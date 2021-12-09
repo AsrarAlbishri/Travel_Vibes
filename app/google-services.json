@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "426444194183",
+    "project_id": "travel-vibes-21c94",
+    "storage_bucket": "travel-vibes-21c94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426444194183:android:48c750449a54d353a09322",
+        "android_client_info": {
+          "package_name": "com.tuwaiq.travelvibes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426444194183-tf1sji288rlvpbp6oadlnm9e8nhgkrvp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQwjzQXJLaZGAdjs3DZ2SaqQ3stzAS8kI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426444194183-tf1sji288rlvpbp6oadlnm9e8nhgkrvp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
