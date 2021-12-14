@@ -3,45 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    tools:ignore="MissingClass">
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="108dp"
         android:layout_height="108dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="57dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <EditText
+    <TextView
         android:id="@+id/post_details"
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
+        android:layout_width="211dp"
+        android:layout_height="85dp"
         android:layout_marginStart="47dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="35dp"
         android:inputType="textMultiLine"
         android:lines="3"
         android:maxLines="3"
         android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <Button
-        android:id="@+id/favBtn"
-        android:layout_width="30sp"
-        android:layout_height="30sp"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="35dp"
-        android:background="@drawable/ic_baseline_favorite_red_24"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_details"
-        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
+    <!--    <com.varunest.sparkbutton.SparkButton-->
+    <!--        android:id="@+id/spark_button"-->
+    <!--        android:layout_width="137dp"-->
+    <!--        android:layout_height="103dp"-->
+    <!--        app:sparkbutton_activeImage="@drawable/ic_baseline_favorite_red_24"-->
+    <!--        app:sparkbutton_iconSize="40dp"-->
+    <!--        app:sparkbutton_inActiveImage="@drawable/ic_baseline_favorite_shadow_24"-->
+    <!--        app:sparkbutton_primaryColor="@color/orange"-->
+    <!--        app:sparkbutton_secondaryColor="@color/red"-->
+    <!--        tools:layout_editor_absoluteX="224dp"-->
+    <!--        tools:layout_editor_absoluteY="165dp" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

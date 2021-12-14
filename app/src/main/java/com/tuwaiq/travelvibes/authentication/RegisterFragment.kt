@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.firestore.auth.User
 import com.tuwaiq.travelvibes.R
 import com.tuwaiq.travelvibes.authentication.FragmentNavigation
 import com.tuwaiq.travelvibes.authentication.LoginFragment
@@ -18,8 +19,14 @@ import com.tuwaiq.travelvibes.authentication.LoginFragment
 private const val TAG = "RegisterFragment"
 class RegisterFragment : Fragment() {
 
+
+    private var newUsername:User? = null
+    private var mAuth:FirebaseAuth? = null
+
+
     companion object {
         var auth: FirebaseAuth = FirebaseAuth.getInstance()
+
 
     }
 
@@ -61,6 +68,7 @@ class RegisterFragment : Fragment() {
                         .addOnCompleteListener{ task ->
 
                             if (task.isSuccessful){
+                                val user =
                                 Log.d(TAG,"register successful")
 
                                 val updateProfile = userProfileChangeRequest {
