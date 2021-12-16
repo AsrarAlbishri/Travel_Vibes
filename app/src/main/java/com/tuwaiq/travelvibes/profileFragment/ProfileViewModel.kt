@@ -7,7 +7,7 @@ import com.tuwaiq.travelvibes.data.User
 
 class ProfileViewModel : ViewModel() {
 
-    private val repo:AppRepository = AppRepository()
+    private val repo:AppRepository = AppRepository.getInstance()
 
     fun saveUser(user:User){
         repo.saveUserInfo(user)

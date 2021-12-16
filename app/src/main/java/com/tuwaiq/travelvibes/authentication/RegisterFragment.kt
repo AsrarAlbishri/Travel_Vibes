@@ -9,19 +9,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.google.firebase.firestore.auth.User
+import com.google.firebase.firestore.FirebaseFirestore
 import com.tuwaiq.travelvibes.R
-import com.tuwaiq.travelvibes.authentication.FragmentNavigation
-import com.tuwaiq.travelvibes.authentication.LoginFragment
+import com.tuwaiq.travelvibes.data.User
 
 private const val TAG = "RegisterFragment"
 class RegisterFragment : Fragment() {
 
-
-    private var newUsername:User? = null
-    private var mAuth:FirebaseAuth? = null
 
 
     companion object {
@@ -35,6 +32,14 @@ class RegisterFragment : Fragment() {
     private lateinit var passwordET: EditText
     private lateinit var confirmPassword: EditText
     private lateinit var registerBtn: Button
+    private lateinit var loginTV:Button
+
+   // private lateinit var auth:FirebaseAuth
+
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        auth = FirebaseAuth.getInstance()
+//    }
 
     override fun onStart() {
         super.onStart()
@@ -42,12 +47,10 @@ class RegisterFragment : Fragment() {
         val currentUser = auth.currentUser
 
         if (currentUser != null){
-            val fragment = LoginFragment()
-
-            activity?.supportFragmentManager?.let {
-                it.beginTransaction()
-                    .replace(R.id.container_fragment,fragment)
-                    .commit()
+            loginTV.setOnClickListener {
+                val navCon = findNavController()
+                val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
+                navCon.navigate(action)
             }
         }
 
@@ -64,26 +67,7 @@ class RegisterFragment : Fragment() {
                 password != confirmPassword -> showToast("password doesn't match password confirmation")
 
                 else -> {
-                    auth.createUserWithEmailAndPassword(email,password)
-                        .addOnCompleteListener{ task ->
-
-                            if (task.isSuccessful){
-                                val user =
-                                Log.d(TAG,"register successful")
-
-                                val updateProfile = userProfileChangeRequest {
-                                    displayName = username
-                                }
-
-                                auth.currentUser?.updateProfile(updateProfile)
-
-                            }else{
-                                Log.d(TAG,"register unsuccessful")
-
-                            }
-
-
-                        }
+                    registerUser(email =  email, password =  password, username= username)
                 }
 
             }
@@ -91,8 +75,39 @@ class RegisterFragment : Fragment() {
         }
     }
 
+
+    private fun registerUser(username: String, email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+
+                if (task.isSuccessful) {
+                    val user = User(username, email)
+//                    user.userName = username
+//                    user.email = email
+
+                    val firestoreDB = FirebaseFirestore.getInstance()
+                    firestoreDB.collection("users").document(auth.currentUser!!.uid).set(user)
+
+                    showToast("register successful")
+
+                } else {
+                    Log.e(TAG, "there was something wrong", task.exception)
+                }
+            }
+
+                    val updateProfile = userProfileChangeRequest {
+                        displayName = username
+                    }
+
+                    auth.currentUser?.updateProfile(updateProfile)
+
+                }
+
+
+
+
     private fun showToast(message:String){
-        Toast.makeText(context,message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(),message, Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateView(
@@ -104,11 +119,6 @@ class RegisterFragment : Fragment() {
 
         initialization(view)
 
-        view.findViewById<Button>(R.id.logintv).setOnClickListener {
-            var navRegister = activity as FragmentNavigation
-            navRegister.navigateFrag(LoginFragment(),false)
-        }
-
         return view
     }
 
@@ -118,8 +128,8 @@ class RegisterFragment : Fragment() {
         passwordET = view.findViewById(R.id.password_et)
         confirmPassword = view.findViewById(R.id.confirm_password_et)
         registerBtn = view.findViewById(R.id.register_btn)
+        loginTV = view.findViewById(R.id.logintv)
     }
-
 
 
 }

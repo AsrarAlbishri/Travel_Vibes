@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.tuwaiq.travelvibes.R
@@ -20,6 +21,8 @@ import com.xwray.groupie.GroupAdapter
 
 private const val TAG = "PostListFragment"
 class PostListFragment : Fragment() {
+
+    val postList = mutableListOf<Post>()
 
     val database = FirebaseFirestore.getInstance()
 
@@ -37,23 +40,24 @@ class PostListFragment : Fragment() {
         binding.postRecyclerView.layoutManager=LinearLayoutManager(context)
 
 
-
+       fetchData()
 
         return binding.root
 
     }
 
     private fun fetchData(){
-        database.collection("list of posts")
+        database.collection("posts")
             .get()
             .addOnSuccessListener {
-                //val adapter = GroupAdapter<PostsHolder>()
+
                 for (document in it){
-                    val post = it.toObjects(Post::class.java)
-                   // adapter.add(PostsAdapter(post))
+                    val post = document.toObject(Post::class.java)
+                    postList.add(post)
+
                 }
 
-               // binding.postRecyclerView.adapter = adapter
+                binding.postRecyclerView.adapter =PostsAdapter(postList)
             }
     }
 
@@ -92,12 +96,5 @@ class PostListFragment : Fragment() {
 
         override fun getItemCount(): Int = posts.size
 
-
-
     }
-
-
-
-
-
 }

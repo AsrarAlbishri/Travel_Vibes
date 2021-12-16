@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="20sp"
+    android:background="#CDC7C7"
     tools:ignore="MissingClass">
 
     <ImageView
@@ -21,14 +23,14 @@
         android:layout_width="211dp"
         android:layout_height="85dp"
         android:layout_marginStart="47dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="35dp"
         android:inputType="textMultiLine"
         android:lines="3"
         android:maxLines="3"
         android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.66"
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck" />

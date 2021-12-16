@@ -3,31 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/profileEditFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
-        android:id="@+id/postListFragment"
+        android:id="@+id/navigation_home"
         android:name="com.tuwaiq.travelvibes.postListFragment.PostListFragment"
         android:label="post_list_fragment"
-        tools:layout="@layout/post_list_fragment" >
+        tools:layout="@layout/post_list_fragment">
         <action
             android:id="@+id/action_postListFragment_to_postFragment"
-            app:destination="@id/postFragment" />
+            app:destination="@id/navigation_add" />
     </fragment>
     <fragment
-        android:id="@+id/postFragment"
+        android:id="@+id/navigation_add"
         android:name="com.tuwaiq.travelvibes.postFragment.PostFragment"
         android:label="post_fragment"
-        tools:layout="@layout/post_fragment" >
+        tools:layout="@layout/post_fragment">
         <action
             android:id="@+id/action_postFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_navigation_add_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/profileFragment"
+        android:id="@+id/navigation_profile"
         android:name="com.tuwaiq.travelvibes.profileFragment.ProfileFragment"
         android:label="profile_fragment"
-        tools:layout="@layout/profile_fragment" >
+        tools:layout="@layout/profile_fragment">
         <action
             android:id="@+id/action_profileFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
@@ -41,9 +44,29 @@
         android:id="@+id/loginFragment"
         android:name="com.tuwaiq.travelvibes.authentication.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_postListFragment"
-            app:destination="@id/postListFragment" />
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_fav"
+        android:name="com.tuwaiq.travelvibes.profileFragment.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite">
+        <action
+            android:id="@+id/action_favoriteFragment_to_profileEditFragment"
+            app:destination="@id/profileEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.tuwaiq.travelvibes.authentication.RegisterFragment"
+        android:label="RegisterFragment">
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

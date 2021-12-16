@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.tuwaiq.travelvibes.R
 
 class LoginFragment : Fragment() {
@@ -29,17 +30,20 @@ class LoginFragment : Fragment() {
         userNameET = view.findViewById(R.id.username_et)
         passwordET = view.findViewById(R.id.password_et)
         loginBtn = view.findViewById(R.id.login_btn)
+        signUp = view.findViewById(R.id.register_btn)
 
-        view.findViewById<Button>(R.id.register_btn).setOnClickListener {
-            var navRegister = activity as FragmentNavigation
-            navRegister.navigateFrag(RegisterFragment(),false)
-        }
+
 
         return view
     }
 
     override fun onStart() {
         super.onStart()
+         signUp.setOnClickListener {
+            val navCon = findNavController()
+            val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+            navCon.navigate(action)
+        }
 
         loginBtn.setOnClickListener {
             RegisterFragment.auth.signInWithEmailAndPassword(
@@ -54,11 +58,6 @@ class LoginFragment : Fragment() {
                     }
                 }
         }
-
-
-
-
-
 
     }
 

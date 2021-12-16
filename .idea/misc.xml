@@ -15,6 +15,7 @@
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_search.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/bottom_m.xml" value="0.1796875" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_favorite.xml" value="0.1796875" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_login.xml" value="0.22" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_profile_edit.xml" value="0.3333333333333333" />
@@ -22,9 +23,11 @@
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/list_item_post.xml" value="0.22" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/post_fragment.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/post_list_fragment.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/post_list_profile_fragment.xml" value="0.1796875" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/profile_fragment.xml" value="0.22" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/menu/bottom_nav_menu.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/menu/search_menu.xml" value="0.1796875" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/xml/my_pics.xml" value="0.1796875" />
       </map>
     </option>
   </component>

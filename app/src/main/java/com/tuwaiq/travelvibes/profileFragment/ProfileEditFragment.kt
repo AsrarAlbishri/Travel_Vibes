@@ -5,12 +5,15 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.tuwaiq.travelvibes.data.User
@@ -19,6 +22,7 @@ import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
 
 
 private const val REQUEST_CODE = 0
+private const val TAG = "ProfileEditFragment"
 class ProfileEditFragment : Fragment() {
 
     var currentFile: Uri? = null
@@ -97,11 +101,24 @@ class ProfileEditFragment : Fragment() {
 
     private fun uploadImageToFirebase(fileName:String){
         currentFile?.let {
-            imageRef.child("images/$fileName").putFile(it)
-                .addOnCompleteListener{ task ->
-                    if (task.isSuccessful){
-                        Toast.makeText(context,"uploaded image",Toast.LENGTH_LONG).show()
+           val ref = imageRef.child("images/$fileName")
+            val uploadImge =   ref.putFile(it)
+            val imgUrl= uploadImge.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
                     }
+                }
+                ref.downloadUrl
+
+            }
+                .addOnSuccessListener{
+
+                        val imageUri = it.toString()
+                        user.profileImageUrl=imageUri
+                    Log.d(TAG,"image url $imageUri")
+                        Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+                            .update("profileImageUrl" , imageUri)
 
                 }
 

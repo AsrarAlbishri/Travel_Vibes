@@ -48,5 +48,8 @@
     <string name="date">Date</string>
     <string name="upload">upload</string>
     <string name="retrieve">Retrieve</string>
+    <string name="selectpic">selectpic</string>
+
+
 
 </resources>

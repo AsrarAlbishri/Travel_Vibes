@@ -8,6 +8,7 @@
     tools:context=".profileFragment.ProfileFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/post_profile_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -29,8 +30,8 @@
 
         <ImageView
             android:id="@+id/photo_profile"
-            android:layout_width="124dp"
-            android:layout_height="125dp"
+            android:layout_width="136dp"
+            android:layout_height="110dp"
             android:layout_marginStart="37dp"
             android:layout_marginBottom="37dp"
             android:src="@drawable/profile1"
@@ -56,13 +57,13 @@
             android:minHeight="48dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/name"
-            app:layout_constraintHorizontal_bias="0.466"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/name"
             app:layout_constraintTop_toBottomOf="@+id/name"
             tools:hint="@string/user_name" />
 
         <ImageView
-            android:id="@+id/imageView6"
+            android:id="@+id/settingIV"
             android:layout_width="35dp"
             android:layout_height="28dp"
             android:layout_marginTop="16dp"
