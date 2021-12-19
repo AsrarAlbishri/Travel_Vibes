@@ -40,17 +40,11 @@ class ProfileFragment : Fragment() {
 
    private lateinit var user: User
 
-
-
     val postList = mutableListOf<Post>()
 
-    // هوا بدل auth
     val database = FirebaseFirestore.getInstance()
 
     private val personCollectionRef = Firebase.firestore.collection("users")
-
-
-
 
 
     override fun onCreateView(
@@ -90,11 +84,17 @@ class ProfileFragment : Fragment() {
 
     private fun profilePostData(){
         Firebase.auth.currentUser?.let {
-            database.collection("posts").whereArrayContains("id", it.uid)
+            Log.d(TAG,it.uid)
+            database.collection("posts").whereEqualTo("id",it.uid)
                 .get()
+                .addOnFailureListener {
+                    Log.e(TAG,"!!!!",it)
+                }
                 .addOnSuccessListener {
                     for (document in it){
+
                         val post = document.toObject(Post::class.java)
+                        Log.d(TAG,"khguy $document" )
                         postList.add(post)
 
                     }

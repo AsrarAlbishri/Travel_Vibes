@@ -19,6 +19,7 @@ import com.google.firebase.storage.ktx.storage
 import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.FragmentProfileEditBinding
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
+import java.util.*
 
 
 private const val REQUEST_CODE = 0
@@ -74,19 +75,19 @@ class ProfileEditFragment : Fragment() {
         }
 
         binding.uploadButton.setOnClickListener {
-            uploadImageToFirebase("myImage")
+            uploadImageToFirebase()
         }
 
         binding.retrieveButton.setOnClickListener {
-            downloadImage("myImage")
+            downloadImage()
         }
 
         return binding.root
     }
 
-    private fun downloadImage(fileName: String){
+    private fun downloadImage( ){
         val maxDownloadSize = 5L * 1024 * 1024
-        val bytes = imageRef.child("images/$fileName").getBytes(maxDownloadSize)
+        val bytes = imageRef.child("images/").getBytes(maxDownloadSize)
             .addOnCompleteListener{ task ->
                 if (task.isSuccessful){
                     val bitmap = BitmapFactory.decodeByteArray(task.result,0,task.result!!.size)
@@ -99,9 +100,9 @@ class ProfileEditFragment : Fragment() {
             }
     }
 
-    private fun uploadImageToFirebase(fileName:String){
+    private fun uploadImageToFirebase(){
         currentFile?.let {
-           val ref = imageRef.child("images/$fileName")
+           val ref = imageRef.child("images/${Calendar.getInstance().time}")
             val uploadImge =   ref.putFile(it)
             val imgUrl= uploadImge.continueWithTask { task ->
                 if (!task.isSuccessful) {
