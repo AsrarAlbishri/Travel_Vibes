@@ -22,18 +22,20 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.tuwaiq.travelvibes.DatePickerDialogFragment
 import com.tuwaiq.travelvibes.authentication.LoginFragmentDirections
 import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.PostFragmentBinding
 import com.tuwaiq.travelvibes.utils.getScaledBitmap
 import java.io.File
+import java.util.*
 
 private const val TAG = "PostFragment"
-
 private const val REQUEST_CODE_IMAGE_POST = 0
+const val POST_DATE_KEY = "post date"
 
-class PostFragment : Fragment() {
+class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
     var currentFile: Uri? = null
     var imageRef = Firebase.storage.reference
@@ -92,6 +94,7 @@ class PostFragment : Fragment() {
         binding.postCamera.setOnClickListener {
 
             openCamera()
+            uploadImage()
 
         }
 
@@ -120,6 +123,7 @@ class PostFragment : Fragment() {
             binding.apply {
                 post.postDescription=postWrite.text.toString()
                 post.placeName=placeName.text.toString()
+
             }
 
 
@@ -128,12 +132,12 @@ class PostFragment : Fragment() {
         }
 
 
-        binding.postPhoto.setOnClickListener {
-            Intent(Intent.ACTION_GET_CONTENT).also {
-                it.type = "image/*"
-                startActivityForResult(it,REQUEST_CODE_IMAGE_POST)
-            }
-        }
+//        binding.postPhoto.setOnClickListener {
+//            Intent(Intent.ACTION_GET_CONTENT).also {
+//                it.type = "image/*"
+//                startActivityForResult(it,REQUEST_CODE_IMAGE_POST)
+//            }
+//        }
 
         binding.postCamera.setOnClickListener {
             val builder = context?.let { it -> AlertDialog.Builder (it) }
@@ -150,7 +154,7 @@ class PostFragment : Fragment() {
                 alert.show()
             }
 
-          // uploadImage("ImageOfPost")
+
         }
 
         binding.restaurantPlace.setOnCheckedChangeListener { _, isChecked ->
@@ -169,8 +173,25 @@ class PostFragment : Fragment() {
     }
 
     private fun uploadImage() {
-        // هنا احط كود القاليري
+        Intent(Intent.ACTION_GET_CONTENT).also {
+            it.type = "image/*"
+            startActivityForResult(it,REQUEST_CODE_IMAGE_POST)
+        }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        binding.datePickerIV.setOnClickListener {
+            val args = Bundle()
+            args.putSerializable(POST_DATE_KEY,post.date)
+
+            val datePicker = DatePickerDialogFragment()
+            datePicker.arguments = args
+            datePicker.setTargetFragment(this,0)
+            datePicker.show(this.parentFragmentManager,"date picker")
+        }
     }
 
 
@@ -208,5 +229,10 @@ class PostFragment : Fragment() {
         }
 
     }
+
+    override fun onDateSelected(date: Date) {
+         post.date = date
+    }
+
 
 }

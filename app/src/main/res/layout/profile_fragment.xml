@@ -40,9 +40,9 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="97dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="80dp"
+            android:layout_width="185dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="76dp"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -52,8 +52,9 @@
 
         <TextView
             android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="187dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="16dp"
             android:minHeight="48dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/name"

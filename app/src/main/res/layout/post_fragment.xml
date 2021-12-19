@@ -133,7 +133,7 @@
         android:layout_marginTop="8dp"
         android:src="@drawable/location"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintTop_toBottomOf="@+id/date_picker_IV" />
 
     <TextView
         android:id="@+id/textView8"
@@ -161,11 +161,11 @@
         app:layout_constraintTop_toBottomOf="@+id/post_write" />
 
     <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="46dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="23dp"
+        android:id="@+id/date_picker_IV"
+        android:layout_width="41dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/dateicon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/post_camera" />
@@ -174,13 +174,13 @@
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
         android:text="@string/date"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/date_picker_IV"
         app:layout_constraintTop_toBottomOf="@+id/post_camera" />
 
 

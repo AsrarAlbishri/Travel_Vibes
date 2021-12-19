@@ -67,7 +67,7 @@ class RegisterFragment : Fragment() {
                 password != confirmPassword -> showToast("password doesn't match password confirmation")
 
                 else -> {
-                    registerUser(email =  email, password =  password, username= username)
+                    registerUser(email =  email, password =  password, username= username )
                 }
 
             }
@@ -76,12 +76,13 @@ class RegisterFragment : Fragment() {
     }
 
 
-    private fun registerUser(username: String, email: String, password: String) {
+    private fun registerUser(username: String, email: String, password: String,) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
 
                 if (task.isSuccessful) {
-                    val user = User(username, email)
+                    val user = User(userName = username, email = email)
+
 //                    user.userName = username
 //                    user.email = email
 

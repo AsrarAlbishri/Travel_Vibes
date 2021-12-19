@@ -1,6 +1,7 @@
 package com.tuwaiq.travelvibes.profileFragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,10 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
 import com.tuwaiq.travelvibes.authentication.LoginFragmentDirections
 import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.data.User
@@ -26,15 +31,25 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 
+private const val TAG = "ProfileFragment"
 class ProfileFragment : Fragment() {
 
    private lateinit var binding: ProfileFragmentBinding
 
+
+
+   private lateinit var user: User
+
+
+
     val postList = mutableListOf<Post>()
 
+    // هوا بدل auth
     val database = FirebaseFirestore.getInstance()
 
-    private val personCollectionRef = Firebase.firestore.collection("persons")
+    private val personCollectionRef = Firebase.firestore.collection("users")
+
+
 
 
 
@@ -46,9 +61,31 @@ class ProfileFragment : Fragment() {
         binding= ProfileFragmentBinding.inflate(layoutInflater)
         binding.postProfileRv.layoutManager = LinearLayoutManager(context)
 
+
         profilePostData()
 
+        getUserData()
+
         return binding.root
+    }
+
+
+    private fun getUserData(){
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        val userRef = database.collection("users")
+        val uidRef = userRef.document(uid)
+        uidRef.get().addOnSuccessListener { document ->
+            if (document != null){
+                binding.name.setText(document.getString("email"))
+                binding.userName.setText(document.getString("userName"))
+
+            }else{
+                Log.d(TAG , "No such document")
+            }
+        }.addOnFailureListener { exception ->
+            Log.d(TAG, "get failed with" , exception)
+
+        }
     }
 
     private fun profilePostData(){
@@ -97,8 +134,6 @@ class ProfileFragment : Fragment() {
         }
 
         override fun getItemCount(): Int = posts.size
-
-
 
     }
 

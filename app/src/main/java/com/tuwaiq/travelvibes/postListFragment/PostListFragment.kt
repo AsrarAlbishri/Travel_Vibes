@@ -17,14 +17,17 @@ import com.tuwaiq.travelvibes.R
 import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.databinding.ListItemPostBinding
 import com.tuwaiq.travelvibes.databinding.PostListFragmentBinding
-import com.xwray.groupie.GroupAdapter
+import android.text.format.DateFormat
 
 private const val TAG = "PostListFragment"
+
 class PostListFragment : Fragment() {
 
     val postList = mutableListOf<Post>()
 
     val database = FirebaseFirestore.getInstance()
+
+    private val dateFormat = "EEE, MMM dd, yyyy"
 
 
 
@@ -68,15 +71,24 @@ class PostListFragment : Fragment() {
     }
 
     private inner class PostsHolder(val binding: ListItemPostBinding)
-        :RecyclerView.ViewHolder(binding.root){
+        :RecyclerView.ViewHolder(binding.root),View.OnClickListener{
+
+        init {
+            itemView.setOnClickListener(this)
+        }
 
             fun bind(post:Post){
 
                 binding.postDetails.text = post.postDescription
+                binding.postDateItem.text =DateFormat.format(dateFormat, post.date)
 
             }
 
+        override fun onClick(p0: View?) {
+
         }
+
+    }
 
     private inner class PostsAdapter(val posts:List<Post>):RecyclerView.Adapter<PostsHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsHolder {
