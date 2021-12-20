@@ -2,6 +2,11 @@ package com.tuwaiq.travelvibes
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -17,6 +22,8 @@ import java.lang.StringBuilder
 
 private const val TAG = "AppRepository"
 class AppRepository private constructor(context: Context) {
+
+    val database = FirebaseFirestore.getInstance()
 
     private val usersCollectionRef = Firebase.firestore.collection("users")
     private val postCollectionRef = Firebase.firestore.collection("posts")
@@ -77,6 +84,45 @@ class AppRepository private constructor(context: Context) {
         }
     }
 
+    suspend fun getFetchPosts(): LiveData<List<Post>>{
+        return liveData {
+            val posts = mutableListOf<Post>()
+             postCollectionRef.get().await()
+                .documents.forEach {
+                    val post = Post()
+
+                     post.postDescription = it.getString("postDescription").toString()
+                     post.location = it.getString("location").toString()
+                     post.placeName = it.getString("placeName").toString()
+                     post.postImageUrl = it.getString("postImageUrl").toString()
+                     post.id = it.getString("id").toString()
+                     post.date = it.getString("date").toString()
+                     post.restaurant = it.getString("restaurant").toString()
+                     post.hotel = it.getString("hotel").toString()
+                     post.others = it.getString("others").toString()
+
+                    post.postId = it.id
+
+
+
+                    posts.add(post)
+                }
+            emit(posts)
+        }
+    }
+
+    suspend fun updatePost(uid:String) : LiveData<DocumentSnapshot> {
+
+
+        return liveData {
+
+            val userRef = database.collection("posts")
+            val uidRef = userRef.document(uid).get().await()
+            Log.e(TAG, "updatePost: ${uidRef.data}")
+            emit(uidRef)
+        }
+
+        }
 
     companion object{
         private var INSTANCE:AppRepository? = null

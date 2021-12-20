@@ -18,10 +18,17 @@ import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.databinding.ListItemPostBinding
 import com.tuwaiq.travelvibes.databinding.PostListFragmentBinding
 import android.text.format.DateFormat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
+import com.tuwaiq.travelvibes.postFragment.PostViewModel
+import kotlinx.coroutines.launch
 
 private const val TAG = "PostListFragment"
 
 class PostListFragment : Fragment() {
+
+    private val postListViewModel: PostListViewModel by lazy { ViewModelProvider(this)[PostListViewModel::class.java] }
 
     val postList = mutableListOf<Post>()
 
@@ -29,9 +36,6 @@ class PostListFragment : Fragment() {
 
     private val dateFormat = "EEE, MMM dd, yyyy"
 
-
-
-    private val postListViewModel: PostListViewModel by lazy { ViewModelProvider(this)[PostListViewModel::class.java] }
 
     private lateinit var binding:PostListFragmentBinding
 
@@ -43,28 +47,17 @@ class PostListFragment : Fragment() {
         binding.postRecyclerView.layoutManager=LinearLayoutManager(context)
 
 
-       fetchData()
+        lifecycleScope.launch {
+
+            postListViewModel.getFetchPosts().observe(viewLifecycleOwner , Observer {
+                binding.postRecyclerView.adapter = PostsAdapter(it)
+            })
+
+        }
 
         return binding.root
 
     }
-
-    private fun fetchData(){
-        database.collection("posts")
-            .get()
-            .addOnSuccessListener {
-
-                for (document in it){
-                    val post = document.toObject(Post::class.java)
-                    postList.add(post)
-
-                }
-
-                binding.postRecyclerView.adapter =PostsAdapter(postList)
-            }
-    }
-
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -73,21 +66,29 @@ class PostListFragment : Fragment() {
     private inner class PostsHolder(val binding: ListItemPostBinding)
         :RecyclerView.ViewHolder(binding.root),View.OnClickListener{
 
+       private lateinit var post: Post
         init {
             itemView.setOnClickListener(this)
         }
 
             fun bind(post:Post){
-
+                this.post = post
                 binding.postDetails.text = post.postDescription
-                binding.postDateItem.text =DateFormat.format(dateFormat, post.date)
-
+                if (post.date.isNotEmpty()) {
+                    binding.postDateItem.text = DateFormat.format(dateFormat, post.date.toLong())
+                }
             }
 
         override fun onClick(p0: View?) {
 
-        }
+            if(p0 == itemView){
 
+
+                    val action = PostListFragmentDirections.actionPostListFragmentToPostFragment(post.postId)
+                     findNavController().navigate(action)
+
+            }
+        }
     }
 
     private inner class PostsAdapter(val posts:List<Post>):RecyclerView.Adapter<PostsHolder>(){

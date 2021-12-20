@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
@@ -72,6 +73,7 @@ class ProfileFragment : Fragment() {
             if (document != null){
                 binding.name.setText(document.getString("email"))
                 binding.userName.setText(document.getString("userName"))
+                //binding.photoProfile.load(User.)
 
             }else{
                 Log.d(TAG , "No such document")

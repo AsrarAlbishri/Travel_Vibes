@@ -4,15 +4,16 @@ import java.util.*
 
 data class Post (
 
-
+    var postId:String = "",
     var id:String = "" ,
     var postDescription:String = "",
-    var date: Date = Date(),
+    var date:String = "",
     var placeName:String = "",
     var location:String = "" ,
-    var restaurant:Boolean = false ,
-    var hotel:Boolean = false ,
-    var others:Boolean = false, )
+    var restaurant:String = "" ,
+    var hotel:String = "" ,
+    var others:String = "",
+    var postImageUrl:String = "")
 
   {
 

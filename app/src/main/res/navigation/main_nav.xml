@@ -25,6 +25,10 @@
         <action
             android:id="@+id/action_navigation_add_to_registerFragment"
             app:destination="@id/registerFragment" />
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/navigation_profile"

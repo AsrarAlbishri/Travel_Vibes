@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +18,12 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.tuwaiq.travelvibes.DatePickerDialogFragment
@@ -28,6 +32,7 @@ import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.PostFragmentBinding
 import com.tuwaiq.travelvibes.utils.getScaledBitmap
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
@@ -40,6 +45,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     var currentFile: Uri? = null
     var imageRef = Firebase.storage.reference
 
+    private val args:PostFragmentArgs by navArgs()
+
     private lateinit var photoFile: File
     private lateinit var photoUri:Uri
 
@@ -51,6 +58,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     private lateinit var post: Post
 
     private lateinit var firebaseUser: FirebaseUser
+
+    val database = FirebaseFirestore.getInstance()
 
 
     private val getPermissionLuncher = registerForActivityResult(
@@ -158,15 +167,26 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         }
 
         binding.restaurantPlace.setOnCheckedChangeListener { _, isChecked ->
-            post.restaurant = isChecked
+            post.restaurant = isChecked.toString()
         }
 
         binding.hotelPlace.setOnCheckedChangeListener { _, isChecked ->
-            post.hotel = isChecked
+            post.hotel = isChecked.toString()
         }
 
         binding.othersPlace.setOnCheckedChangeListener { _, isChecked ->
-            post.others = isChecked
+            post.others = isChecked.toString()
+        }
+
+        lifecycleScope.launch {
+            Log.d(TAG, "onCreateView: ${args.id}")
+            postViewModel.updatePost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
+                binding.postWrite.setText(it.getString("postDescription"))
+                binding.placeName.setText(it.getString("placeName"))
+//                binding.restaurantPlace.isChecked.toString()
+
+
+            })
         }
 
         return binding.root
@@ -204,7 +224,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
                 binding.postPhoto.setImageURI(it)
 
                 currentFile?.let {
-                    imageRef.child("postImages/ImageOfPost").putFile(it)
+                    imageRef.child("postImages/${Calendar.getInstance().time}").putFile(it)
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful){
                                 Toast.makeText(context,"uploaded image", Toast.LENGTH_LONG).show()
@@ -231,7 +251,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     }
 
     override fun onDateSelected(date: Date) {
-         post.date = date
+         post.date = date.time.toString()
     }
 
 
