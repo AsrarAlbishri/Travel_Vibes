@@ -3,7 +3,6 @@ package com.tuwaiq.travelvibes.postFragment
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -24,12 +23,11 @@ import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.tuwaiq.travelvibes.DatePickerDialogFragment
-import com.tuwaiq.travelvibes.authentication.LoginFragmentDirections
 import com.tuwaiq.travelvibes.data.Post
-import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.PostFragmentBinding
 import com.tuwaiq.travelvibes.utils.getScaledBitmap
 import kotlinx.coroutines.launch
@@ -48,7 +46,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     private val args:PostFragmentArgs by navArgs()
 
     private lateinit var photoFile: File
-    private lateinit var photoUri:Uri
+    private lateinit var photoUri: Uri
 
 
     private val postViewModel: PostViewModel by lazy { ViewModelProvider(this)[PostViewModel::class.java] }
@@ -72,6 +70,32 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         ActivityResultContracts.TakePicture()
     ){
         if (it){
+            photoUri?.let {
+                val ref = imageRef.child("postImages/${Calendar.getInstance().time}")
+                val uploadImage = ref.putFile(it)
+                uploadImage.continueWithTask { task ->
+                    if (!task.isSuccessful){
+                        task.exception?.let {
+                            throw it
+                        }
+                    }
+
+                    ref.downloadUrl
+                }
+
+                    .addOnSuccessListener {
+                        val imageUri = it.toString()
+                        post.postImageUrl = imageUri
+                        Log.d(TAG, "imageUri $imageUri" )
+                        Toast.makeText(context,"uploaded image", Toast.LENGTH_LONG).show()
+                        Firebase.firestore.collection("posts").document(Firebase.auth.currentUser?.uid!!)
+                            .update("postImageUrl" , imageUri)
+
+                    }.addOnFailureListener {
+                        Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
+                    }
+            }
+
             updateImageview()
         }
     }
@@ -163,8 +187,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
                 alert.show()
             }
 
-
         }
+
 
         binding.restaurantPlace.setOnCheckedChangeListener { _, isChecked ->
             post.restaurant = isChecked.toString()
@@ -184,7 +208,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
                 binding.postWrite.setText(it.getString("postDescription"))
                 binding.placeName.setText(it.getString("placeName"))
 //                binding.restaurantPlace.isChecked.toString()
-
+//                binding.hotelPlace.isChecked.toString()
+//                binding.othersPlace.isChecked.toString()
 
             })
         }
@@ -222,22 +247,40 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             data?.data?.let {
                 currentFile = it
                 binding.postPhoto.setImageURI(it)
-
-                currentFile?.let {
-                    imageRef.child("postImages/${Calendar.getInstance().time}").putFile(it)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful){
-                                Toast.makeText(context,"uploaded image", Toast.LENGTH_LONG).show()
-                            }
-
-                        }.addOnFailureListener {
-                            Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
-                        }
-
-                }
+                uploadImageToFirestore()
 
             }
         }
+    }
+
+    private fun uploadImageToFirestore(){
+
+        currentFile?.let {
+           val ref = imageRef.child("postImages/${Calendar.getInstance().time}")
+               val uploadImage = ref.putFile(it)
+                   uploadImage.continueWithTask { task ->
+                           if (!task.isSuccessful){
+                               task.exception?.let {
+                                   throw it
+                               }
+                           }
+                           ref.downloadUrl
+                       }
+                           .addOnSuccessListener {
+                               val imageUri = it.toString()
+                               post.postImageUrl = imageUri
+                               Log.d(TAG, "imageUri $imageUri" )
+                        Toast.makeText(context,"uploaded image", Toast.LENGTH_LONG).show()
+                               Firebase.firestore.collection("posts").document(Firebase.auth.currentUser?.uid!!)
+                                   .update("postImageUrl",imageUri)
+
+
+                }.addOnFailureListener {
+                    Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
+                }
+
+        }
+
     }
 
     fun updateImageview(){
@@ -253,6 +296,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     override fun onDateSelected(date: Date) {
          post.date = date.time.toString()
     }
+
+
 
 
 }

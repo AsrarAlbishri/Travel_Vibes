@@ -13,7 +13,10 @@ data class Post (
     var restaurant:String = "" ,
     var hotel:String = "" ,
     var others:String = "",
-    var postImageUrl:String = "")
+    var postImageUrl:String = ""
+      )
+
+
 
   {
 

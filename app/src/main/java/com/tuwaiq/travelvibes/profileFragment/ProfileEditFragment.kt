@@ -74,11 +74,11 @@ class ProfileEditFragment : Fragment() {
             }
         }
 
-        binding.uploadButton.setOnClickListener {
+        binding.uploadimageButton.setOnClickListener {
             uploadImageToFirebase()
         }
 
-        binding.retrieveButton.setOnClickListener {
+        binding.dawonloadIMAGE.setOnClickListener {
             downloadImage()
         }
 
@@ -104,7 +104,7 @@ class ProfileEditFragment : Fragment() {
         currentFile?.let {
            val ref = imageRef.child("images/${Calendar.getInstance().time}")
             val uploadImge =   ref.putFile(it)
-            val imgUrl= uploadImge.continueWithTask { task ->
+                uploadImge.continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let {
                         throw it
@@ -140,8 +140,5 @@ class ProfileEditFragment : Fragment() {
             }
         }
     }
-
-
-
 
 }

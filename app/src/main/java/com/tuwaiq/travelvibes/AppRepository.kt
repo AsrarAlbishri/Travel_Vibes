@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -123,6 +122,11 @@ class AppRepository private constructor(context: Context) {
         }
 
         }
+
+//    suspend fun deletePost(uid: String):LiveData<DocumentSnapshot>{
+//
+//
+//    }
 
     companion object{
         private var INSTANCE:AppRepository? = null

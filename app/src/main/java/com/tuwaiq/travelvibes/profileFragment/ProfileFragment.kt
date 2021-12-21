@@ -39,7 +39,7 @@ class ProfileFragment : Fragment() {
 
 
 
-   private lateinit var user: User
+   //private lateinit var user: User
 
     val postList = mutableListOf<Post>()
 
@@ -66,14 +66,17 @@ class ProfileFragment : Fragment() {
 
 
     private fun getUserData(){
+        var user=User(Firebase.auth.uid!!)
         val uid = FirebaseAuth.getInstance().currentUser!!.uid
         val userRef = database.collection("users")
         val uidRef = userRef.document(uid)
         uidRef.get().addOnSuccessListener { document ->
             if (document != null){
+                user = document.toObject(User::class.java)!!
                 binding.name.setText(document.getString("email"))
                 binding.userName.setText(document.getString("userName"))
-                //binding.photoProfile.load(User.)
+                binding.photoProfile.load(user.profileImageUrl)
+                Log.d(TAG, "hhhhhhhh h${user.profileImageUrl} vvv $user")
 
             }else{
                 Log.d(TAG , "No such document")
