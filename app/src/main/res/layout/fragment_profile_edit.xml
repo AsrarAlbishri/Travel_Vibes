@@ -40,22 +40,12 @@
 
         <ImageButton
             android:id="@+id/uploadimageButton"
-            android:layout_width="37dp"
-            android:layout_height="31dp"
+            android:layout_width="67dp"
+            android:layout_height="28dp"
             android:src="@android:drawable/ic_menu_camera"
-            app:layout_constraintEnd_toStartOf="@+id/dawonloadIMAGE"
             app:layout_constraintStart_toStartOf="@+id/profile_image"
             app:layout_constraintTop_toBottomOf="@+id/profile_image"
             tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-        <ImageButton
-            android:id="@+id/dawonloadIMAGE"
-            android:layout_width="36dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_baseline_image_24"
-            app:layout_constraintEnd_toEndOf="@+id/profile_image"
-            app:layout_constraintStart_toEndOf="@+id/uploadimageButton"
-            app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -76,10 +66,10 @@
 
     <EditText
         android:id="@+id/first_name_edit"
-        android:layout_width="169dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="184dp"
-        android:layout_marginEnd="124dp"
+        android:layout_width="209dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="76dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -99,9 +89,9 @@
 
     <EditText
         android:id="@+id/last_name_edit"
-        android:layout_width="182dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="12dp"
+        android:layout_width="209dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/first_name_edit"
@@ -122,10 +112,10 @@
 
     <EditText
         android:id="@+id/user_name_edit"
-        android:layout_width="185dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_width="211dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/last_name_edit"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -135,7 +125,7 @@
         android:layout_width="75dp"
         android:layout_height="18dp"
         android:layout_marginStart="28dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:text="@string/email"
         android:textColor="@color/black"
         android:textSize="16sp"
@@ -145,13 +135,13 @@
 
     <EditText
         android:id="@+id/email_edit"
-        android:layout_width="197dp"
-        android:layout_height="41dp"
+        android:layout_width="207dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="39dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toBottomOf="@+id/user_name_edit"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -161,7 +151,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="40dp"
         android:text="@string/phone_number"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -170,8 +160,8 @@
 
     <EditText
         android:id="@+id/phone_num"
-        android:layout_width="186dp"
-        android:layout_height="43dp"
+        android:layout_width="209dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/textView9"

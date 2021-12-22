@@ -98,13 +98,13 @@ class RegisterFragment : Fragment() {
 
                     val updateProfile = userProfileChangeRequest {
                         displayName = username
+
+
                     }
 
                     auth.currentUser?.updateProfile(updateProfile)
 
                 }
-
-
 
 
     private fun showToast(message:String){

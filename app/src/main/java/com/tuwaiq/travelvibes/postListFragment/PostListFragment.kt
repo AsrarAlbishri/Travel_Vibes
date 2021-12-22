@@ -20,6 +20,7 @@ import com.tuwaiq.travelvibes.databinding.PostListFragmentBinding
 import android.text.format.DateFormat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import coil.load
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
 import com.tuwaiq.travelvibes.postFragment.PostViewModel
 import kotlinx.coroutines.launch
@@ -77,6 +78,8 @@ class PostListFragment : Fragment() {
                 if (post.date.isNotEmpty()) {
                     binding.postDateItem.text = DateFormat.format(dateFormat, post.date.toLong())
                 }
+
+                binding.imageViewOfPost.load(post.postImageUrl)
             }
 
         override fun onClick(p0: View?) {

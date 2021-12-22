@@ -156,6 +156,9 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             binding.apply {
                 post.postDescription=postWrite.text.toString()
                 post.placeName=placeName.text.toString()
+                post.hotel = hotelPlace.isChecked.toString()
+                post.others = othersPlace.isChecked.toString()
+                post.restaurant = restaurantPlace.isChecked.toString()
 
             }
 
@@ -207,9 +210,11 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             postViewModel.updatePost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
                 binding.postWrite.setText(it.getString("postDescription"))
                 binding.placeName.setText(it.getString("placeName"))
-//                binding.restaurantPlace.isChecked.toString()
-//                binding.hotelPlace.isChecked.toString()
-//                binding.othersPlace.isChecked.toString()
+//                binding.restaurantPlace.isChecked
+//                binding.hotelPlace.isChecked
+//                binding.othersPlace.isChecked
+                binding.postPhoto.setImageURI(photoUri)
+                //binding.postPhoto.setImageURI(currentFile)
 
             })
         }

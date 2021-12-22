@@ -12,7 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import coil.load
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -28,6 +31,8 @@ class ProfileEditFragment : Fragment() {
 
     var currentFile: Uri? = null
     var imageRef = Firebase.storage.reference
+
+    val database = FirebaseFirestore.getInstance()
 
     private val  profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
 
@@ -78,27 +83,29 @@ class ProfileEditFragment : Fragment() {
             uploadImageToFirebase()
         }
 
-        binding.dawonloadIMAGE.setOnClickListener {
-            downloadImage()
-        }
+//        binding.dawonloadIMAGE.setOnClickListener {
+//            downloadImage()
+//        }
+
+        getUserData()
 
         return binding.root
     }
 
-    private fun downloadImage( ){
-        val maxDownloadSize = 5L * 1024 * 1024
-        val bytes = imageRef.child("images/").getBytes(maxDownloadSize)
-            .addOnCompleteListener{ task ->
-                if (task.isSuccessful){
-                    val bitmap = BitmapFactory.decodeByteArray(task.result,0,task.result!!.size)
-
-                    binding.profileImage.setImageBitmap(bitmap)
-                }
-
-            }.addOnFailureListener {
-                Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
-            }
-    }
+//    private fun downloadImage( ){
+//        val maxDownloadSize = 5L * 1024 * 1024
+//        val bytes = imageRef.child("images/").getBytes(maxDownloadSize)
+//            .addOnCompleteListener{ task ->
+//                if (task.isSuccessful){
+//                    val bitmap = BitmapFactory.decodeByteArray(task.result,0,task.result!!.size)
+//
+//                    binding.profileImage.setImageBitmap(bitmap)
+//                }
+//
+//            }.addOnFailureListener {
+//                Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
+//            }
+//    }
 
     private fun uploadImageToFirebase(){
         currentFile?.let {
@@ -118,8 +125,8 @@ class ProfileEditFragment : Fragment() {
                         val imageUri = it.toString()
                         user.profileImageUrl=imageUri
                     Log.d(TAG,"image url $imageUri")
-                        Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
-                            .update("profileImageUrl" , imageUri)
+//                        Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+//                            .update("profileImageUrl" , imageUri)
 
                 }
 
@@ -138,6 +145,30 @@ class ProfileEditFragment : Fragment() {
                 binding.profileImage.setImageURI(it)
 
             }
+        }
+    }
+
+    private fun getUserData(){
+        var user=User(Firebase.auth.uid!!)
+        val uid = FirebaseAuth.getInstance().currentUser!!.uid
+        val userRef = database.collection("users")
+        val uidRef = userRef.document(uid)
+        uidRef.get().addOnSuccessListener { document ->
+            if (document != null){
+                user = document.toObject(User::class.java)!!
+                binding.firstNameEdit.setText(document.getString("firstName"))
+                binding.lastNameEdit.setText(document.getString("lastName"))
+                binding.userNameEdit.setText(document.getString("userName"))
+                binding.emailEdit.setText(document.getString(" email"))
+                binding.phoneNum.setText(document.getString("phoneNumber"))
+                //binding.profileImage.setImageURI()
+
+            }else{
+                Log.d(TAG , "No such document")
+            }
+        }.addOnFailureListener { exception ->
+            Log.d(TAG, "get failed with" , exception)
+
         }
     }
 

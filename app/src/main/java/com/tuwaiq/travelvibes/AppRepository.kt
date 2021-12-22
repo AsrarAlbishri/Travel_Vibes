@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -53,7 +54,7 @@ class AppRepository private constructor(context: Context) {
     fun saveUserInfo(user: User)= CoroutineScope(Dispatchers.IO).launch {
 
         try {
-            usersCollectionRef.add(user).await()
+            usersCollectionRef.document(Firebase.auth.currentUser?.uid!!).set(user).await()
             withContext(Dispatchers.Main){
                 Log.d(TAG,"successfully saved data")
             }
