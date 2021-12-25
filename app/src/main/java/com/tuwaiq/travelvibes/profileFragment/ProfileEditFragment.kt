@@ -65,6 +65,9 @@ class ProfileEditFragment : Fragment() {
                 user.userName=userNameEdit.text.toString()
                 user.email=emailEdit.text.toString()
                 user.phoneNumber=phoneNum.text.toString()
+                user.bio=editBio.text.toString()
+              // user.profileImageUrl= profileImage.load(currentFile).toString()
+                uploadImageToFirebase()
 
         }
 
@@ -72,14 +75,18 @@ class ProfileEditFragment : Fragment() {
         }
 
 
-        binding.profileImage.setOnClickListener {
+//        binding.profileImage.setOnClickListener {
+//            Intent(Intent.ACTION_GET_CONTENT).also {
+//                it.type = "image/*"
+//                startActivityForResult(it,REQUEST_CODE)
+//            }
+//        }
+
+        binding.uploadimageButton.setOnClickListener {
             Intent(Intent.ACTION_GET_CONTENT).also {
                 it.type = "image/*"
                 startActivityForResult(it,REQUEST_CODE)
             }
-        }
-
-        binding.uploadimageButton.setOnClickListener {
             uploadImageToFirebase()
         }
 
@@ -125,8 +132,8 @@ class ProfileEditFragment : Fragment() {
                         val imageUri = it.toString()
                         user.profileImageUrl=imageUri
                     Log.d(TAG,"image url $imageUri")
-//                        Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
-//                            .update("profileImageUrl" , imageUri)
+                        Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+                            .update("profileImageUrl" , imageUri)
 
                 }
 
@@ -159,9 +166,10 @@ class ProfileEditFragment : Fragment() {
                 binding.firstNameEdit.setText(document.getString("firstName"))
                 binding.lastNameEdit.setText(document.getString("lastName"))
                 binding.userNameEdit.setText(document.getString("userName"))
-                binding.emailEdit.setText(document.getString(" email"))
                 binding.phoneNum.setText(document.getString("phoneNumber"))
-                //binding.profileImage.setImageURI()
+                binding.emailEdit.setText(document.getString("email"))
+                binding.editBio.setText(document.getString("bio"))
+                binding.profileImage.load(user.profileImageUrl)
 
             }else{
                 Log.d(TAG , "No such document")

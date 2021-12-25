@@ -1,6 +1,7 @@
 package com.tuwaiq.travelvibes.profileFragment
 
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,8 @@ private const val TAG = "ProfileFragment"
 class ProfileFragment : Fragment() {
 
    private lateinit var binding: ProfileFragmentBinding
+
+    private val dateFormat = "EEE, MMM dd, yyyy"
 
 
 
@@ -73,8 +76,9 @@ class ProfileFragment : Fragment() {
         uidRef.get().addOnSuccessListener { document ->
             if (document != null){
                 user = document.toObject(User::class.java)!!
-                binding.name.setText(document.getString("email"))
+                binding.name.setText(document.getString("firstName"))
                 binding.userName.setText(document.getString("userName"))
+                binding.usrBio.setText(document.getString("bio"))
                 binding.photoProfile.load(user.profileImageUrl)
                 Log.d(TAG, "hhhhhhhh h${user.profileImageUrl} vvv $user")
 
@@ -112,9 +116,18 @@ class ProfileFragment : Fragment() {
     private inner class PostsProfileHolder(val binding:PostListProfileFragmentBinding)
         : RecyclerView.ViewHolder(binding.root){
 
+        private lateinit var post: Post
+
         fun bind(post:Post){
 
+            this.post = post
+
             binding.postProfileDetails.text = post.postDescription
+            if (post.date.isNotEmpty()) {
+                binding.dataUserPost.text = DateFormat.format(dateFormat, post.date.toLong())
+            }
+
+            binding.profilePostImage.load(post.postImageUrl)
 
 
         }

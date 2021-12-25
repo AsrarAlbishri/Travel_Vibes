@@ -3,25 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="25sp"
+
+    android:background="@drawable/custom_itemview">
 
     <TextView
         android:id="@+id/post_profile_details"
-        android:layout_width="211dp"
-        android:layout_height="85dp"
-        android:layout_marginStart="44dp"
+        android:layout_width="272dp"
+        android:layout_height="98dp"
+        android:layout_margin="20sp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="156dp"
-        android:background="#E6E2E2"
+        android:layout_marginEnd="69dp"
         android:inputType="textMultiLine"
         android:lines="3"
         android:maxLines="3"
         android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePostImage"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/profilePostImage"
+        android:layout_width="336sp"
+        android:layout_height="367sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="9dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck" />
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/data_user_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/post_profile_details"
+        app:layout_constraintStart_toStartOf="@+id/post_profile_details"
+        tools:text="date" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

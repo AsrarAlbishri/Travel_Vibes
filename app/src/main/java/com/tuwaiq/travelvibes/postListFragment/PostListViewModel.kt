@@ -14,5 +14,9 @@ class PostListViewModel : ViewModel() {
 
     }
 
+    fun deletePost(post: Post ){
+         repo.deletePost(post)
+    }
+
 
 }

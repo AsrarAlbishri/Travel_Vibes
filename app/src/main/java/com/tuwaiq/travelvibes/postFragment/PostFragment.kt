@@ -20,6 +20,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import coil.load
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -207,17 +208,26 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
         lifecycleScope.launch {
             Log.d(TAG, "onCreateView: ${args.id}")
-            postViewModel.updatePost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
+            postViewModel.detailsPost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
                 binding.postWrite.setText(it.getString("postDescription"))
                 binding.placeName.setText(it.getString("placeName"))
 //                binding.restaurantPlace.isChecked
 //                binding.hotelPlace.isChecked
 //                binding.othersPlace.isChecked
-                binding.postPhoto.setImageURI(photoUri)
-                //binding.postPhoto.setImageURI(currentFile)
+                binding.postPhoto.load(post.postImageUrl)
+
+               // binding.postPhoto.setImageURI(currentFile)
+               // binding.postPhoto.setImageURI(photoUri)
+               // binding.postPhoto.setImageURI(post.postImageUrl)
 
             })
         }
+
+        binding.updatePost.setOnClickListener {
+            postViewModel.updatePost(post)
+        }
+
+
 
         return binding.root
     }

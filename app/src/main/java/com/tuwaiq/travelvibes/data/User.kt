@@ -8,6 +8,7 @@ data class User(
     var lastName:String="" ,
     var userName:String="" ,
     var phoneNumber:String = "",
-    var profileImageUrl:String = ""
+    var profileImageUrl:String = "",
+    var bio:String = ""
 
 )

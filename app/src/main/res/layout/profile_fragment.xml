@@ -40,11 +40,11 @@
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="185dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="76dp"
-            android:textSize="20sp"
+            android:layout_width="109dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="48dp"
+            android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/photo_profile"
             app:layout_constraintTop_toTopOf="parent"
@@ -52,14 +52,15 @@
 
         <TextView
             android:id="@+id/user_name"
-            android:layout_width="187dp"
-            android:layout_height="33dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="95dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="54dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="89dp"
             android:minHeight="48dp"
             android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/name"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/photo_profile"
             app:layout_constraintTop_toBottomOf="@+id/name"
             tools:hint="@string/user_name" />
 
@@ -72,6 +73,16 @@
             android:src="@drawable/ic_baseline_settings_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/usr_bio"
+            android:layout_width="157dp"
+            android:layout_height="43dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="54dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/user_name"
+            tools:text="your bio" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -49,7 +49,9 @@
     <string name="upload">upload</string>
     <string name="retrieve">Retrieve</string>
     <string name="selectpic">selectpic</string>
-
+    <string name="bio">Bio</string>
+    <string name="add">Add</string>
+    <string name="update">Update</string>
 
 
 </resources>

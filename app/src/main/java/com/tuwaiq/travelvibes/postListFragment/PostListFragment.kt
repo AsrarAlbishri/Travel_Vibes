@@ -19,6 +19,7 @@ import com.tuwaiq.travelvibes.databinding.ListItemPostBinding
 import com.tuwaiq.travelvibes.databinding.PostListFragmentBinding
 import android.text.format.DateFormat
 import androidx.lifecycle.Observer
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
@@ -50,8 +51,11 @@ class PostListFragment : Fragment() {
 
         lifecycleScope.launch {
 
-            postListViewModel.getFetchPosts().observe(viewLifecycleOwner , Observer {
+
+
+            postListViewModel.getFetchPosts().observeForever(  Observer {
                 binding.postRecyclerView.adapter = PostsAdapter(it)
+               // binding.postRecyclerView.adapter!!.notifyDataSetChanged()
             })
 
         }
@@ -70,6 +74,7 @@ class PostListFragment : Fragment() {
        private lateinit var post: Post
         init {
             itemView.setOnClickListener(this)
+            binding.deletPostIV.setOnClickListener(this)
         }
 
             fun bind(post:Post){
@@ -78,19 +83,27 @@ class PostListFragment : Fragment() {
                 if (post.date.isNotEmpty()) {
                     binding.postDateItem.text = DateFormat.format(dateFormat, post.date.toLong())
                 }
-
                 binding.imageViewOfPost.load(post.postImageUrl)
+
+
             }
 
         override fun onClick(p0: View?) {
 
             if(p0 == itemView){
 
-
                     val action = PostListFragmentDirections.actionPostListFragmentToPostFragment(post.postId)
                      findNavController().navigate(action)
+            }
+
+            if (p0 == binding.deletPostIV){
+
+                    postListViewModel.deletePost(post)
+
+
 
             }
+
         }
     }
 

@@ -2,11 +2,14 @@ package com.tuwaiq.travelvibes
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -34,20 +37,20 @@ class AppRepository private constructor(context: Context) {
     fun getPhotoFile(post: Post): File = File(fileDir , post.photoFileName)
 
 
-    fun retrievePerson() = CoroutineScope(Dispatchers.IO).launch {
-        try {
-
-            val querySnapshot = usersCollectionRef.get().await()
-            val sb = StringBuilder()
-            for(document in querySnapshot.documents){
-                val user = document.toObject<User>()
-                sb.append("$user\n")
-            }
-
-        }catch (e:Exception){
-
-        }
-    }
+//    fun retrievePerson() = CoroutineScope(Dispatchers.IO).launch {
+//        try {
+//
+//            val querySnapshot = usersCollectionRef.get().await()
+//            val sb = StringBuilder()
+//            for(document in querySnapshot.documents){
+//                val user = document.toObject<User>()
+//                sb.append("$user\n")
+//            }
+//
+//        }catch (e:Exception){
+//
+//        }
+//    }
 
 
 
@@ -103,15 +106,15 @@ class AppRepository private constructor(context: Context) {
 
                     post.postId = it.id
 
-
-
                     posts.add(post)
                 }
             emit(posts)
         }
     }
 
-    suspend fun updatePost(uid:String) : LiveData<DocumentSnapshot> {
+
+
+    suspend fun detailsPost(uid:String) : LiveData<DocumentSnapshot> {
 
 
         return liveData {
@@ -124,10 +127,28 @@ class AppRepository private constructor(context: Context) {
 
         }
 
-//    suspend fun deletePost(uid: String):LiveData<DocumentSnapshot>{
-//
-//
-//    }
+    fun updatePost(post: Post )  {
+
+        postCollectionRef.document(post.postId).set(post)
+
+            .addOnSuccessListener {
+                Log.e(TAG , "post document update successful ")
+
+
+            }.addOnFailureListener {
+                Log.e(TAG, "Error adding post document")
+
+            }
+
+    }
+
+
+
+   fun deletePost(post: Post ) {
+
+            postCollectionRef.document(post.postId).delete()
+
+    }
 
     companion object{
         private var INSTANCE:AppRepository? = null
