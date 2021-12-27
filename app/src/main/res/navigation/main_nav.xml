@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_postListFragment_to_postFragment"
             app:destination="@id/navigation_add" />
+        <action
+            android:id="@+id/action_navigation_home_to_commentFragment"
+            app:destination="@id/commentFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_add"
@@ -29,6 +32,9 @@
             android:name="id"
             app:argType="string"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_navigation_add_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
     <fragment
         android:id="@+id/navigation_profile"
@@ -73,4 +79,8 @@
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="com.tuwaiq.travelvibes.commentFragment.CommentFragment"
+        android:label="CommentFragment" />
 </navigation>

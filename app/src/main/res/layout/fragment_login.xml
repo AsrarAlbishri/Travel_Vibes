@@ -65,18 +65,16 @@
 
     <Button
         android:id="@+id/register_btn"
-        android:layout_width="143dp"
+        android:layout_width="108dp"
         android:layout_height="48dp"
-        android:layout_marginStart="290dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="5dp"
         android:backgroundTint="@color/white"
         android:text="@string/register"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.09"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 

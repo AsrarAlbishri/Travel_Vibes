@@ -22,6 +22,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.tuwaiq.travelvibes.commentFragment.CommentViewModel
+import com.tuwaiq.travelvibes.data.Comment
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
 import com.tuwaiq.travelvibes.postFragment.PostViewModel
 import kotlinx.coroutines.launch
@@ -31,6 +33,7 @@ private const val TAG = "PostListFragment"
 class PostListFragment : Fragment() {
 
     private val postListViewModel: PostListViewModel by lazy { ViewModelProvider(this)[PostListViewModel::class.java] }
+
 
     val postList = mutableListOf<Post>()
 
@@ -75,17 +78,18 @@ class PostListFragment : Fragment() {
         init {
             itemView.setOnClickListener(this)
             binding.deletPostIV.setOnClickListener(this)
+            binding.commentIV.setOnClickListener(this)
         }
 
             fun bind(post:Post){
                 this.post = post
                 binding.postDetails.text = post.postDescription
-                if (post.date.isNotEmpty()) {
+                Log.d(TAG, "bind: ${post.date}")
+                
+                if (!post.date.isNullOrEmpty()) {
                     binding.postDateItem.text = DateFormat.format(dateFormat, post.date.toLong())
                 }
                 binding.imageViewOfPost.load(post.postImageUrl)
-
-
             }
 
         override fun onClick(p0: View?) {
@@ -100,7 +104,11 @@ class PostListFragment : Fragment() {
 
                     postListViewModel.deletePost(post)
 
+            }
 
+            if (p0 == binding.commentIV){
+                val action = PostListFragmentDirections.actionNavigationHomeToCommentFragment()
+                findNavController().navigate(action)
 
             }
 

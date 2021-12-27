@@ -2,17 +2,14 @@ package com.tuwaiq.travelvibes
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.tuwaiq.travelvibes.data.Comment
 import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.data.User
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +18,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.lang.StringBuilder
 
 private const val TAG = "AppRepository"
 class AppRepository private constructor(context: Context) {
@@ -74,6 +70,8 @@ class AppRepository private constructor(context: Context) {
     }
 
     fun addPost(post: Post) = CoroutineScope(Dispatchers.IO).launch {
+
+
         try {
             postCollectionRef.add(post).await()
             withContext(Dispatchers.Main){
@@ -98,7 +96,7 @@ class AppRepository private constructor(context: Context) {
                      post.location = it.getString("location").toString()
                      post.placeName = it.getString("placeName").toString()
                      post.postImageUrl = it.getString("postImageUrl").toString()
-                     post.id = it.getString("id").toString()
+                     post.ownerId = it.getString("id").toString()
                      post.date = it.getString("date").toString()
                      post.restaurant = it.getString("restaurant").toString()
                      post.hotel = it.getString("hotel").toString()
@@ -148,6 +146,27 @@ class AppRepository private constructor(context: Context) {
 
             postCollectionRef.document(post.postId).delete()
 
+    }
+
+    fun addComment(comment: Comment , postId: String ) = CoroutineScope(Dispatchers.IO).launch {
+
+
+
+        try {
+         val oldPost =   postCollectionRef.document(postId).get().await().toObject(Post::class.java)!!
+            oldPost.comment += comment
+
+
+            postCollectionRef.document(postId).update("comment",oldPost.comment).await()
+            withContext(Dispatchers.Main){
+                Log.d(TAG,"successfully saved comment")
+            }
+
+        }catch (e: java.lang.Exception){
+            withContext(Dispatchers.Main){
+                Log.d(TAG,"reject save comment")
+            }
+        }
     }
 
     companion object{

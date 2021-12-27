@@ -161,12 +161,18 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
                 post.others = othersPlace.isChecked.toString()
                 post.restaurant = restaurantPlace.isChecked.toString()
 
+                val action = PostFragmentDirections.actionNavigationAddToNavigationHome()
+                findNavController().navigate(action)
+
             }
 
 
-            post.id = firebaseUser.uid
+            post.ownerId= firebaseUser.uid
+            post.postId = UUID.randomUUID().toString()
             postViewModel.savePost(post)
         }
+
+
 
 
 //        binding.postPhoto.setOnClickListener {
@@ -226,6 +232,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         binding.updatePost.setOnClickListener {
             postViewModel.updatePost(post)
         }
+
+
 
 
 
