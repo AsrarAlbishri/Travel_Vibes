@@ -43,6 +43,7 @@ class PostListFragment : Fragment() {
 
 
     private lateinit var binding:PostListFragmentBinding
+    lateinit var postId:String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,6 +59,7 @@ class PostListFragment : Fragment() {
 
             postListViewModel.getFetchPosts().observeForever(  Observer {
                 binding.postRecyclerView.adapter = PostsAdapter(it)
+
                // binding.postRecyclerView.adapter!!.notifyDataSetChanged()
             })
 
@@ -83,6 +85,7 @@ class PostListFragment : Fragment() {
 
             fun bind(post:Post){
                 this.post = post
+                postId = post.postId
                 binding.postDetails.text = post.postDescription
                 Log.d(TAG, "bind: ${post.date}")
                 
@@ -107,7 +110,7 @@ class PostListFragment : Fragment() {
             }
 
             if (p0 == binding.commentIV){
-                val action = PostListFragmentDirections.actionNavigationHomeToCommentFragment()
+                val action = PostListFragmentDirections.actionNavigationHomeToCommentFragment(post.postId)
                 findNavController().navigate(action)
 
             }

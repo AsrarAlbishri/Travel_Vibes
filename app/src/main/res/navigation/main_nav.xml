@@ -82,5 +82,9 @@
     <fragment
         android:id="@+id/commentFragment"
         android:name="com.tuwaiq.travelvibes.commentFragment.CommentFragment"
-        android:label="CommentFragment" />
+        android:label="CommentFragment" >
+        <argument
+            android:name="postId"
+            app:argType="string" />
+    </fragment>
 </navigation>

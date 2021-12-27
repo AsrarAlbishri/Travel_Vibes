@@ -123,7 +123,7 @@ class ProfileFragment : Fragment() {
             this.post = post
 
             binding.postProfileDetails.text = post.postDescription
-            if (post.date.isNotEmpty()) {
+            if (!post.date.isNullOrEmpty()) {
                 binding.dataUserPost.text = DateFormat.format(dateFormat, post.date.toLong())
             }
 

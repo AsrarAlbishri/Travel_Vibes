@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.tuwaiq.travelvibes.data.Comment
+import com.tuwaiq.travelvibes.data.CommentResponse
 import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.data.User
 import kotlinx.coroutines.CoroutineScope
@@ -167,6 +168,21 @@ class AppRepository private constructor(context: Context) {
                 Log.d(TAG,"reject save comment")
             }
         }
+    }
+
+    suspend fun getComments(postId: String): LiveData<List<Comment>>{
+
+        return liveData {
+
+          val post =    database.collection("posts").document( postId)
+              val x = post.get().await().toObject(CommentResponse::class.java)
+            Log.d(TAG, "getComments: ${x?.comment}")
+//                  .toObjects(Post::class.java)
+
+//            val test: List<Comment> = x.data?.get("comment") as CommentResponse.kotlin.collections.List<Comment> ?: emptyList<Comment>()
+            emit(x?.comment ?: emptyList())
+        }
+
     }
 
     companion object{
