@@ -20,6 +20,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.tuwaiq.travelvibes.authentication.LoginFragmentDirections
+import com.tuwaiq.travelvibes.authentication.RegisterFragment.Companion.auth
 import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.ListItemPostBinding
@@ -49,6 +50,19 @@ class ProfileFragment : Fragment() {
     val database = FirebaseFirestore.getInstance()
 
     private val personCollectionRef = Firebase.firestore.collection("users")
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val currentUser = auth.currentUser
+
+        if (currentUser == null){
+            val navCon = findNavController()
+            val action = ProfileFragmentDirections.actionNavigationProfileToLoginFragment()
+            navCon.navigate(action)
+        }
+    }
 
 
     override fun onCreateView(

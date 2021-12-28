@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav"
-    app:startDestination="@id/navigation_home">
+    app:startDestination="@id/registerFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_home_to_commentFragment"
             app:destination="@id/commentFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_fav"
+            app:destination="@id/navigation_fav" />
     </fragment>
     <fragment
         android:id="@+id/navigation_add"
@@ -30,8 +33,8 @@
             app:destination="@id/registerFragment" />
         <argument
             android:name="id"
-            app:argType="string"
-            android:defaultValue="-1" />
+            android:defaultValue="-1"
+            app:argType="string" />
         <action
             android:id="@+id/action_navigation_add_to_navigation_home"
             app:destination="@id/navigation_home" />
@@ -44,6 +47,9 @@
         <action
             android:id="@+id/action_profileFragment_to_profileEditFragment"
             app:destination="@id/profileEditFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
@@ -64,12 +70,13 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_fav"
-        android:name="com.tuwaiq.travelvibes.profileFragment.FavoriteFragment"
+        android:name="com.tuwaiq.travelvibes.favorite.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite">
-        <action
-            android:id="@+id/action_favoriteFragment_to_profileEditFragment"
-            app:destination="@id/profileEditFragment" />
+
+        <argument
+            android:name="postId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -82,7 +89,7 @@
     <fragment
         android:id="@+id/commentFragment"
         android:name="com.tuwaiq.travelvibes.commentFragment.CommentFragment"
-        android:label="CommentFragment" >
+        android:label="CommentFragment">
         <argument
             android:name="postId"
             app:argType="string" />

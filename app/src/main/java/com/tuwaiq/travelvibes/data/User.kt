@@ -9,6 +9,7 @@ data class User(
     var userName:String="" ,
     var phoneNumber:String = "",
     var profileImageUrl:String = "",
-    var bio:String = ""
+    var bio:String = "",
+    var favorite : List<String> = listOf()
 
 )

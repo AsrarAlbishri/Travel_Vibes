@@ -22,17 +22,24 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.google.firebase.firestore.ktx.firestore
 import com.tuwaiq.travelvibes.commentFragment.CommentViewModel
 import com.tuwaiq.travelvibes.data.Comment
+import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
 import com.tuwaiq.travelvibes.postFragment.PostViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import java.util.*
 
 private const val TAG = "PostListFragment"
 
 class PostListFragment : Fragment() {
 
     private val postListViewModel: PostListViewModel by lazy { ViewModelProvider(this)[PostListViewModel::class.java] }
+
+    private val favoriteCollectionRef = Firebase.firestore.collection("favorite post")
 
 
     val postList = mutableListOf<Post>()
@@ -81,6 +88,7 @@ class PostListFragment : Fragment() {
             itemView.setOnClickListener(this)
             binding.deletPostIV.setOnClickListener(this)
             binding.commentIV.setOnClickListener(this)
+            binding.favoritIV.setOnClickListener(this)
         }
 
             fun bind(post:Post){
@@ -111,6 +119,28 @@ class PostListFragment : Fragment() {
 
             if (p0 == binding.commentIV){
                 val action = PostListFragmentDirections.actionNavigationHomeToCommentFragment(post.postId)
+                findNavController().navigate(action)
+
+            }
+
+            if (p0 == binding.favoritIV){
+
+                lifecycleScope.launch(Dispatchers.IO){
+                val originalList:MutableList<String> = (Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+                    .get()
+                    .await()
+                    .toObject(User::class.java)
+                    ?.favorite ?: emptyList()) as MutableList<String>
+
+                    originalList += post.postId
+
+                    Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+                        .update("favorite" , originalList)
+
+
+                }
+
+                val action = PostListFragmentDirections.actionNavigationHomeToNavigationFav(post.postId)
                 findNavController().navigate(action)
 
             }

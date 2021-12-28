@@ -5,11 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="25sp"
-
     android:background="@drawable/custom_itemview">
 
     <TextView
-        android:id="@+id/post_profile_details"
+        android:id="@+id/post_fav_details"
         android:layout_width="272dp"
         android:layout_height="98dp"
         android:layout_margin="20sp"
@@ -21,12 +20,13 @@
         android:maxLines="3"
         android:singleLine="false"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePostImage"
+        app:layout_constraintTop_toBottomOf="@+id/favPostImage"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
-        android:id="@+id/profilePostImage"
+        android:id="@+id/favPostImage"
         android:layout_width="336sp"
         android:layout_height="367sp"
         android:layout_marginStart="8dp"
@@ -38,15 +38,15 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/data_user_post"
+        android:id="@+id/data_fav_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="16dp"
         android:textAlignment="center"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/post_profile_details"
-        app:layout_constraintStart_toStartOf="@+id/post_profile_details"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/post_fav_details"
         tools:text="date" />
 
 

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -154,7 +155,7 @@ class AppRepository private constructor(context: Context) {
 
 
         try {
-         val oldPost =   postCollectionRef.document(postId).get().await().toObject(Post::class.java)!!
+         val oldPost =  postCollectionRef.document(postId).get().await().toObject(Post::class.java)!!
             oldPost.comment += comment
 
 
@@ -183,6 +184,20 @@ class AppRepository private constructor(context: Context) {
             emit(x?.comment ?: emptyList())
         }
 
+    }
+
+    suspend fun getFavoritePost(uid: String): LiveData<List<Post>> {
+
+        return liveData {
+
+            val favPost = database.collection("users").document(uid)
+            val f = favPost.get().await().toObject(User::class.java)
+
+            Log.d(TAG,"get favorite :${f?.favorite}")
+
+            emit((f?.favorite ?: emptyList()) as List<Post>)
+
+        }
     }
 
     companion object{
