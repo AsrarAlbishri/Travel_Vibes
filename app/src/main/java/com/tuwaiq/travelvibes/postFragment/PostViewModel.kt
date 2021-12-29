@@ -17,7 +17,7 @@ class PostViewModel : ViewModel() {
 
     fun getPhotoFile(post: Post): File = repo.getPhotoFile(post)
 
-    suspend fun detailsPost(uid:String): LiveData<DocumentSnapshot> {
+    suspend fun detailsPost(uid:String): LiveData<Post> {
         return repo.detailsPost(uid)
 
     }

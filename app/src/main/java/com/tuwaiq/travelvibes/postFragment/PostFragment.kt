@@ -215,8 +215,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         lifecycleScope.launch {
             Log.d(TAG, "onCreateView: ${args.id}")
             postViewModel.detailsPost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
-                binding.postWrite.setText(it.getString("postDescription"))
-                binding.placeName.setText(it.getString("placeName"))
+                binding.postWrite.setText(it.postDescription)
+                binding.placeName.setText(it.placeName)
 //                binding.restaurantPlace.isChecked
 //                binding.hotelPlace.isChecked
 //                binding.othersPlace.isChecked

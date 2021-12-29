@@ -13,13 +13,17 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.tuwaiq.travelvibes.data.Comment
 import com.tuwaiq.travelvibes.data.Post
+import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.FragmentFavoriteBinding
 import com.tuwaiq.travelvibes.databinding.ListItemFavPostBinding
 //import com.tuwaiq.travelvibes.profileFragment.FavoriteFragmentArgs
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 private const val TAG = "FavoriteFragment"
@@ -30,7 +34,9 @@ class FavoriteFragment : Fragment() {
     private lateinit var binding: FragmentFavoriteBinding
     private lateinit var post: Post
 
-    private val args: FavoriteFragmentArgs by navArgs()
+    private lateinit var user: User
+
+//    private val args: FavoriteFragmentArgs by navArgs()
 
     lateinit var postId:String
 
@@ -40,7 +46,10 @@ class FavoriteFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        postId = args.postId
+      //  postId = args.postId
+
+        user = User()
+
     }
 
 
@@ -54,17 +63,28 @@ class FavoriteFragment : Fragment() {
 
 
         lifecycleScope.launch {
-            favoriteViewModel.getFavoritePost(postId).observeForever {
 
-//                it.forEach {
-//                    val fav = it.
-//
-//                }
+            favoriteViewModel.getFavoritePost().observeForever {
 
-                //binding.favoriteRecyclerView.adapter = PostFavoriteAdapter()
+
+                       it.favorite.forEach {
+                           lifecycleScope.launch {
+                               favoriteViewModel.detailsPost(it).observe(
+                                   viewLifecycleOwner, {
+                                       val favoritePosts : MutableList<Post> = mutableListOf()
+                                       favoritePosts += it
+                                       binding.favoriteRecyclerView.adapter = PostFavoriteAdapter(favoritePosts)
+                                   }
+                               )
+                           }
+                       }
+
+                       Log.d(TAG, "onCreateView: $it")
+            }
+
 
             }
-        }
+
         
         return binding.root
     }

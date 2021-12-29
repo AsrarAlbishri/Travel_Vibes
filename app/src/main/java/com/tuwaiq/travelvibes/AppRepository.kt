@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -94,19 +93,20 @@ class AppRepository private constructor(context: Context) {
                 .documents.forEach {
                     val post = Post()
 
-                     post.postDescription = it.getString("postDescription").toString()
-                     post.location = it.getString("location").toString()
-                     post.placeName = it.getString("placeName").toString()
-                     post.postImageUrl = it.getString("postImageUrl").toString()
-                     post.ownerId = it.getString("id").toString()
-                     post.date = it.getString("date").toString()
-                     post.restaurant = it.getString("restaurant").toString()
-                     post.hotel = it.getString("hotel").toString()
-                     post.others = it.getString("others").toString()
 
-                    post.postId = it.id
+//                     post.postDescription = it.getString("postDescription").toString()
+//                     post.location = it.getString("location").toString()
+//                     post.placeName = it.getString("placeName").toString()
+//                     post.postImageUrl = it.getString("postImageUrl").toString()
+//                     post.ownerId = it.getString("id").toString()
+//                     post.date = it.getString("date").toString()
+//                     post.restaurant = it.getString("restaurant").toString()
+//                     post.hotel = it.getString("hotel").toString()
+//                     post.others = it.getString("others").toString()
+//
+//                     post.postId = it.id
 
-                    posts.add(post)
+                    posts.add(documentSnapshotToPost(post,it))
                 }
             emit(posts)
         }
@@ -114,7 +114,7 @@ class AppRepository private constructor(context: Context) {
 
 
 
-    suspend fun detailsPost(uid:String) : LiveData<DocumentSnapshot> {
+    suspend fun detailsPost(uid:String) : LiveData<Post> {
 
 
         return liveData {
@@ -122,7 +122,9 @@ class AppRepository private constructor(context: Context) {
             val userRef = database.collection("posts")
             val uidRef = userRef.document(uid).get().await()
             Log.e(TAG, "updatePost: ${uidRef.data}")
-            emit(uidRef)
+            val post = Post()
+
+            emit(documentSnapshotToPost(post,uidRef))
         }
 
         }
@@ -186,18 +188,35 @@ class AppRepository private constructor(context: Context) {
 
     }
 
-    suspend fun getFavoritePost(uid: String): LiveData<List<Post>> {
+    suspend fun getFavoritePost(  ): LiveData<User> {
 
-        return liveData {
+//        return liveData {
+//
+//            val post: List<Post> = emptyList()
+//
+//            usersCollectionRef.get().await()
+//                .documents.forEach {
+//                    val user = User()
+//                    user.favorite.forEach {
+//
+//
+//
+//                    }
+//                }
+//
+//        }
+                return liveData {
 
-            val favPost = database.collection("users").document(uid)
-            val f = favPost.get().await().toObject(User::class.java)
+                    val favPost = database.collection("users")//.whereEqualTo("favorite",postId)
+                        .document(Firebase.auth.currentUser?.uid!!)
+                    val f = favPost.get().await().toObject(User::class.java)
 
-            Log.d(TAG,"get favorite :${f?.favorite}")
+                    Log.d(TAG, "get favorite :${f?.favorite}")
 
-            emit((f?.favorite ?: emptyList()) as List<Post>)
+                    emit(f!!)
 
-        }
+                }
+
     }
 
     companion object{
@@ -212,6 +231,22 @@ class AppRepository private constructor(context: Context) {
         fun getInstance():AppRepository = INSTANCE ?: throw IllegalStateException("you must initialize your repo")
 
 
+    }
+
+    fun documentSnapshotToPost(post: Post, documentSnapshot: DocumentSnapshot):Post{
+
+        post.postDescription = documentSnapshot.getString("postDescription").toString()
+        post.location = documentSnapshot.getString("location").toString()
+        post.placeName = documentSnapshot.getString("placeName").toString()
+        post.postImageUrl = documentSnapshot.getString("postImageUrl").toString()
+        post.ownerId = documentSnapshot.getString("id").toString()
+        post.date = documentSnapshot.getString("date").toString()
+        post.restaurant = documentSnapshot.getString("restaurant").toString()
+        post.hotel = documentSnapshot.getString("hotel").toString()
+        post.others = documentSnapshot.getString("others").toString()
+
+        post.postId = documentSnapshot.id
+        return post
     }
 
 

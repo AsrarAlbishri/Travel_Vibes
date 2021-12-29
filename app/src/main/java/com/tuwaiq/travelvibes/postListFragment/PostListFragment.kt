@@ -125,6 +125,8 @@ class PostListFragment : Fragment() {
 
             if (p0 == binding.favoritIV){
 
+                binding.favoritIV.setBackgroundColor(getResources().getColor(R.color.red))
+
                 lifecycleScope.launch(Dispatchers.IO){
                 val originalList:MutableList<String> = (Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
                     .get()
