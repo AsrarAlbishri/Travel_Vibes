@@ -112,6 +112,22 @@ class AppRepository private constructor(context: Context) {
         }
     }
 
+    fun documentSnapshotToPost(post: Post, documentSnapshot: DocumentSnapshot):Post{
+
+        post.postDescription = documentSnapshot.getString("postDescription").toString()
+        post.location = documentSnapshot.getString("location").toString()
+        post.placeName = documentSnapshot.getString("placeName").toString()
+        post.postImageUrl = documentSnapshot.getString("postImageUrl").toString()
+        post.ownerId = documentSnapshot.getString("id").toString()
+        post.date = documentSnapshot.getString("date").toString()
+        post.restaurant = documentSnapshot.getString("restaurant").toString()
+        post.hotel = documentSnapshot.getString("hotel").toString()
+        post.others = documentSnapshot.getString("others").toString()
+
+        post.postId = documentSnapshot.id
+        return post
+    }
+
 
 
     suspend fun detailsPost(uid:String) : LiveData<Post> {
@@ -190,21 +206,6 @@ class AppRepository private constructor(context: Context) {
 
     suspend fun getFavoritePost(  ): LiveData<User> {
 
-//        return liveData {
-//
-//            val post: List<Post> = emptyList()
-//
-//            usersCollectionRef.get().await()
-//                .documents.forEach {
-//                    val user = User()
-//                    user.favorite.forEach {
-//
-//
-//
-//                    }
-//                }
-//
-//        }
                 return liveData {
 
                     val favPost = database.collection("users")//.whereEqualTo("favorite",postId)
@@ -232,22 +233,5 @@ class AppRepository private constructor(context: Context) {
 
 
     }
-
-    fun documentSnapshotToPost(post: Post, documentSnapshot: DocumentSnapshot):Post{
-
-        post.postDescription = documentSnapshot.getString("postDescription").toString()
-        post.location = documentSnapshot.getString("location").toString()
-        post.placeName = documentSnapshot.getString("placeName").toString()
-        post.postImageUrl = documentSnapshot.getString("postImageUrl").toString()
-        post.ownerId = documentSnapshot.getString("id").toString()
-        post.date = documentSnapshot.getString("date").toString()
-        post.restaurant = documentSnapshot.getString("restaurant").toString()
-        post.hotel = documentSnapshot.getString("hotel").toString()
-        post.others = documentSnapshot.getString("others").toString()
-
-        post.postId = documentSnapshot.id
-        return post
-    }
-
 
 }

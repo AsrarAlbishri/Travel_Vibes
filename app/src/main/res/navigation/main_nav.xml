@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_fav"
             app:destination="@id/navigation_fav" />
+        <argument
+            android:name="postId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/navigation_add"
@@ -77,6 +80,9 @@
         <argument
             android:name="postId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_navigation_fav_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
     <fragment
         android:id="@+id/registerFragment"

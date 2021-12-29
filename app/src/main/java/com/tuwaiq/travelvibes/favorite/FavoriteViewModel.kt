@@ -22,10 +22,4 @@ class FavoriteViewModel:ViewModel() {
 
     }
 
-
-
-
-
-
-
 }

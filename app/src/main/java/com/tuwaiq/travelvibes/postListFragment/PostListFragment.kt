@@ -21,11 +21,13 @@ import android.text.format.DateFormat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.firebase.firestore.ktx.firestore
 import com.tuwaiq.travelvibes.commentFragment.CommentViewModel
 import com.tuwaiq.travelvibes.data.Comment
 import com.tuwaiq.travelvibes.data.User
+import com.tuwaiq.travelvibes.postFragment.PostFragmentArgs
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
 import com.tuwaiq.travelvibes.postFragment.PostViewModel
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +46,8 @@ class PostListFragment : Fragment() {
 
     val postList = mutableListOf<Post>()
 
+  //  private val args: PostListFragmentArgs by navArgs()
+
     val database = FirebaseFirestore.getInstance()
 
     private val dateFormat = "EEE, MMM dd, yyyy"
@@ -51,6 +55,13 @@ class PostListFragment : Fragment() {
 
     private lateinit var binding:PostListFragmentBinding
     lateinit var postId:String
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+       // postId = args.postId
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -125,7 +136,7 @@ class PostListFragment : Fragment() {
 
             if (p0 == binding.favoritIV){
 
-                binding.favoritIV.setBackgroundColor(getResources().getColor(R.color.red))
+              //  binding.favoritIV.setBackgroundColor(getResources().getColor(R.color.red))
 
                 lifecycleScope.launch(Dispatchers.IO){
                 val originalList:MutableList<String> = (Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)

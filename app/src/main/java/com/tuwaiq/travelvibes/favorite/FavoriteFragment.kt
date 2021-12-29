@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.FragmentFavoriteBinding
 import com.tuwaiq.travelvibes.databinding.ListItemFavPostBinding
+import com.tuwaiq.travelvibes.postListFragment.PostListFragmentDirections
 //import com.tuwaiq.travelvibes.profileFragment.FavoriteFragmentArgs
 import kotlinx.coroutines.launch
 import java.util.*
@@ -42,13 +44,13 @@ class FavoriteFragment : Fragment() {
 
     private val dateFormat = "EEE, MMM dd, yyyy"
 
-    private val favoriteCollectionRef = Firebase.firestore.collection("favorite post")
+    //private val favoriteCollectionRef = Firebase.firestore.collection("favorite post")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
       //  postId = args.postId
 
-        user = User()
+       // user = User()
 
     }
 
@@ -66,20 +68,22 @@ class FavoriteFragment : Fragment() {
 
             favoriteViewModel.getFavoritePost().observeForever {
 
-
+                val favoritePosts : MutableList<Post> = mutableListOf()
                        it.favorite.forEach {
                            lifecycleScope.launch {
                                favoriteViewModel.detailsPost(it).observe(
                                    viewLifecycleOwner, {
-                                       val favoritePosts : MutableList<Post> = mutableListOf()
-                                       favoritePosts += it
+                                        if(!favoritePosts.contains(it)) {
+                                            favoritePosts += it
+                                        }
                                        binding.favoriteRecyclerView.adapter = PostFavoriteAdapter(favoritePosts)
+
                                    }
                                )
                            }
                        }
 
-                       Log.d(TAG, "onCreateView: $it")
+
             }
 
 
@@ -91,23 +95,40 @@ class FavoriteFragment : Fragment() {
     
     
     private inner class PostFavoriteHolder(val binding: ListItemFavPostBinding)
-        :RecyclerView.ViewHolder(binding.root){
+        :RecyclerView.ViewHolder(binding.root),View.OnClickListener{
             
             private lateinit var post: Post
+
+            init {
+                itemView.setOnClickListener(this)
+            }
             
             fun bind(post: Post){
                 this.post = post
+                postId = post.postId
                 
-                binding.postFavDetails.text = post.postDescription
+                binding.postFavPlace.text = post.placeName
 
-                if (!post.date.isNullOrEmpty()) {
-                    binding.dataFavPost.text = DateFormat.format(dateFormat, post.date.toLong())
-                }
+
+
+//                if (!post.date.isNullOrEmpty()) {
+//                    binding.dataFavPost.text = DateFormat.format(dateFormat, post.date.toLong())
+//                }
                 
                 binding.favPostImage.load(post.postImageUrl)
                 
             }
+
+        override fun onClick(p0: View?) {
+
+            if(p0 == itemView){
+                val action = FavoriteFragmentDirections.actionNavigationFavToNavigationHome(post.postId)
+                findNavController().navigate(action)
+
+            }
+
         }
+    }
     
     private inner class PostFavoriteAdapter(val posts:List<Post>)
         :RecyclerView.Adapter<PostFavoriteHolder>(){
