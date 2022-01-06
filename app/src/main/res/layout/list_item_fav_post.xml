@@ -21,6 +21,8 @@
         android:lines="3"
         android:maxLines="3"
         android:singleLine="false"
+        android:textAlignment="center"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.888"
@@ -31,8 +33,8 @@
 
     <ImageView
         android:id="@+id/favPostImage"
-        android:layout_width="197dp"
-        android:layout_height="183dp"
+        android:layout_width="192dp"
+        android:layout_height="92dp"
         android:layout_margin="10sp"
         android:padding="5sp"
         android:scaleType="centerCrop"

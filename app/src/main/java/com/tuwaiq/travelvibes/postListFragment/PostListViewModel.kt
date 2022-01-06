@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.tuwaiq.travelvibes.AppRepository
 import com.tuwaiq.travelvibes.data.Post
+import com.tuwaiq.travelvibes.data.User
 
 class PostListViewModel : ViewModel() {
 
@@ -16,6 +17,14 @@ class PostListViewModel : ViewModel() {
 
     fun deletePost(post: Post ){
          repo.deletePost(post)
+    }
+
+    suspend fun getSearchPosts(word:String): LiveData<List<Post>>{
+        return repo.getSearchPosts(word)
+    }
+
+    suspend fun getUserInfo():LiveData<User>{
+      return  repo.getUserInfo()
     }
 
 

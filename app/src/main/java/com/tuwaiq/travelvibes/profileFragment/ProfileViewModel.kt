@@ -1,5 +1,6 @@
 package com.tuwaiq.travelvibes.profileFragment
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.tuwaiq.travelvibes.AppRepository
 import com.tuwaiq.travelvibes.data.Post
@@ -11,6 +12,10 @@ class ProfileViewModel : ViewModel() {
 
     fun saveUser(user:User){
         repo.saveUserInfo(user)
+    }
+
+    suspend fun profilePostData(): LiveData<List<Post>>{
+       return repo.profilePostData()
     }
 
 

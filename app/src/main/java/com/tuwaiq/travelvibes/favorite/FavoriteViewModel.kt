@@ -14,7 +14,7 @@ class FavoriteViewModel:ViewModel() {
     private val repo: AppRepository = AppRepository.getInstance()
 
     suspend fun getFavoritePost( ): LiveData<User>{
-       return repo.getFavoritePost( )
+       return repo.getUserInfo( )
 }
 
     suspend fun detailsPost(uid:String): LiveData<Post> {

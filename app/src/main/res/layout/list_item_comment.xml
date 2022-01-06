@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10sp"
-    android:background="@drawable/custom_comment_itemview">
+    >
 
     <TextView
         android:id="@+id/comment_text"
@@ -25,14 +25,23 @@
 
     <TextView
         android:id="@+id/comment_userName"
-        android:layout_width="92dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="101dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="userName"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/user_IVComment"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_IVComment"
+        android:layout_width="46dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

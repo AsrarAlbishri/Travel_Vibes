@@ -12,11 +12,10 @@ data class Post(
     var hotel:String = "",
     var others:String = "",
     var postImageUrl:String = "",
-    var comment:List<Comment> = listOf()
+    var comment:List<Comment> = listOf(),
+    var latitude: Double = 0.0,
+    var longitude: Double = 0.0
       )
-
-
-
   {
 
     val photoFileName:String

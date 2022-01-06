@@ -4,9 +4,6 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,11 +15,14 @@ import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.databinding.ListItemPostBinding
 import com.tuwaiq.travelvibes.databinding.PostListFragmentBinding
 import android.text.format.DateFormat
+import android.view.*
+import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.tuwaiq.travelvibes.commentFragment.CommentViewModel
 import com.tuwaiq.travelvibes.data.Comment
@@ -34,6 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.*
+import kotlin.collections.ArrayList
 
 private const val TAG = "PostListFragment"
 
@@ -41,12 +42,12 @@ class PostListFragment : Fragment() {
 
     private val postListViewModel: PostListViewModel by lazy { ViewModelProvider(this)[PostListViewModel::class.java] }
 
-    private val favoriteCollectionRef = Firebase.firestore.collection("favorite post")
+   // private val favoriteCollectionRef = Firebase.firestore.collection("favorite post")
 
 
     val postList = mutableListOf<Post>()
 
-  //  private val args: PostListFragmentArgs by navArgs()
+//    private val args: PostListFragmentArgs by navArgs()
 
     val database = FirebaseFirestore.getInstance()
 
@@ -56,9 +57,67 @@ class PostListFragment : Fragment() {
     private lateinit var binding:PostListFragmentBinding
     lateinit var postId:String
 
+   private lateinit var auth: FirebaseAuth
+
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.search_menu,menu)
+
+
+        val searchItem = menu.findItem(R.id.search_action)
+        if (searchItem != null){
+            val searchView = searchItem.actionView as SearchView
+            searchView.queryHint = "Search for..."
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(p0: String?): Boolean {
+
+                    return false
+
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+
+                    if (newText!!.isNotEmpty()){
+
+                        val search = newText.lowercase(Locale.getDefault())
+
+                        lifecycleScope.launch {
+
+                            postListViewModel.getSearchPosts(search).observeForever { postList ->
+
+                                lifecycleScope.launch {
+                                    postListViewModel.getUserInfo().observe(viewLifecycleOwner){ user ->
+                                        binding.postRecyclerView.adapter = PostsAdapter(postList,user)
+                                    }
+                                }
+
+                            }
+
+
+                        }
+
+                    }
+
+
+                    return true
+
+                }
+
+            })
+        }
+
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setHasOptionsMenu(true)
+
+       auth = FirebaseAuth.getInstance()
 
        // postId = args.postId
     }
@@ -73,12 +132,16 @@ class PostListFragment : Fragment() {
 
         lifecycleScope.launch {
 
+            postListViewModel.getFetchPosts().observeForever(  Observer { postList->
 
+                lifecycleScope.launch {
+                    postListViewModel.getUserInfo().observe(viewLifecycleOwner){user->
+                        Log.d(TAG, "onCreateView: postList $postList")
+                        binding.postRecyclerView.adapter = PostsAdapter(postList , user)
 
-            postListViewModel.getFetchPosts().observeForever(  Observer {
-                binding.postRecyclerView.adapter = PostsAdapter(it)
+                    }
+                }
 
-               // binding.postRecyclerView.adapter!!.notifyDataSetChanged()
             })
 
         }
@@ -87,31 +150,71 @@ class PostListFragment : Fragment() {
 
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
+
 
     private inner class PostsHolder(val binding: ListItemPostBinding)
         :RecyclerView.ViewHolder(binding.root),View.OnClickListener{
 
-       private lateinit var post: Post
+
+       // var favBtnClicked = false
+
+       lateinit var post: Post
+       lateinit var user: User
+
+
         init {
             itemView.setOnClickListener(this)
             binding.deletPostIV.setOnClickListener(this)
             binding.commentIV.setOnClickListener(this)
-            binding.favoritIV.setOnClickListener(this)
+            //binding.favoritIV.setOnClickListener(this)
         }
 
-            fun bind(post:Post){
+
+            fun bind(post:Post,user: User){
                 this.post = post
+                this.user = user
+
                 postId = post.postId
                 binding.postDetails.text = post.postDescription
-                Log.d(TAG, "bind: ${post.date}")
+                Log.d(TAG, "bind: ${post.ownerId}")
                 
                 if (!post.date.isNullOrEmpty()) {
                     binding.postDateItem.text = DateFormat.format(dateFormat, post.date.toLong())
                 }
+
                 binding.imageViewOfPost.load(post.postImageUrl)
+
+               binding.favoritIV.isChecked = user.favorite.contains(postId)
+
+
+
+                        lifecycleScope.launch(Dispatchers.Main) {
+                            Firebase.firestore.collection("users").document(post.ownerId)
+
+                                .get().addOnSuccessListener {
+
+                                    val postUser = it.toObject(User::class.java)
+                                    Log.d(TAG, "bind: $postUser  owner ${post.ownerId}")
+                                    binding.userPost.text = postUser?.userName
+                                    binding.profilePostIV.load(postUser?.profileImageUrl)
+                                }.addOnFailureListener {
+                                    Log.e(TAG, "bind: ",it)
+                                }
+                        }
+
+
+                binding.favoritIV.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked){
+                       addToFav()
+                        Log.d(TAG, "bind: $isChecked")
+
+                    }else{
+                        Log.d(TAG, "bind: $isChecked")
+                        removeFromFav(post)
+                    }
+
+                }
+
             }
 
         override fun onClick(p0: View?) {
@@ -124,44 +227,66 @@ class PostListFragment : Fragment() {
 
             if (p0 == binding.deletPostIV){
 
+                if (auth.currentUser!!.uid == post.ownerId){
                     postListViewModel.deletePost(post)
+
+
+                    PostsAdapter(postList,user).notifyDataSetChanged()
+
+                }
+
+//                    Firebase.firestore.collection("posts").document(post.postId)
+//                        .update("postId",post)
 
             }
 
             if (p0 == binding.commentIV){
                 val action = PostListFragmentDirections.actionNavigationHomeToCommentFragment(post.postId)
                 findNavController().navigate(action)
+              //  findNavController().popBackStack()
 
             }
+        }
+    }
 
-            if (p0 == binding.favoritIV){
-
-              //  binding.favoritIV.setBackgroundColor(getResources().getColor(R.color.red))
-
-                lifecycleScope.launch(Dispatchers.IO){
-                val originalList:MutableList<String> = (Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+    private fun removeFromFav(post: Post) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val originalList: MutableList<String> =
+                (Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
                     .get()
                     .await()
                     .toObject(User::class.java)
                     ?.favorite ?: emptyList()) as MutableList<String>
 
-                    originalList += post.postId
+           // originalList -= post.postId
+            originalList.remove(post.postId)
 
-                    Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
-                        .update("favorite" , originalList)
+            Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+                .update("favorite", originalList)
 
-
-                }
-
-                val action = PostListFragmentDirections.actionNavigationHomeToNavigationFav(post.postId)
-                findNavController().navigate(action)
-
-            }
 
         }
     }
 
-    private inner class PostsAdapter(val posts:List<Post>):RecyclerView.Adapter<PostsHolder>(){
+    private fun PostsHolder.addToFav() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val originalList: MutableList<String> =
+                (Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+                    .get()
+                    .await()
+                    .toObject(User::class.java)
+                    ?.favorite ?: emptyList()) as MutableList<String>
+
+            originalList += post.postId
+
+            Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+                .update("favorite", originalList)
+
+
+        }
+    }
+
+    private inner class PostsAdapter(val posts:List<Post>,val user: User):RecyclerView.Adapter<PostsHolder>(){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostsHolder {
             val binding = ListItemPostBinding.inflate(
                 layoutInflater,
@@ -173,7 +298,7 @@ class PostListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: PostsHolder, position: Int) {
             val post = posts[position]
-            holder.bind(post)
+            holder.bind(post,user)
 
         }
 

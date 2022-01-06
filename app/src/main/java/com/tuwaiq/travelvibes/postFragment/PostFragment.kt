@@ -44,6 +44,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     var currentFile: Uri? = null
     var imageRef = Firebase.storage.reference
 
+   // var postHolder: Post? = null
+
     private val args:PostFragmentArgs by navArgs()
 
     private lateinit var photoFile: File
@@ -130,6 +132,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             openCamera()
             uploadImage()
 
+
         }
 
     }
@@ -156,10 +159,11 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         binding.addPost.setOnClickListener {
             binding.apply {
                 post.postDescription=postWrite.text.toString()
-                post.placeName=placeName.text.toString()
+                post.placeName= placeName.text.toString().lowercase(Locale.getDefault())
                 post.hotel = hotelPlace.isChecked.toString()
                 post.others = othersPlace.isChecked.toString()
                 post.restaurant = restaurantPlace.isChecked.toString()
+
 
 //                val action = PostFragmentDirections.actionNavigationAddToNavigationHome()
 //                findNavController().navigate(action)
@@ -220,18 +224,16 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 //                binding.restaurantPlace.isChecked
 //                binding.hotelPlace.isChecked
 //                binding.othersPlace.isChecked
-                binding.postPhoto.load(post.postImageUrl)
+                binding.postPhoto.load(it.postImageUrl)
 
-               // binding.postPhoto.setImageURI(currentFile)
-               // binding.postPhoto.setImageURI(photoUri)
-               // binding.postPhoto.setImageURI(post.postImageUrl)
+
 
             })
         }
 
-        binding.updatePost.setOnClickListener {
-            postViewModel.updatePost(post)
-        }
+//        binding.addPost.setOnClickListener {
+//            postViewModel.updatePost(post)
+//        }
 
 
 
@@ -245,6 +247,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             it.type = "image/*"
             startActivityForResult(it,REQUEST_CODE_IMAGE_POST)
         }
+
+
 
     }
 

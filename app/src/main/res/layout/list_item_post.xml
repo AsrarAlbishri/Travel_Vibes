@@ -10,22 +10,23 @@
 
     <ImageView
         android:id="@+id/imageViewOfPost"
-        android:layout_width="336dp"
-        android:layout_height="367dp"
+        android:layout_width="341dp"
+        android:layout_height="275dp"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_postIV"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/post_details"
-        android:layout_width="289dp"
-        android:layout_height="94dp"
+        android:layout_width="291dp"
+        android:layout_height="86dp"
         android:layout_marginStart="27dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="32dp"
         android:inputType="textMultiLine"
         android:lines="3"
@@ -33,10 +34,10 @@
         android:singleLine="false"
         android:textAlignment="viewStart"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/deletPostIV"
-        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintHorizontal_bias="0.44"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageViewOfPost"
         tools:ignore="SpeakableTextPresentCheck,TextViewEdits" />
@@ -73,26 +74,39 @@
         app:layout_constraintEnd_toStartOf="@+id/favoritIV"
         app:srcCompat="@drawable/ic_baseline_comment_24" />
 
-    <ImageView
+    <CheckBox
         android:id="@+id/favoritIV"
         android:layout_width="27dp"
         android:layout_height="26dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="8dp"
+        android:button="@drawable/fav_clicked"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/deletPostIV"
-        app:srcCompat="@drawable/ic_baseline_favorite_shadow_24" />
+        tools:ignore="TouchTargetSizeCheck" />
 
-    <!--    <com.varunest.sparkbutton.SparkButton-->
-    <!--        android:id="@+id/spark_button"-->
-    <!--        android:layout_width="137dp"-->
-    <!--        android:layout_height="103dp"-->
-    <!--        app:sparkbutton_activeImage="@drawable/ic_baseline_favorite_red_24"-->
-    <!--        app:sparkbutton_iconSize="40dp"-->
-    <!--        app:sparkbutton_inActiveImage="@drawable/ic_baseline_favorite_shadow_24"-->
-    <!--        app:sparkbutton_primaryColor="@color/orange"-->
-    <!--        app:sparkbutton_secondaryColor="@color/red"-->
-    <!--        tools:layout_editor_absoluteX="224dp"-->
-    <!--        tools:layout_editor_absoluteY="165dp" />-->
+
+    <TextView
+        android:id="@+id/user_post"
+        android:layout_width="114dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/profile_postIV"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/user_post" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_postIV"
+        android:layout_width="61dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

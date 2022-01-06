@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentSnapshot
 import com.tuwaiq.travelvibes.AppRepository
 import com.tuwaiq.travelvibes.data.Comment
+import com.tuwaiq.travelvibes.data.CommentUser
 import com.tuwaiq.travelvibes.data.Post
+import com.tuwaiq.travelvibes.data.User
 
 class CommentViewModel : ViewModel(){
 
@@ -15,7 +17,17 @@ class CommentViewModel : ViewModel(){
         repo.addComment(comment,postId)
     }
 
-    suspend fun getComments(postId: String): LiveData<List<Comment>> {
-       return repo.getComments(postId)
+    suspend fun getComments(postId: String): LiveData<List<CommentUser>> {
+        return repo.getComments(postId)
     }
+
+//    suspend fun getComments(postId: String): LiveData<List<Comment>> {
+//       return repo.getComments(postId)
+//    }
+
+//    suspend fun getUserCommentInfo(postId: String): LiveData<User>{
+//        return repo.getUserCommentInfo(postId)
+//    }
+
+
 }

@@ -3,16 +3,14 @@ package com.tuwaiq.travelvibes
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.tuwaiq.travelvibes.data.Comment
-import com.tuwaiq.travelvibes.data.CommentResponse
-import com.tuwaiq.travelvibes.data.Post
-import com.tuwaiq.travelvibes.data.User
+import com.tuwaiq.travelvibes.data.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -91,44 +89,59 @@ class AppRepository private constructor(context: Context) {
             val posts = mutableListOf<Post>()
              postCollectionRef.get().await()
                 .documents.forEach {
-                    val post = Post()
+                    val post = it.toObject(Post::class.java)!!
+                    post.postId = it.id
+                    posts += post
 
-
-//                     post.postDescription = it.getString("postDescription").toString()
-//                     post.location = it.getString("location").toString()
-//                     post.placeName = it.getString("placeName").toString()
-//                     post.postImageUrl = it.getString("postImageUrl").toString()
-//                     post.ownerId = it.getString("id").toString()
-//                     post.date = it.getString("date").toString()
-//                     post.restaurant = it.getString("restaurant").toString()
-//                     post.hotel = it.getString("hotel").toString()
-//                     post.others = it.getString("others").toString()
-//
-//                     post.postId = it.id
-
-                    posts.add(documentSnapshotToPost(post,it))
                 }
             emit(posts)
         }
     }
 
-    fun documentSnapshotToPost(post: Post, documentSnapshot: DocumentSnapshot):Post{
 
-        post.postDescription = documentSnapshot.getString("postDescription").toString()
-        post.location = documentSnapshot.getString("location").toString()
-        post.placeName = documentSnapshot.getString("placeName").toString()
-        post.postImageUrl = documentSnapshot.getString("postImageUrl").toString()
-        post.ownerId = documentSnapshot.getString("id").toString()
-        post.date = documentSnapshot.getString("date").toString()
-        post.restaurant = documentSnapshot.getString("restaurant").toString()
-        post.hotel = documentSnapshot.getString("hotel").toString()
-        post.others = documentSnapshot.getString("others").toString()
+    suspend fun getSearchPosts(word:String): LiveData<List<Post>>{
+        return liveData {
+            val posts = mutableListOf<Post>()
+            postCollectionRef.whereEqualTo("placeName", word)
+                .get()
+                .await()
+                .documents.forEach {
+                    val post = it.toObject(Post::class.java)!!
+                    post.postId = it.id
+                    posts += post
 
-        post.postId = documentSnapshot.id
-        return post
+                }
+            emit(posts)
+        }
     }
 
+    suspend fun profilePostData():LiveData<List<Post>>{
+        val postList = mutableListOf<Post>()
+        Firebase.auth.currentUser?.let {
+            Log.d(TAG,it.uid)
+            database.collection("posts").whereEqualTo("ownerId",it.uid)
+                .get()
+                .addOnFailureListener {
+                    Log.e(TAG,"!!!!",it)
+                }
+                .addOnSuccessListener {
+                    for (document in it){
 
+                        val post = document.toObject(Post::class.java)
+                        Log.d(TAG,"khguy $document" )
+                        postList.add(post)
+
+                    }
+
+
+                }
+                .await()
+
+        }
+        return liveData {
+            emit(postList)
+        }
+    }
 
     suspend fun detailsPost(uid:String) : LiveData<Post> {
 
@@ -138,33 +151,38 @@ class AppRepository private constructor(context: Context) {
             val userRef = database.collection("posts")
             val uidRef = userRef.document(uid).get().await()
             Log.e(TAG, "updatePost: ${uidRef.data}")
-            val post = Post()
+            val post = uidRef.toObject(Post::class.java)
+            post?.postId = uidRef.id
 
-            emit(documentSnapshotToPost(post,uidRef))
-        }
-
-        }
-
-    fun updatePost(post: Post )  {
-
-        postCollectionRef.document(post.postId).set(post)
-
-            .addOnSuccessListener {
-                Log.e(TAG , "post document update successful ")
-
-
-            }.addOnFailureListener {
-                Log.e(TAG, "Error adding post document")
-
+            if (post != null) {
+                emit(post)
             }
+        }
 
-    }
+        }
+
+//    fun updatePost(post: Post )  {
+//
+//        postCollectionRef.document(post.postId).set(post)
+//
+//            .addOnSuccessListener {
+//                Log.e(TAG , "post document update successful ")
+//
+//
+//            }.addOnFailureListener {
+//                Log.e(TAG, "Error adding post document")
+//
+//            }
+//
+//    }
 
 
 
    fun deletePost(post: Post ) {
 
             postCollectionRef.document(post.postId).delete()
+          // postCollectionRef.document(post.postId).update("postId",post)
+
 
     }
 
@@ -189,26 +207,49 @@ class AppRepository private constructor(context: Context) {
         }
     }
 
-    suspend fun getComments(postId: String): LiveData<List<Comment>>{
+    suspend fun getComments(postId: String): LiveData<List<CommentUser>>{
+
+        var comments = mutableListOf<CommentUser>()
+//        Log.d(TAG, "getComments: ${x?.comment}")
+        /**
+         *
+         *
+         * */
 
         return liveData {
 
-          val post =    database.collection("posts").document( postId)
-              val x = post.get().await().toObject(CommentResponse::class.java)
-            Log.d(TAG, "getComments: ${x?.comment}")
+            val post =    database.collection("posts").document( postId)
+            val x = post.get().await().toObject(CommentResponse::class.java)
+//            Log.d(TAG, "getComments: ${x?.comment}")
+            x?.comment?.forEach {
+                var comment = CommentUser()
+                comment.comment = it
+                comment.user = getUserCommentInfo(it.userId)
+                Log.d(TAG, "\ngetComments: ${comment}\n")
+                comments += comment
+            }
+            emit(comments)
+
+            /**
+             *
+             *
+             * */
+//          val post =    database.collection("posts").document( postId)
+//              val x = post.get().await().toObject(CommentResponse::class.java)
+//            Log.d(TAG, "getComments: ${x?.comment}")
 //                  .toObjects(Post::class.java)
 
 //            val test: List<Comment> = x.data?.get("comment") as CommentResponse.kotlin.collections.List<Comment> ?: emptyList<Comment>()
-            emit(x?.comment ?: emptyList())
+//            emit(x?.comment ?: emptyList())
         }
 
     }
 
-    suspend fun getFavoritePost(  ): LiveData<User> {
+    suspend fun getUserInfo(): LiveData<User> {
 
                 return liveData {
 
-                    val favPost = database.collection("users")//.whereEqualTo("favorite",postId)
+                    val favPost = database.collection("users")
                         .document(Firebase.auth.currentUser?.uid!!)
                     val f = favPost.get().await().toObject(User::class.java)
 
@@ -219,6 +260,31 @@ class AppRepository private constructor(context: Context) {
                 }
 
     }
+
+    suspend fun getUserCommentInfo(userId: String): User? {
+        val user = database.collection("users").document(userId)
+        return user.get().await().toObject(User::class.java)
+//        return liveData {
+//
+//            val comment = database.collection("users").document(userId)
+//            val f = comment.get().await().toObject(User::class.java)
+//
+//            Log.d(TAG, "get userComment :${f}")
+////            f?.comment?.forEach { comment ->
+////                val favPost = database.collection("users")
+////                    .document(comment.userId)
+////                val dd = favPost.get().await().toObject(User::class.java)
+////
+////                if (dd != null) {
+////                    emit(dd)
+////                }
+////            }
+//            emit(f!!)
+//
+//        }
+
+    }
+
 
     companion object{
         private var INSTANCE:AppRepository? = null

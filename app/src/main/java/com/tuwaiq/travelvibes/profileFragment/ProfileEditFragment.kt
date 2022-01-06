@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import coil.load
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.tuwaiq.travelvibes.authentication.LoginFragmentDirections
 import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.FragmentProfileEditBinding
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
@@ -38,6 +40,8 @@ class ProfileEditFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileEditBinding
 
+    private lateinit var auth: FirebaseAuth
+
     private lateinit var user: User
 
 
@@ -46,6 +50,8 @@ class ProfileEditFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         user=User()
+
+        auth = FirebaseAuth.getInstance()
 
 
     }
@@ -72,6 +78,7 @@ class ProfileEditFragment : Fragment() {
         }
 
             profileViewModel.saveUser(user)
+            findNavController().popBackStack()
         }
 
 
@@ -95,6 +102,8 @@ class ProfileEditFragment : Fragment() {
 //        }
 
         getUserData()
+
+
 
         return binding.root
     }

@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -37,6 +39,8 @@ import java.lang.Exception
 private const val TAG = "ProfileFragment"
 class ProfileFragment : Fragment() {
 
+    private val  profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
+
    private lateinit var binding: ProfileFragmentBinding
 
     private val dateFormat = "EEE, MMM dd, yyyy"
@@ -45,12 +49,9 @@ class ProfileFragment : Fragment() {
 
    //private lateinit var user: User
 
-    val postList = mutableListOf<Post>()
+
 
     val database = FirebaseFirestore.getInstance()
-
-    private val personCollectionRef = Firebase.firestore.collection("users")
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +75,14 @@ class ProfileFragment : Fragment() {
         binding.postProfileRv.layoutManager = LinearLayoutManager(context)
 
 
-        profilePostData()
+        lifecycleScope.launch {
+            profileViewModel.profilePostData().observe(viewLifecycleOwner ,{ postList ->
+                binding.postProfileRv.adapter = PostProfileAdapter(postList)
+            })
+        }
+
+
+       // profilePostData()
 
         getUserData()
 
@@ -105,27 +113,27 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun profilePostData(){
-        Firebase.auth.currentUser?.let {
-            Log.d(TAG,it.uid)
-            database.collection("posts").whereEqualTo("id",it.uid)
-                .get()
-                .addOnFailureListener {
-                    Log.e(TAG,"!!!!",it)
-                }
-                .addOnSuccessListener {
-                    for (document in it){
-
-                        val post = document.toObject(Post::class.java)
-                        Log.d(TAG,"khguy $document" )
-                        postList.add(post)
-
-                    }
-                    binding.postProfileRv.adapter = PostProfileAdapter(postList)
-
-                }
-        }
-    }
+//    private fun profilePostData(){
+//        Firebase.auth.currentUser?.let {
+//            Log.d(TAG,it.uid)
+//            database.collection("posts").whereEqualTo("ownerId",it.uid)
+//                .get()
+//                .addOnFailureListener {
+//                    Log.e(TAG,"!!!!",it)
+//                }
+//                .addOnSuccessListener {
+//                    for (document in it){
+//
+//                        val post = document.toObject(Post::class.java)
+//                        Log.d(TAG,"khguy $document" )
+//                        postList.add(post)
+//
+//                    }
+//                    binding.postProfileRv.adapter = PostProfileAdapter(postList)
+//
+//                }
+//        }
+//    }
 
     private inner class PostsProfileHolder(val binding:PostListProfileFragmentBinding)
         : RecyclerView.ViewHolder(binding.root){
@@ -171,30 +179,19 @@ class ProfileFragment : Fragment() {
 
 
 
-    private fun savePerson(person: User) = CoroutineScope(Dispatchers.IO).launch {
-        try {
-
-            personCollectionRef.add(person).await()
-
-        }catch (e:Exception){
-            withContext(Dispatchers.Main){
-                //Toast.makeText(this, e.message,Toast.LENGTH_LONG).show()
-            }
-        }
-    }
 
     override fun onStart() {
         super.onStart()
 
-        binding.settingIV.setOnClickListener {
+        binding.editProfileBtn.setOnClickListener {
             val navCon = findNavController()
             val action = ProfileFragmentDirections.actionProfileFragmentToProfileEditFragment()
             navCon.navigate(action)
         }
 
+
+
+
     }
-
-
-
 
 }
