@@ -42,7 +42,7 @@ class PostListFragment : Fragment() {
 
     private val postListViewModel: PostListViewModel by lazy { ViewModelProvider(this)[PostListViewModel::class.java] }
 
-   // private val favoriteCollectionRef = Firebase.firestore.collection("favorite post")
+
 
 
     val postList = mutableListOf<Post>()
@@ -137,8 +137,7 @@ class PostListFragment : Fragment() {
                 lifecycleScope.launch {
                     postListViewModel.getUserInfo().observe(viewLifecycleOwner){user->
                         Log.d(TAG, "onCreateView: postList $postList")
-                        binding.postRecyclerView.adapter = PostsAdapter(postList , user)
-
+                        updateUI(postList, user)
                     }
                 }
 
@@ -150,7 +149,10 @@ class PostListFragment : Fragment() {
 
     }
 
+    private fun updateUI(postList: List<Post>, user: User){
+        binding.postRecyclerView.adapter = PostsAdapter(postList , user)
 
+    }
 
     private inner class PostsHolder(val binding: ListItemPostBinding)
         :RecyclerView.ViewHolder(binding.root),View.OnClickListener{
@@ -160,7 +162,7 @@ class PostListFragment : Fragment() {
 
        lateinit var post: Post
        lateinit var user: User
-
+       var postion = 0
 
         init {
             itemView.setOnClickListener(this)
@@ -170,10 +172,10 @@ class PostListFragment : Fragment() {
         }
 
 
-            fun bind(post:Post,user: User){
+            fun bind(post:Post,user: User, postion: Int){
                 this.post = post
                 this.user = user
-
+                this.postion = postion
                 postId = post.postId
                 binding.postDetails.text = post.postDescription
                 Log.d(TAG, "bind: ${post.ownerId}")
@@ -228,10 +230,15 @@ class PostListFragment : Fragment() {
             if (p0 == binding.deletPostIV){
 
                 if (auth.currentUser!!.uid == post.ownerId){
+                    val newpostList = postList.filter {
+                        post == it
+                    }
+                    updateUI(newpostList, user)
                     postListViewModel.deletePost(post)
 
 
-                    PostsAdapter(postList,user).notifyDataSetChanged()
+
+                    PostsAdapter(newpostList,user).notifyDataSetChanged()
 
                 }
 
@@ -298,7 +305,7 @@ class PostListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: PostsHolder, position: Int) {
             val post = posts[position]
-            holder.bind(post,user)
+            holder.bind(post,user,position)
 
         }
 

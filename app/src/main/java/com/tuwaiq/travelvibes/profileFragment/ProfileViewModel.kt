@@ -18,5 +18,9 @@ class ProfileViewModel : ViewModel() {
        return repo.profilePostData()
     }
 
+    suspend fun getUserInfo(): LiveData<User>{
+        return repo.getUserInfo()
+    }
+
 
 }

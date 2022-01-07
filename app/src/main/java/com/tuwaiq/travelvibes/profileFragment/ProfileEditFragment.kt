@@ -11,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.google.firebase.auth.FirebaseAuth
@@ -24,6 +26,7 @@ import com.tuwaiq.travelvibes.authentication.LoginFragmentDirections
 import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.FragmentProfileEditBinding
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -34,14 +37,10 @@ class ProfileEditFragment : Fragment() {
     var currentFile: Uri? = null
     var imageRef = Firebase.storage.reference
 
-    val database = FirebaseFirestore.getInstance()
 
     private val  profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
-
     private lateinit var binding: FragmentProfileEditBinding
-
     private lateinit var auth: FirebaseAuth
-
     private lateinit var user: User
 
 
@@ -50,7 +49,6 @@ class ProfileEditFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         user=User()
-
         auth = FirebaseAuth.getInstance()
 
 
@@ -73,21 +71,18 @@ class ProfileEditFragment : Fragment() {
                 user.phoneNumber=phoneNum.text.toString()
                 user.bio=editBio.text.toString()
               // user.profileImageUrl= profileImage.load(currentFile).toString()
-                uploadImageToFirebase()
+              //  uploadImageToFirebase()
 
         }
 
             profileViewModel.saveUser(user)
-            findNavController().popBackStack()
+
+            if (!user.profileImageUrl.isNullOrEmpty()){
+                uploadImageToFirebase()
+            }
         }
 
 
-//        binding.profileImage.setOnClickListener {
-//            Intent(Intent.ACTION_GET_CONTENT).also {
-//                it.type = "image/*"
-//                startActivityForResult(it,REQUEST_CODE)
-//            }
-//        }
 
         binding.uploadimageButton.setOnClickListener {
             Intent(Intent.ACTION_GET_CONTENT).also {
@@ -97,31 +92,25 @@ class ProfileEditFragment : Fragment() {
             uploadImageToFirebase()
         }
 
-//        binding.dawonloadIMAGE.setOnClickListener {
-//            downloadImage()
-//        }
 
-        getUserData()
+        lifecycleScope.launch {
+            profileViewModel.getUserInfo().observe(viewLifecycleOwner , {
+                user = it
+                binding.firstNameEdit.setText(it.firstName)
+                binding.lastNameEdit.setText(it.lastName)
+                binding.userNameEdit.setText(it.userName)
+                binding.phoneNum.setText(it.phoneNumber)
+                binding.emailEdit.setText(it.email)
+                binding.editBio.setText(it.bio)
+                binding.profileImage.load(it.profileImageUrl)
 
-
+            })
+        }
 
         return binding.root
     }
 
-//    private fun downloadImage( ){
-//        val maxDownloadSize = 5L * 1024 * 1024
-//        val bytes = imageRef.child("images/").getBytes(maxDownloadSize)
-//            .addOnCompleteListener{ task ->
-//                if (task.isSuccessful){
-//                    val bitmap = BitmapFactory.decodeByteArray(task.result,0,task.result!!.size)
-//
-//                    binding.profileImage.setImageBitmap(bitmap)
-//                }
-//
-//            }.addOnFailureListener {
-//                Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
-//            }
-//    }
+
 
     private fun uploadImageToFirebase(){
         currentFile?.let {
@@ -164,29 +153,6 @@ class ProfileEditFragment : Fragment() {
         }
     }
 
-    private fun getUserData(){
-        var user=User(Firebase.auth.uid!!)
-        val uid = FirebaseAuth.getInstance().currentUser!!.uid
-        val userRef = database.collection("users")
-        val uidRef = userRef.document(uid)
-        uidRef.get().addOnSuccessListener { document ->
-            if (document != null){
-                user = document.toObject(User::class.java)!!
-                binding.firstNameEdit.setText(document.getString("firstName"))
-                binding.lastNameEdit.setText(document.getString("lastName"))
-                binding.userNameEdit.setText(document.getString("userName"))
-                binding.phoneNum.setText(document.getString("phoneNumber"))
-                binding.emailEdit.setText(document.getString("email"))
-                binding.editBio.setText(document.getString("bio"))
-                binding.profileImage.load(user.profileImageUrl)
 
-            }else{
-                Log.d(TAG , "No such document")
-            }
-        }.addOnFailureListener { exception ->
-            Log.d(TAG, "get failed with" , exception)
-
-        }
-    }
 
 }

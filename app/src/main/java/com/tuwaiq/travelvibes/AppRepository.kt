@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
+import coil.load
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,23 +32,6 @@ class AppRepository private constructor(context: Context) {
     private val fileDir = context.applicationContext.filesDir
 
     fun getPhotoFile(post: Post): File = File(fileDir , post.photoFileName)
-
-
-//    fun retrievePerson() = CoroutineScope(Dispatchers.IO).launch {
-//        try {
-//
-//            val querySnapshot = usersCollectionRef.get().await()
-//            val sb = StringBuilder()
-//            for(document in querySnapshot.documents){
-//                val user = document.toObject<User>()
-//                sb.append("$user\n")
-//            }
-//
-//        }catch (e:Exception){
-//
-//        }
-//    }
-
 
 
     fun saveUserInfo(user: User)= CoroutineScope(Dispatchers.IO).launch {
@@ -143,6 +128,7 @@ class AppRepository private constructor(context: Context) {
         }
     }
 
+
     suspend fun detailsPost(uid:String) : LiveData<Post> {
 
 
@@ -210,11 +196,6 @@ class AppRepository private constructor(context: Context) {
     suspend fun getComments(postId: String): LiveData<List<CommentUser>>{
 
         var comments = mutableListOf<CommentUser>()
-//        Log.d(TAG, "getComments: ${x?.comment}")
-        /**
-         *
-         *
-         * */
 
         return liveData {
 
@@ -230,17 +211,6 @@ class AppRepository private constructor(context: Context) {
             }
             emit(comments)
 
-            /**
-             *
-             *
-             * */
-//          val post =    database.collection("posts").document( postId)
-//              val x = post.get().await().toObject(CommentResponse::class.java)
-//            Log.d(TAG, "getComments: ${x?.comment}")
-//                  .toObjects(Post::class.java)
-
-//            val test: List<Comment> = x.data?.get("comment") as CommentResponse.kotlin.collections.List<Comment> ?: emptyList<Comment>()
-//            emit(x?.comment ?: emptyList())
         }
 
     }
@@ -249,13 +219,17 @@ class AppRepository private constructor(context: Context) {
 
                 return liveData {
 
-                    val favPost = database.collection("users")
+                    val userInfo = database.collection("users")
                         .document(Firebase.auth.currentUser?.uid!!)
-                    val f = favPost.get().await().toObject(User::class.java)
+                    val user = userInfo.get().await().toObject(User::class.java)
 
-                    Log.d(TAG, "get favorite :${f?.favorite}")
+                    Log.d(TAG, "get favorite :${user?.favorite}")
 
-                    emit(f!!)
+                    if (user != null){
+                        emit(user!!)
+                    }
+
+
 
                 }
 
@@ -264,24 +238,6 @@ class AppRepository private constructor(context: Context) {
     suspend fun getUserCommentInfo(userId: String): User? {
         val user = database.collection("users").document(userId)
         return user.get().await().toObject(User::class.java)
-//        return liveData {
-//
-//            val comment = database.collection("users").document(userId)
-//            val f = comment.get().await().toObject(User::class.java)
-//
-//            Log.d(TAG, "get userComment :${f}")
-////            f?.comment?.forEach { comment ->
-////                val favPost = database.collection("users")
-////                    .document(comment.userId)
-////                val dd = favPost.get().await().toObject(User::class.java)
-////
-////                if (dd != null) {
-////                    emit(dd)
-////                }
-////            }
-//            emit(f!!)
-//
-//        }
 
     }
 

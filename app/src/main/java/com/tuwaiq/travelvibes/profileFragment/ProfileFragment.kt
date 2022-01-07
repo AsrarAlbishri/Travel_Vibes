@@ -46,13 +46,6 @@ class ProfileFragment : Fragment() {
     private val dateFormat = "EEE, MMM dd, yyyy"
 
 
-
-   //private lateinit var user: User
-
-
-
-    val database = FirebaseFirestore.getInstance()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -81,59 +74,21 @@ class ProfileFragment : Fragment() {
             })
         }
 
+        lifecycleScope.launch {
+            profileViewModel.getUserInfo().observe(viewLifecycleOwner,{
 
-       // profilePostData()
+                binding.name.setText(it.firstName)
+               binding.userName.setText(it.userName)
+                binding.usrBio.setText(it.bio)
+               binding.photoProfile.load(it.profileImageUrl)
+               Log.d( TAG, "hhhhhhhh h${it.profileImageUrl} vvv $it")
+            })
+        }
 
-        getUserData()
 
         return binding.root
     }
 
-
-    private fun getUserData(){
-        var user=User(Firebase.auth.uid!!)
-        val uid = FirebaseAuth.getInstance().currentUser!!.uid
-        val userRef = database.collection("users")
-        val uidRef = userRef.document(uid)
-        uidRef.get().addOnSuccessListener { document ->
-            if (document != null){
-                user = document.toObject(User::class.java)!!
-                binding.name.setText(document.getString("firstName"))
-                binding.userName.setText(document.getString("userName"))
-                binding.usrBio.setText(document.getString("bio"))
-                binding.photoProfile.load(user.profileImageUrl)
-                Log.d(TAG, "hhhhhhhh h${user.profileImageUrl} vvv $user")
-
-            }else{
-                Log.d(TAG , "No such document")
-            }
-        }.addOnFailureListener { exception ->
-            Log.d(TAG, "get failed with" , exception)
-
-        }
-    }
-
-//    private fun profilePostData(){
-//        Firebase.auth.currentUser?.let {
-//            Log.d(TAG,it.uid)
-//            database.collection("posts").whereEqualTo("ownerId",it.uid)
-//                .get()
-//                .addOnFailureListener {
-//                    Log.e(TAG,"!!!!",it)
-//                }
-//                .addOnSuccessListener {
-//                    for (document in it){
-//
-//                        val post = document.toObject(Post::class.java)
-//                        Log.d(TAG,"khguy $document" )
-//                        postList.add(post)
-//
-//                    }
-//                    binding.postProfileRv.adapter = PostProfileAdapter(postList)
-//
-//                }
-//        }
-//    }
 
     private inner class PostsProfileHolder(val binding:PostListProfileFragmentBinding)
         : RecyclerView.ViewHolder(binding.root){
@@ -178,8 +133,6 @@ class ProfileFragment : Fragment() {
     }
 
 
-
-
     override fun onStart() {
         super.onStart()
 
@@ -188,9 +141,6 @@ class ProfileFragment : Fragment() {
             val action = ProfileFragmentDirections.actionProfileFragmentToProfileEditFragment()
             navCon.navigate(action)
         }
-
-
-
 
     }
 
