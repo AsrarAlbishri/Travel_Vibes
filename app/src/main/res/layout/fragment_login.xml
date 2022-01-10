@@ -32,6 +32,7 @@
         android:ems="10"
         android:hint="@string/username"
         android:inputType="textPersonName"
+        android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,6 +48,7 @@
         android:ems="10"
         android:hint="@string/password"
         android:inputType="textPassword"
+        android:textAlignment="viewStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,16 +69,17 @@
         app:layout_constraintTop_toBottomOf="@+id/password_et"
         tools:ignore="TouchTargetSizeCheck" />
 
-    <Button
-        android:id="@+id/register_btn"
-        android:layout_width="108dp"
-        android:layout_height="48dp"
+    <TextView
+        android:id="@+id/register_TV"
+        android:layout_width="145dp"
+        android:layout_height="36dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="5dp"
+        android:layout_marginEnd="16dp"
         android:backgroundTint="@color/white"
         android:text="@string/register"
+        android:textAlignment="textEnd"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

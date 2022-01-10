@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -32,7 +33,7 @@ class RegisterFragment : Fragment() {
     private lateinit var passwordET: EditText
     private lateinit var confirmPassword: EditText
     private lateinit var registerBtn: Button
-    private lateinit var loginTV:Button
+    private lateinit var loginTV:TextView
 
    // private lateinit var auth:FirebaseAuth
 

@@ -21,6 +21,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.tuwaiq.travelvibes.*
+import com.tuwaiq.travelvibes.authentication.RegisterFragment.Companion.auth
 import com.tuwaiq.travelvibes.commentFragment.CommentFragmentArgs
 import com.tuwaiq.travelvibes.data.Post
 
@@ -53,7 +54,7 @@ class LoginFragment : Fragment() {
         userNameET = view.findViewById(R.id.username_et)
         passwordET = view.findViewById(R.id.password_et)
         loginBtn = view.findViewById(R.id.login_btn)
-        signUp = view.findViewById(R.id.register_btn)
+        signUp = view.findViewById(R.id.register_TV)
 
 
 
@@ -75,7 +76,7 @@ class LoginFragment : Fragment() {
 
 
         loginBtn.setOnClickListener {
-            RegisterFragment.auth.signInWithEmailAndPassword(
+            auth.signInWithEmailAndPassword(
                 userNameET.text.toString(),
                 passwordET.text.toString()
             )

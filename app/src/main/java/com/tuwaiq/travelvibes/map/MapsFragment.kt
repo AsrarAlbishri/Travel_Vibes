@@ -34,8 +34,8 @@ class MapsFragment : Fragment() {
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private lateinit var googleMap: GoogleMap
     private lateinit var currentLocation : LatLng
-//    private var locationAddress: String = ""
-//    private lateinit var addLocationBtn : Button
+    private var locationAddress: String = ""
+    private lateinit var addLocationBtn : Button
 
     private val callback = OnMapReadyCallback { googleMap ->
        this.googleMap = googleMap
@@ -57,21 +57,21 @@ class MapsFragment : Fragment() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         getCurrentLocation()
 
-//        addLocationBtn = view.findViewById(R.id.btn_Add_location)
-//        addLocationBtn.setOnClickListener {
-//            val addresses : List<Address>
-//            val geocoder = Geocoder(context, Locale.getDefault())
-//            try {
-//                addresses = geocoder.getFromLocation(currentLocation.latitude,currentLocation.longitude,1)
-//                locationAddress = addresses[0].getAddressLine(0)
-//
-//                LocationResponse.currentLocation = currentLocation
-//                LocationResponse.locationAddress = locationAddress
-//                findNavController().popBackStack()
-//            }catch (e: Exception){
-//                Log.i("Here" , "No Internet Connection")
-//            }
-//        }
+        addLocationBtn = view.findViewById(R.id.btn_Add_location)
+        addLocationBtn.setOnClickListener {
+            val addresses : List<Address>
+            val geocoder = Geocoder(context, Locale.getDefault())
+            try {
+                addresses = geocoder.getFromLocation(currentLocation.latitude,currentLocation.longitude,1)
+                locationAddress = addresses[0].getAddressLine(0)
+
+                LocationResponse.currentLocation = currentLocation
+                LocationResponse.locationAddress = locationAddress
+                findNavController().popBackStack()
+            }catch (e: Exception){
+                Log.i("Here" , "No Internet Connection")
+            }
+        }
     }
 
     private fun getCurrentLocation(){
@@ -84,13 +84,13 @@ class MapsFragment : Fragment() {
             return
         }
 
-//        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
-//            currentLocation = LatLng(location!!.latitude, location.longitude)
-//            googleMap.addMarker(MarkerOptions().position(currentLocation).title("Current Location").snippet("Current Location"))
-//            googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation))
-//            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 17f))
-//
-//        }
+        fusedLocationClient.lastLocation.addOnSuccessListener { location : Location? ->
+            currentLocation = LatLng(location!!.latitude, location.longitude)
+            googleMap.addMarker(MarkerOptions().position(currentLocation).title("Current Location").snippet("Current Location"))
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation))
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 17f))
+
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

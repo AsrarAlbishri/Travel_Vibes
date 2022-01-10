@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout7"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="20sp"
+    tools:context=".DetailsFragment">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="351sp"
+        android:layout_height="280sp"
+        android:layout_marginBottom="8dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/post_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/post_description"
+        android:layout_width="331dp"
+        android:layout_height="158dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="37dp"
+        android:inputType="textMultiLine"
+        android:lines="3"
+        android:maxLines="3"
+        android:singleLine="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <TextView
+        android:id="@+id/place_name_tv"
+        android:layout_width="216dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="76dp"
+        android:text="@string/place_name1"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/post_description"
+        app:layout_constraintTop_toTopOf="@+id/post_description" />
+
+    <TextView
+        android:id="@+id/post_date_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/place_name_tv"
+        app:layout_constraintTop_toTopOf="@+id/place_name_tv"
+        tools:text="date" />
+
+    <TextView
+        android:id="@+id/location_address_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="8dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintStart_toEndOf="@+id/details_location_IV" />
+
+    <ImageView
+        android:id="@+id/details_location_IV"
+        android:layout_width="32dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/location1" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

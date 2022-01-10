@@ -100,11 +100,11 @@ class AppRepository private constructor(context: Context) {
         }
     }
 
-    suspend fun profilePostData():LiveData<List<Post>>{
+    suspend fun profilePostData(uid: String):LiveData<List<Post>>{
         val postList = mutableListOf<Post>()
-        Firebase.auth.currentUser?.let {
-            Log.d(TAG,it.uid)
-            database.collection("posts").whereEqualTo("ownerId",it.uid)
+
+
+            database.collection("posts").whereEqualTo("ownerId",uid )
                 .get()
                 .addOnFailureListener {
                     Log.e(TAG,"!!!!",it)
@@ -122,7 +122,7 @@ class AppRepository private constructor(context: Context) {
                 }
                 .await()
 
-        }
+
         return liveData {
             emit(postList)
         }
@@ -215,12 +215,12 @@ class AppRepository private constructor(context: Context) {
 
     }
 
-    suspend fun getUserInfo(): LiveData<User> {
+    suspend fun getUserInfo(uid: String): LiveData<User> {
 
                 return liveData {
 
                     val userInfo = database.collection("users")
-                        .document(Firebase.auth.currentUser?.uid!!)
+                        .document(uid)
                     val user = userInfo.get().await().toObject(User::class.java)
 
                     Log.d(TAG, "get favorite :${user?.favorite}")

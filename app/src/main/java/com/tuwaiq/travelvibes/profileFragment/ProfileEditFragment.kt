@@ -2,7 +2,6 @@ package com.tuwaiq.travelvibes.profileFragment
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,21 +10,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import coil.load
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import com.tuwaiq.travelvibes.authentication.LoginFragmentDirections
 import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.FragmentProfileEditBinding
-import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -71,7 +65,7 @@ class ProfileEditFragment : Fragment() {
                 user.phoneNumber=phoneNum.text.toString()
                 user.bio=editBio.text.toString()
               // user.profileImageUrl= profileImage.load(currentFile).toString()
-              //  uploadImageToFirebase()
+                uploadImageToFirebase()
 
         }
 
@@ -94,7 +88,7 @@ class ProfileEditFragment : Fragment() {
 
 
         lifecycleScope.launch {
-            profileViewModel.getUserInfo().observe(viewLifecycleOwner , {
+            profileViewModel.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(viewLifecycleOwner , {
                 user = it
                 binding.firstNameEdit.setText(it.firstName)
                 binding.lastNameEdit.setText(it.lastName)

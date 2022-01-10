@@ -21,15 +21,22 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.google.android.gms.maps.model.LatLng
 import com.tuwaiq.travelvibes.DatePickerDialogFragment
+import com.tuwaiq.travelvibes.R
 import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.databinding.PostFragmentBinding
+import com.tuwaiq.travelvibes.map.LocationResponse
 import com.tuwaiq.travelvibes.utils.getScaledBitmap
 import kotlinx.coroutines.launch
 import java.io.File
@@ -44,7 +51,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     var currentFile: Uri? = null
     var imageRef = Firebase.storage.reference
 
-   // var postHolder: Post? = null
+    var postHolder: Post? = null
 
     private val args:PostFragmentArgs by navArgs()
 
@@ -119,6 +126,9 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
         post = Post()
 
+        LocationResponse.currentLocation = null
+        LocationResponse.locationAddress = null
+
         photoFile = postViewModel.getPhotoFile(post)
         photoUri = FileProvider.getUriForFile(
             requireContext(),
@@ -133,6 +143,11 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             uploadImage()
 
 
+        }
+
+        binding.clickMap.setOnClickListener {
+            val action =PostFragmentDirections.actionNavigationAddToMapsFragment()
+            findNavController().navigate(action)
         }
 
     }
@@ -160,9 +175,9 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             binding.apply {
                 post.postDescription=postWrite.text.toString()
                 post.placeName= placeName.text.toString().lowercase(Locale.getDefault())
-                post.hotel = hotelPlace.isChecked.toString()
-                post.others = othersPlace.isChecked.toString()
-                post.restaurant = restaurantPlace.isChecked.toString()
+//                post.hotel = hotelPlace.isChecked.toString()
+//                post.others = othersPlace.isChecked.toString()
+//                post.restaurant = restaurantPlace.isChecked.toString()
 
 
 //                val action = PostFragmentDirections.actionNavigationAddToNavigationHome()
@@ -204,29 +219,36 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         }
 
 
-        binding.restaurantPlace.setOnCheckedChangeListener { _, isChecked ->
-            post.restaurant = isChecked.toString()
-        }
-
-        binding.hotelPlace.setOnCheckedChangeListener { _, isChecked ->
-            post.hotel = isChecked.toString()
-        }
-
-        binding.othersPlace.setOnCheckedChangeListener { _, isChecked ->
-            post.others = isChecked.toString()
-        }
+//        binding.restaurantPlace.setOnCheckedChangeListener { _, isChecked ->
+//            post.restaurant = isChecked.toString()
+//        }
+//
+//        binding.hotelPlace.setOnCheckedChangeListener { _, isChecked ->
+//            post.hotel = isChecked.toString()
+//        }
+//
+//        binding.othersPlace.setOnCheckedChangeListener { _, isChecked ->
+//            post.others = isChecked.toString()
+//        }
 
         lifecycleScope.launch {
             Log.d(TAG, "onCreateView: ${args.id}")
             postViewModel.detailsPost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
                 binding.postWrite.setText(it.postDescription)
                 binding.placeName.setText(it.placeName)
+                if (!it.location.isNullOrEmpty() && it.location != "null"){
+                    binding.clickMap.text = it.location
+                }
+
+                if (it.latitude != 0.0 && it.longitude != 0.0){
+                    postHolder = it
+                    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                    mapFragment?.getMapAsync(callback)
+                }
 //                binding.restaurantPlace.isChecked
 //                binding.hotelPlace.isChecked
 //                binding.othersPlace.isChecked
                 binding.postPhoto.load(it.postImageUrl)
-
-
 
             })
         }
@@ -237,9 +259,23 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
 
 
-
-
         return binding.root
+    }
+
+    private val callback = OnMapReadyCallback { googleMap ->
+        if (postHolder != null){
+            binding.materialCardView.visibility = View.VISIBLE
+           val currentLocation = LatLng(postHolder!!.latitude, postHolder!!.longitude)
+            googleMap.addMarker(
+                MarkerOptions().position(currentLocation).title(postHolder!!.placeName)
+                    .snippet(postHolder!!.placeName)
+            )
+
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation))
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13f))
+            googleMap.uiSettings.setAllGesturesEnabled(false)
+
+        }
     }
 
     private fun uploadImage() {
@@ -324,7 +360,15 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
          post.date = date.time.toString()
     }
 
+    override fun onResume() {
+        super.onResume()
 
-
+        if (LocationResponse.currentLocation != null && LocationResponse.locationAddress != null){
+            binding.clickMap.text = LocationResponse.locationAddress
+            post.location = LocationResponse.locationAddress ?: "Current Location Address"
+            post.latitude = LocationResponse.currentLocation?.latitude ?: 0.0
+            post.longitude = LocationResponse.currentLocation?.longitude ?: 0.0
+        }
+    }
 
 }

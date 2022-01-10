@@ -22,7 +22,7 @@
         tools:ignore="TouchTargetSizeCheck" />
 
     <TextView
-        android:id="@+id/change_language"
+        android:id="@+id/language"
         android:layout_width="101dp"
         android:layout_height="38dp"
         android:layout_marginStart="8dp"
@@ -34,18 +34,29 @@
         app:layout_constraintStart_toEndOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/change_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="77dp"
+        android:hint="@string/change_language"
+        android:textSize="14dp"
+        app:layout_constraintStart_toEndOf="@+id/language"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/change_mode"
         android:layout_width="101dp"
         android:layout_height="38dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="19dp"
-        android:text="Dark Mode"
+        android:text="@string/dark_mode"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toBottomOf="@+id/change_language" />
+        app:layout_constraintTop_toBottomOf="@+id/language" />
 
     <ImageView
         android:id="@+id/imageView2"

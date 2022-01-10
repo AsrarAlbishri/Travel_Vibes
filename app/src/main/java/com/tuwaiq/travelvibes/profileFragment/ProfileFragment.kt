@@ -10,31 +10,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageReference
-import com.tuwaiq.travelvibes.authentication.LoginFragmentDirections
 import com.tuwaiq.travelvibes.authentication.RegisterFragment.Companion.auth
 import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.data.User
-import com.tuwaiq.travelvibes.databinding.ListItemPostBinding
 import com.tuwaiq.travelvibes.databinding.PostListProfileFragmentBinding
 import com.tuwaiq.travelvibes.databinding.ProfileFragmentBinding
-import com.tuwaiq.travelvibes.postListFragment.PostListFragment
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 private const val TAG = "ProfileFragment"
 class ProfileFragment : Fragment() {
@@ -42,14 +32,25 @@ class ProfileFragment : Fragment() {
     private val  profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
 
    private lateinit var binding: ProfileFragmentBinding
+    val database = FirebaseFirestore.getInstance()
+
+  //  val postList = mutableListOf<Post>()
+
+   private val args:ProfileFragmentArgs by navArgs()
 
     private val dateFormat = "EEE, MMM dd, yyyy"
+
+    lateinit var ownerId:String
+    private val currentUser = auth.currentUser
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val currentUser = auth.currentUser
+        ownerId = args.ownerId
+
+
+
 
         if (currentUser == null){
             val navCon = findNavController()
@@ -65,28 +66,54 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding= ProfileFragmentBinding.inflate(layoutInflater)
-        binding.postProfileRv.layoutManager = LinearLayoutManager(context)
+        binding.postProfileRv.layoutManager = GridLayoutManager(context,2)
+        binding.postProfileRv.addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
+        binding.postProfileRv.addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.HORIZONTAL))
 
+        if (args.ownerId == "-1"){
+            lifecycleScope.launch {
+                profileViewModel.profilePostData(Firebase.auth.currentUser?.uid!!).observe(viewLifecycleOwner,{ postList ->
+                    binding.postProfileRv.adapter = PostProfileAdapter(postList)
 
-        lifecycleScope.launch {
-            profileViewModel.profilePostData().observe(viewLifecycleOwner ,{ postList ->
-                binding.postProfileRv.adapter = PostProfileAdapter(postList)
-            })
+                })
+            }
+
+        }else{
+            lifecycleScope.launch {
+                profileViewModel.profilePostData(args.ownerId).observe(viewLifecycleOwner,{ postList ->
+                    binding.postProfileRv.adapter = PostProfileAdapter(postList)
+
+                })
+            }
+
         }
 
-        lifecycleScope.launch {
-            profileViewModel.getUserInfo().observe(viewLifecycleOwner,{
 
-                binding.name.setText(it.firstName)
-               binding.userName.setText(it.userName)
-                binding.usrBio.setText(it.bio)
-               binding.photoProfile.load(it.profileImageUrl)
-               Log.d( TAG, "hhhhhhhh h${it.profileImageUrl} vvv $it")
-            })
-        }
+       if (args.ownerId == "-1"){
+           showUserInfo(Firebase.auth.currentUser?.uid!!)
+           binding.editProfileBtn.visibility = View.VISIBLE
+       }else{
+           showUserInfo(args.ownerId)
 
+       }
 
         return binding.root
+    }
+
+    private fun showUserInfo(uid:String) {
+        lifecycleScope.launch {
+
+                profileViewModel.getUserInfo(uid).observe(viewLifecycleOwner, {
+
+                    binding.name.setText(it.firstName)
+                    binding.userName.setText(it.userName)
+                    binding.usrBio.setText(it.bio)
+                    binding.photoProfile.load(it.profileImageUrl)
+                    Log.d(TAG, "hhhhhhhh h${it.profileImageUrl} vvv $it")
+
+                })
+
+        }
     }
 
 
@@ -99,10 +126,10 @@ class ProfileFragment : Fragment() {
 
             this.post = post
 
-            binding.postProfileDetails.text = post.postDescription
-            if (!post.date.isNullOrEmpty()) {
-                binding.dataUserPost.text = DateFormat.format(dateFormat, post.date.toLong())
-            }
+//            binding.postProfileDetails.text = post.postDescription
+//            if (!post.date.isNullOrEmpty()) {
+//                binding.dataUserPost.text = DateFormat.format(dateFormat, post.date.toLong())
+//            }
 
             binding.profilePostImage.load(post.postImageUrl)
 
@@ -136,9 +163,19 @@ class ProfileFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        binding.editProfileBtn.setOnClickListener {
+
+
+            binding.editProfileBtn.setOnClickListener {
+                val navCon = findNavController()
+                val action = ProfileFragmentDirections.actionProfileFragmentToProfileEditFragment()
+                navCon.navigate(action)
+            }
+
+
+
+        binding.settingIV.setOnClickListener {
             val navCon = findNavController()
-            val action = ProfileFragmentDirections.actionProfileFragmentToProfileEditFragment()
+            val action = ProfileFragmentDirections.actionNavigationProfileToSettingFragment()
             navCon.navigate(action)
         }
 

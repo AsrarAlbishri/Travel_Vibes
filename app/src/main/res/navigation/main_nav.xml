@@ -22,6 +22,9 @@
         <argument
             android:name="postId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_profile"
+            app:destination="@id/navigation_profile" />
     </fragment>
     <fragment
         android:id="@+id/navigation_add"
@@ -41,6 +44,9 @@
         <action
             android:id="@+id/action_navigation_add_to_navigation_home"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_add_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_profile"
@@ -56,15 +62,17 @@
         <action
             android:id="@+id/action_navigation_profile_to_settingFragment"
             app:destination="@id/settingFragment" />
+        <argument
+            android:name="ownerId"
+            app:argType="string"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
         android:name="com.tuwaiq.travelvibes.profileFragment.ProfileEditFragment"
         android:label="fragment_profile_edit"
         tools:layout="@layout/fragment_profile_edit" >
-        <action
-            android:id="@+id/action_profileEditFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -111,5 +119,13 @@
         android:id="@+id/settingFragment"
         android:name="com.tuwaiq.travelvibes.profileFragment.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.tuwaiq.travelvibes.map.MapsFragment"
+        android:label="MapsFragment" />
 </navigation>

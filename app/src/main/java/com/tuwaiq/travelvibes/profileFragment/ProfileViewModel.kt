@@ -14,12 +14,12 @@ class ProfileViewModel : ViewModel() {
         repo.saveUserInfo(user)
     }
 
-    suspend fun profilePostData(): LiveData<List<Post>>{
-       return repo.profilePostData()
+    suspend fun profilePostData(uid: String): LiveData<List<Post>>{
+       return repo.profilePostData(uid)
     }
 
-    suspend fun getUserInfo(): LiveData<User>{
-        return repo.getUserInfo()
+    suspend fun getUserInfo(uid:String): LiveData<User>{
+        return repo.getUserInfo(uid)
     }
 
 

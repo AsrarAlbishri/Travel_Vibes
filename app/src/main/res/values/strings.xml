@@ -9,9 +9,9 @@
     <string name="log_inbtn">Log In</string>
     <string name="register">Sign Up</string>
 
-    <string name="registerusername">User Name</string>
+    <string name="register_user_name">User Name</string>
     <string name="e_mail">E_mail</string>
-    <string name="registerpassword">password</string>
+    <string name="register_password">password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="log_in">Login</string>
 
@@ -42,12 +42,10 @@
     <string name="user_name_edit">User Name:</string>
     <string name="email">Email:</string>
     <string name="phone_number">Phone Number:</string>
-    <string name="birth_of_date">Birth of Date:</string>
     <string name="save">save</string>
     <string name="change_photo">Change Photo</string>
     <string name="date">Date</string>
-    <string name="upload">upload</string>
-    <string name="retrieve">Retrieve</string>
+
     <string name="selectpic">selectpic</string>
     <string name="bio">Bio</string>
 
@@ -58,10 +56,16 @@
 
     <string name="title">Title</string>
     <string name="this_is_message">This is message</string>
-    <string name="clear_search">clear search</string>
+
     <string name="edit_profile">Edit profile</string>
     <string name="language">Language</string>
     <string name="save_post">Save</string>
+    <string name="account_information">Account Information</string>
+    <string name="register_btn">Register</string>
+    <string name="add_location">Add Location</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="change_language">change language</string>
+    <string name="place_name1">place name:</string>
 
 
 </resources>

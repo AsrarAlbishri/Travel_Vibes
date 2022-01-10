@@ -102,6 +102,7 @@ class CommentFragment : Fragment() {
 
                 Log.d(TAG, "onCreateView: ${it}")
                 binding.commentRV.adapter = CommentAdapter(it ?: emptyList())
+               // CommentAdapter(it).notifyDataSetChanged()
 
 
             })
@@ -109,20 +110,6 @@ class CommentFragment : Fragment() {
 
         return binding.root
     }
-
-//    fun userComment(){
-//        var user=User(Firebase.auth.uid!!)
-//        val uid = FirebaseAuth.getInstance().currentUser!!.uid
-//        val userRef = database.collection("users")
-//        val uidRef = userRef.document(uid)
-//        uidRef.get().addOnSuccessListener { document ->
-//            if (document != null){
-//                user = document.toObject(User::class.java)!!
-//
-//            }
-//
-//        }
-//    }
 
 
     private inner class CommentHolder(val binding:ListItemCommentBinding)

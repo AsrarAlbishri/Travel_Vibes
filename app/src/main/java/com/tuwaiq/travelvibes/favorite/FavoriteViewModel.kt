@@ -13,8 +13,8 @@ class FavoriteViewModel:ViewModel() {
 
     private val repo: AppRepository = AppRepository.getInstance()
 
-    suspend fun getFavoritePost( ): LiveData<User>{
-       return repo.getUserInfo( )
+    suspend fun getFavoritePost(uid: String ): LiveData<User>{
+       return repo.getUserInfo(uid)
 }
 
     suspend fun detailsPost(uid:String): LiveData<Post> {

@@ -23,8 +23,8 @@ class PostListViewModel : ViewModel() {
         return repo.getSearchPosts(word)
     }
 
-    suspend fun getUserInfo():LiveData<User>{
-      return  repo.getUserInfo()
+    suspend fun getUserInfo(uid:String):LiveData<User>{
+      return  repo.getUserInfo(uid)
     }
 
 

@@ -20,6 +20,7 @@ import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.google.firebase.auth.FirebaseAuth
@@ -89,7 +90,7 @@ class PostListFragment : Fragment() {
                             postListViewModel.getSearchPosts(search).observeForever { postList ->
 
                                 lifecycleScope.launch {
-                                    postListViewModel.getUserInfo().observe(viewLifecycleOwner){ user ->
+                                    postListViewModel.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(viewLifecycleOwner){ user ->
                                         binding.postRecyclerView.adapter = PostsAdapter(postList,user)
                                     }
                                 }
@@ -100,7 +101,6 @@ class PostListFragment : Fragment() {
                         }
 
                     }
-
 
                     return true
 
@@ -135,7 +135,7 @@ class PostListFragment : Fragment() {
             postListViewModel.getFetchPosts().observeForever(  Observer { postList->
 
                 lifecycleScope.launch {
-                    postListViewModel.getUserInfo().observe(viewLifecycleOwner){user->
+                    postListViewModel.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(viewLifecycleOwner){user->
                         Log.d(TAG, "onCreateView: postList $postList")
                         updateUI(postList, user)
                     }
@@ -164,6 +164,8 @@ class PostListFragment : Fragment() {
        lateinit var user: User
        var postion = 0
 
+        lateinit var posts: MutableList<Post>
+
         init {
             itemView.setOnClickListener(this)
             binding.deletPostIV.setOnClickListener(this)
@@ -172,10 +174,11 @@ class PostListFragment : Fragment() {
         }
 
 
-            fun bind(post:Post,user: User, postion: Int){
+            fun bind(post:Post,user: User, postion: Int,posts: MutableList<Post>){
                 this.post = post
                 this.user = user
                 this.postion = postion
+                this.posts = posts
                 postId = post.postId
                 binding.postDetails.text = post.postDescription
                 Log.d(TAG, "bind: ${post.ownerId}")
@@ -187,6 +190,14 @@ class PostListFragment : Fragment() {
                 binding.imageViewOfPost.load(post.postImageUrl)
 
                binding.favoritIV.isChecked = user.favorite.contains(postId)
+
+                binding.locationAddressText.text = post.location
+
+//                if (post.location.contains(post.location)){
+//                    binding.locationIV.visibility = View.VISIBLE
+//                }else{
+//                    binding.locationIV.visibility = View.GONE
+//                }
 
 
 
@@ -217,6 +228,11 @@ class PostListFragment : Fragment() {
 
                 }
 
+                binding.userPost.setOnClickListener {
+
+                        val action = PostListFragmentDirections.actionNavigationHomeToNavigationProfile(post.ownerId)
+                       findNavController().navigate(action)
+                }
             }
 
         override fun onClick(p0: View?) {
@@ -230,15 +246,10 @@ class PostListFragment : Fragment() {
             if (p0 == binding.deletPostIV){
 
                 if (auth.currentUser!!.uid == post.ownerId){
-                    val newpostList = postList.filter {
-                        post == it
-                    }
-                    updateUI(newpostList, user)
                     postListViewModel.deletePost(post)
+                    posts.removeAt(adapterPosition)
+                    updateUI(posts, user)
 
-
-
-                    PostsAdapter(newpostList,user).notifyDataSetChanged()
 
                 }
 
@@ -305,7 +316,7 @@ class PostListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: PostsHolder, position: Int) {
             val post = posts[position]
-            holder.bind(post,user,position)
+            holder.bind(post,user,position, posts as MutableList<Post>)
 
         }
 

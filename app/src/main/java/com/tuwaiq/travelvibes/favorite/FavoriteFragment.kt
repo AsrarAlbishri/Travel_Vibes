@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -66,7 +67,7 @@ class FavoriteFragment : Fragment() {
 
         lifecycleScope.launch {
 
-            favoriteViewModel.getFavoritePost().observeForever {
+            favoriteViewModel.getFavoritePost(Firebase.auth.currentUser?.uid!!).observeForever {
 
                 val favoritePosts : MutableList<Post> = mutableListOf()
                        it.favorite.forEach {
