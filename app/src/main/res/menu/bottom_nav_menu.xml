@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
 
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/home_page" />
 
-    <item
-        android:id="@+id/navigation_add"
-        android:icon="@drawable/ic_baseline_add_circle_outline_24"
-        android:title="@string/add_page"/>
 
     <item
         android:id="@+id/navigation_fav"
@@ -22,6 +22,9 @@
         android:icon="@drawable/ic_baseline_person_24"
         android:title="@string/profile_page"/>
 
+    <item
+        android:id="@+id/placeholder"
+        android:title=""/>
 
 
 

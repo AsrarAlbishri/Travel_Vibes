@@ -1,12 +1,10 @@
 package com.tuwaiq.travelvibes.authentication
 
-import android.annotation.SuppressLint
+
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,11 +17,12 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.tuwaiq.travelvibes.*
 import com.tuwaiq.travelvibes.authentication.RegisterFragment.Companion.auth
-import com.tuwaiq.travelvibes.commentFragment.CommentFragmentArgs
 import com.tuwaiq.travelvibes.data.Post
+
+const val channelId = "notification"
+const val channelName = "my notification"
 
 class LoginFragment : Fragment() {
 
@@ -31,8 +30,6 @@ class LoginFragment : Fragment() {
     private lateinit var passwordET: EditText
     private lateinit var loginBtn: Button
     private lateinit var signUp:TextView
-
-    //private val args: LoginFragmentArgs by navArgs()
 
     private lateinit var post: Post
 
@@ -72,9 +69,6 @@ class LoginFragment : Fragment() {
         val (builder, nm) = generateNotification()
 
 
-
-
-
         loginBtn.setOnClickListener {
             auth.signInWithEmailAndPassword(
                 userNameET.text.toString(),
@@ -88,6 +82,7 @@ class LoginFragment : Fragment() {
                         }                    } else {
                         showToast("login failed")
                     }
+                   // Registration.validation()
                 }
 
             val navCon = findNavController()

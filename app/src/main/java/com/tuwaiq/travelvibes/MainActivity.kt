@@ -3,9 +3,11 @@ package com.tuwaiq.travelvibes
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomappbar.BottomAppBar
 import com.tuwaiq.travelvibes.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -19,11 +21,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val bottomNavigationView = binding.bottomNavigationView
+        val navController = findNavController(R.id.fragmentContainerView)
 
-        val navController = findNavController(R.id.container)
+        binding.bottomNavigationView.background = null
 
-        bottomNavigationView.setupWithNavController(navController)
+
+
+        binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
+
+        binding.fab.setOnClickListener {
+
+           navController.navigate(R.id.navigation_add)
+
+        }
+
+
+
+
+        binding.bottomNavigationView.setupWithNavController(navController)
 
 
 

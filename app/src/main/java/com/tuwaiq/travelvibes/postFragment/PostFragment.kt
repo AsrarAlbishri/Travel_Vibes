@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
-private const val TAG = "PostFragment"
+const val TAG = "PostFragment"
 private const val REQUEST_CODE_IMAGE_POST = 0
 const val POST_DATE_KEY = "post date"
 
@@ -55,19 +55,18 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
     private val args:PostFragmentArgs by navArgs()
 
+
+
     private lateinit var photoFile: File
     private lateinit var photoUri: Uri
 
 
     private val postViewModel: PostViewModel by lazy { ViewModelProvider(this)[PostViewModel::class.java] }
-
     private lateinit var binding: PostFragmentBinding
-
     private lateinit var post: Post
-
     private lateinit var firebaseUser: FirebaseUser
 
-    val database = FirebaseFirestore.getInstance()
+
 
 
     private val getPermissionLuncher = registerForActivityResult(

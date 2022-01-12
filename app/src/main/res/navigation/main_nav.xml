@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_profile"
             app:destination="@id/navigation_profile" />
+        <action
+            android:id="@+id/action_navigation_home_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_add"
@@ -37,16 +40,16 @@
         <action
             android:id="@+id/action_navigation_add_to_registerFragment"
             app:destination="@id/registerFragment" />
-        <argument
-            android:name="id"
-            android:defaultValue="-1"
-            app:argType="string" />
         <action
             android:id="@+id/action_navigation_add_to_navigation_home"
             app:destination="@id/navigation_home" />
         <action
             android:id="@+id/action_navigation_add_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/navigation_profile"
@@ -66,6 +69,9 @@
             android:name="ownerId"
             app:argType="string"
             android:defaultValue="-1" />
+        <action
+            android:id="@+id/action_navigation_profile_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
@@ -128,4 +134,13 @@
         android:id="@+id/mapsFragment"
         android:name="com.tuwaiq.travelvibes.map.MapsFragment"
         android:label="MapsFragment" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.tuwaiq.travelvibes.detailsFragment.DetailsFragment"
+        android:label="DetailsFragment" >
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue="-1" />
+    </fragment>
 </navigation>

@@ -57,7 +57,7 @@ class AppRepository private constructor(context: Context) {
 
 
         try {
-            postCollectionRef.add(post).await()
+            postCollectionRef.document(post.postId).set(post).await()
             withContext(Dispatchers.Main){
                 Log.d(TAG,"successfully saved post")
             }

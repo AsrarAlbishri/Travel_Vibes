@@ -28,7 +28,6 @@ import com.google.firebase.firestore.ktx.firestore
 import com.tuwaiq.travelvibes.commentFragment.CommentViewModel
 import com.tuwaiq.travelvibes.data.Comment
 import com.tuwaiq.travelvibes.data.User
-import com.tuwaiq.travelvibes.postFragment.PostFragmentArgs
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
 import com.tuwaiq.travelvibes.postFragment.PostViewModel
 import kotlinx.coroutines.Dispatchers
@@ -45,10 +44,7 @@ class PostListFragment : Fragment() {
 
 
 
-
-    val postList = mutableListOf<Post>()
-
-//    private val args: PostListFragmentArgs by navArgs()
+    private val args: PostListFragmentArgs by navArgs()
 
     val database = FirebaseFirestore.getInstance()
 
@@ -158,8 +154,6 @@ class PostListFragment : Fragment() {
         :RecyclerView.ViewHolder(binding.root),View.OnClickListener{
 
 
-       // var favBtnClicked = false
-
        lateinit var post: Post
        lateinit var user: User
        var postion = 0
@@ -170,7 +164,8 @@ class PostListFragment : Fragment() {
             itemView.setOnClickListener(this)
             binding.deletPostIV.setOnClickListener(this)
             binding.commentIV.setOnClickListener(this)
-            //binding.favoritIV.setOnClickListener(this)
+            binding.editIV.setOnClickListener(this)
+
         }
 
 
@@ -239,7 +234,7 @@ class PostListFragment : Fragment() {
 
             if(p0 == itemView){
 
-                    val action = PostListFragmentDirections.actionPostListFragmentToPostFragment(post.postId)
+                    val action = PostListFragmentDirections.actionNavigationHomeToDetailsFragment(post.postId)
                      findNavController().navigate(action)
             }
 
@@ -250,19 +245,22 @@ class PostListFragment : Fragment() {
                     posts.removeAt(adapterPosition)
                     updateUI(posts, user)
 
-
                 }
-
-//                    Firebase.firestore.collection("posts").document(post.postId)
-//                        .update("postId",post)
-
             }
 
             if (p0 == binding.commentIV){
                 val action = PostListFragmentDirections.actionNavigationHomeToCommentFragment(post.postId)
                 findNavController().navigate(action)
-              //  findNavController().popBackStack()
 
+            }
+
+            if(p0 == binding.editIV){
+                if (auth.currentUser!!.uid == post.ownerId){
+
+                    val action = PostListFragmentDirections.actionPostListFragmentToPostFragment(post.postId)
+                    findNavController().navigate(action)
+
+                }
             }
         }
     }
@@ -276,7 +274,6 @@ class PostListFragment : Fragment() {
                     .toObject(User::class.java)
                     ?.favorite ?: emptyList()) as MutableList<String>
 
-           // originalList -= post.postId
             originalList.remove(post.postId)
 
             Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)

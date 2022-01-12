@@ -11,6 +11,7 @@
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/custom_image.xml" value="0.18703703703703703" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/custom_itemview.xml" value="0.22" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/fav_clicked.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_add_24.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_favorite_24.xml" value="0.12685185185185185" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.12685185185185185" />
@@ -21,6 +22,7 @@
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.18177083333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_launcher_background.xml" value="0.19583333333333333" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_round_add_24.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_search.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
@@ -47,7 +49,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

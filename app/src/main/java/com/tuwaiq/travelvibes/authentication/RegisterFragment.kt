@@ -15,16 +15,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tuwaiq.travelvibes.R
+import com.tuwaiq.travelvibes.Registration
 import com.tuwaiq.travelvibes.data.User
 
 private const val TAG = "RegisterFragment"
 class RegisterFragment : Fragment() {
 
-
-
     companion object {
         var auth: FirebaseAuth = FirebaseAuth.getInstance()
-
 
     }
 
@@ -35,12 +33,7 @@ class RegisterFragment : Fragment() {
     private lateinit var registerBtn: Button
     private lateinit var loginTV:TextView
 
-   // private lateinit var auth:FirebaseAuth
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        auth = FirebaseAuth.getInstance()
-//    }
 
     override fun onStart() {
         super.onStart()
@@ -78,6 +71,8 @@ class RegisterFragment : Fragment() {
 
 
     private fun registerUser(username: String, email: String, password: String,) {
+
+        if (Registration.validation(username,password))
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
 
@@ -96,6 +91,8 @@ class RegisterFragment : Fragment() {
                     Log.e(TAG, "there was something wrong", task.exception)
                 }
             }
+
+
 
                     val updateProfile = userProfileChangeRequest {
                         displayName = username

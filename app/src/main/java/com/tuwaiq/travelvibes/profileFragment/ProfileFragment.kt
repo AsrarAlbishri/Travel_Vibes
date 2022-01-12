@@ -32,15 +32,11 @@ class ProfileFragment : Fragment() {
     private val  profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
 
    private lateinit var binding: ProfileFragmentBinding
-    val database = FirebaseFirestore.getInstance()
-
-  //  val postList = mutableListOf<Post>()
 
    private val args:ProfileFragmentArgs by navArgs()
 
-    private val dateFormat = "EEE, MMM dd, yyyy"
-
     lateinit var ownerId:String
+
     private val currentUser = auth.currentUser
 
 
@@ -48,8 +44,6 @@ class ProfileFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         ownerId = args.ownerId
-
-
 
 
         if (currentUser == null){
@@ -112,27 +106,34 @@ class ProfileFragment : Fragment() {
                     Log.d(TAG, "hhhhhhhh h${it.profileImageUrl} vvv $it")
 
                 })
-
         }
     }
 
 
     private inner class PostsProfileHolder(val binding:PostListProfileFragmentBinding)
-        : RecyclerView.ViewHolder(binding.root){
+        : RecyclerView.ViewHolder(binding.root),View.OnClickListener{
 
         private lateinit var post: Post
+
+        init {
+            itemView.setOnClickListener(this)
+        }
 
         fun bind(post:Post){
 
             this.post = post
 
-//            binding.postProfileDetails.text = post.postDescription
-//            if (!post.date.isNullOrEmpty()) {
-//                binding.dataUserPost.text = DateFormat.format(dateFormat, post.date.toLong())
-//            }
 
             binding.profilePostImage.load(post.postImageUrl)
 
+        }
+
+        override fun onClick(v: View?) {
+            if (v == itemView){
+                val action = ProfileFragmentDirections.actionNavigationProfileToNavigationHome(post.postId)
+                findNavController().navigate(action)
+
+            }
 
         }
 

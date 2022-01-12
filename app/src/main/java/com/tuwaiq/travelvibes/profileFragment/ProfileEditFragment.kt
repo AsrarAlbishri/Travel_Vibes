@@ -64,7 +64,7 @@ class ProfileEditFragment : Fragment() {
                 user.email=emailEdit.text.toString()
                 user.phoneNumber=phoneNum.text.toString()
                 user.bio=editBio.text.toString()
-              // user.profileImageUrl= profileImage.load(currentFile).toString()
+
                 uploadImageToFirebase()
 
         }
@@ -146,7 +146,5 @@ class ProfileEditFragment : Fragment() {
             }
         }
     }
-
-
 
 }

@@ -22,6 +22,8 @@ class PostViewModel : ViewModel() {
 
     }
 
+
+
 //    fun updatePost(post: Post ){
 //        repo.updatePost(post)
 //    }

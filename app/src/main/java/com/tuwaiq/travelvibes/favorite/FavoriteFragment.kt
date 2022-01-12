@@ -35,17 +35,8 @@ class FavoriteFragment : Fragment() {
     private val favoriteViewModel: FavoriteViewModel by lazy { ViewModelProvider(this)[FavoriteViewModel::class.java] }
     
     private lateinit var binding: FragmentFavoriteBinding
-    private lateinit var post: Post
-
-    private lateinit var user: User
-
-//    private val args: FavoriteFragmentArgs by navArgs()
 
     lateinit var postId:String
-
-    private val dateFormat = "EEE, MMM dd, yyyy"
-
-    //private val favoriteCollectionRef = Firebase.firestore.collection("favorite post")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,11 +99,6 @@ class FavoriteFragment : Fragment() {
                 
                 binding.postFavPlace.text = post.placeName
 
-
-
-//                if (!post.date.isNullOrEmpty()) {
-//                    binding.dataFavPost.text = DateFormat.format(dateFormat, post.date.toLong())
-//                }
                 
                 binding.favPostImage.load(post.postImageUrl)
                 

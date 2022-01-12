@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
@@ -18,20 +16,13 @@ import coil.load
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.tuwaiq.travelvibes.data.Comment
 import com.tuwaiq.travelvibes.data.CommentUser
-import com.tuwaiq.travelvibes.data.Post
-import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.databinding.FragmentCommentBinding
 import com.tuwaiq.travelvibes.databinding.ListItemCommentBinding
-import com.tuwaiq.travelvibes.databinding.PostListFragmentBinding
-import com.tuwaiq.travelvibes.postFragment.PostFragmentArgs
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+
 
 
 private const val TAG = "CommentFragment"
@@ -40,19 +31,11 @@ class CommentFragment : Fragment() {
     private val commentViewModel:CommentViewModel by lazy { ViewModelProvider(this)[CommentViewModel::class.java] }
 
     private lateinit var comment: Comment
-
     private lateinit var firebaseUser: FirebaseUser
-
     private lateinit var auth: FirebaseAuth
-
     private val args: CommentFragmentArgs by navArgs()
-
     lateinit var postId:String
-
-     var commentUser = CommentUser()
     lateinit var commentUserList: List<CommentUser>
-
-    val database = FirebaseFirestore.getInstance()
 
 
     private lateinit var binding : FragmentCommentBinding
@@ -85,7 +68,6 @@ class CommentFragment : Fragment() {
             }
 
             comment.userId = firebaseUser.uid
-           // comment.userName = firebaseUser.displayName
             commentViewModel.addComment(comment,postId)
         }
 
@@ -93,17 +75,9 @@ class CommentFragment : Fragment() {
 
             commentViewModel.getComments(postId).observe(viewLifecycleOwner,  {
 
-//                it.forEach {
-//                    val comments = it.comment
-//
-//                    binding.commentRV.adapter = CommentAdapter(comments)
-//                }
-
 
                 Log.d(TAG, "onCreateView: ${it}")
                 binding.commentRV.adapter = CommentAdapter(it ?: emptyList())
-               // CommentAdapter(it).notifyDataSetChanged()
-
 
             })
         }
@@ -124,20 +98,6 @@ class CommentFragment : Fragment() {
                 binding.commentText.text = comment.comment?.commentDetails
                 binding.userIVComment.load(comment.user?.profileImageUrl)
                 binding.commentUserName.text = comment.user?.userName
-//                lifecycleScope.launch {
-//
-//                    commentViewModel.getUserCommentInfo(postId).observeForever{
-//                        binding.commentUserName.text = it.userName
-//                        binding.userIVComment.load(it.profileImageUrl)
-//                    }
-//
-////                        viewLifecycleOwner, { user ->
-////                            binding.userIVComment.load(user.profileImageUrl)
-////                            binding.commentUserName.text = user.userName
-////
-////                        }
-//
-//                }
 
             }
         }
