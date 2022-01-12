@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "DetailsFragment"
 class DetailsFragment : Fragment() {
 
-    var postHolder: Post? = null
+ //   var postHolder: Post? = null
 
     private val detailsViewModel: DetailsViewModel by lazy { ViewModelProvider(this)[DetailsViewModel::class.java] }
 
@@ -58,7 +58,7 @@ class DetailsFragment : Fragment() {
             detailsViewModel.detailsPost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
                 binding.postDescription.setText(it.postDescription)
                 binding.placeNameTv.setText(it.placeName)
-                binding.locationAddressDetails.setText(it.location)
+              //  binding.locationAddressDetails.setText(it.location)
 //                if (!it.location.isNullOrEmpty() && it.location != "null"){
 //                    binding.clickMap.text = it.location
 //                }

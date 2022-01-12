@@ -3,6 +3,7 @@ package com.tuwaiq.travelvibes.profileFragment
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
@@ -10,14 +11,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat.recreate
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.tuwaiq.travelvibes.MainActivity
 import com.tuwaiq.travelvibes.R
 import com.tuwaiq.travelvibes.databinding.FragmentProfileEditBinding
 import com.tuwaiq.travelvibes.databinding.FragmentSettingBinding
+import com.tuwaiq.travelvibes.postFragment.PostFragment
+import com.tuwaiq.travelvibes.postListFragment.PostListFragment
 import java.util.*
 
 
@@ -32,7 +37,9 @@ class SettingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        loadLocate()
+        //loadLocate()
+
+
 
     }
 
@@ -41,13 +48,19 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-       // loadLocate()
+        loadLocate()
+
+//        val intent = Intent(requireActivity(), PostListFragment::class.java)
+//
+//        activity?.finish()
+
 
         binding= FragmentSettingBinding.inflate(layoutInflater)
 
 
         binding.changeLanguage.setOnClickListener {
             showChangeLang()
+
         }
 
 
@@ -71,8 +84,11 @@ class SettingFragment : Fragment() {
         builder.setTitle("Choose Language")
         builder.setSingleChoiceItems(listLanguage , -1){ dialog , which ->
            when(which){
-               0 -> setLocate("ar")
-               1 -> setLocate("en")
+               0 -> {setLocate("ar")
+               recreate(requireActivity())}
+
+               1 -> {setLocate("en")
+               recreate(requireActivity())}
            }
             dialog.dismiss()
 
@@ -102,6 +118,5 @@ class SettingFragment : Fragment() {
         setLocate(language)
 
     }
-
 
 }
