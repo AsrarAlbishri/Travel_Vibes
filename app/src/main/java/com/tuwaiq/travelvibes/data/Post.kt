@@ -5,6 +5,7 @@ data class Post(
     var postId:String = "",
     var ownerId:String = "",
     var postDescription:String = "",
+    var postTitle:String = "",
     var date:String = "",
     var placeName:String = "",
     var location:String = "",

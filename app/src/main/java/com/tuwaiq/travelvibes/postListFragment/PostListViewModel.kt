@@ -15,6 +15,10 @@ class PostListViewModel : ViewModel() {
 
     }
 
+//    suspend fun getPost(postId: String): Post ?{
+//        return repo.getPost(postId)
+//    }
+
     fun deletePost(post: Post ){
          repo.deletePost(post)
     }

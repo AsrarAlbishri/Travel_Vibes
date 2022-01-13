@@ -11,7 +11,7 @@
         android:id="@+id/fragmentContainerView"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="642dp"
+        android:layout_height="606dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/main_nav" />
 

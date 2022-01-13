@@ -174,6 +174,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             binding.apply {
                 post.postDescription=postWrite.text.toString()
                 post.placeName= placeName.text.toString().lowercase(Locale.getDefault())
+                post.postTitle= enterTitle.text.toString()
 //                post.hotel = hotelPlace.isChecked.toString()
 //                post.others = othersPlace.isChecked.toString()
 //                post.restaurant = restaurantPlace.isChecked.toString()
@@ -187,10 +188,9 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
             post.ownerId= firebaseUser.uid
             post.postId = UUID.randomUUID().toString()
+
             postViewModel.savePost(post)
         }
-
-
 
 
 //        binding.postPhoto.setOnClickListener {
@@ -218,23 +218,12 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         }
 
 
-//        binding.restaurantPlace.setOnCheckedChangeListener { _, isChecked ->
-//            post.restaurant = isChecked.toString()
-//        }
-//
-//        binding.hotelPlace.setOnCheckedChangeListener { _, isChecked ->
-//            post.hotel = isChecked.toString()
-//        }
-//
-//        binding.othersPlace.setOnCheckedChangeListener { _, isChecked ->
-//            post.others = isChecked.toString()
-//        }
-
         lifecycleScope.launch {
             Log.d(TAG, "onCreateView: ${args.id}")
             postViewModel.detailsPost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
                 binding.postWrite.setText(it.postDescription)
                 binding.placeName.setText(it.placeName)
+                binding.enterTitle.setText(it.postTitle)
                 if (!it.location.isNullOrEmpty() && it.location != "null"){
                     binding.clickMap.text = it.location
                 }
@@ -244,9 +233,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
                     val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
                     mapFragment?.getMapAsync(callback)
                 }
-//                binding.restaurantPlace.isChecked
-//                binding.hotelPlace.isChecked
-//                binding.othersPlace.isChecked
+
                 binding.postPhoto.load(it.postImageUrl)
 
             })
@@ -255,8 +242,6 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 //        binding.addPost.setOnClickListener {
 //            postViewModel.updatePost(post)
 //        }
-
-
 
         return binding.root
     }

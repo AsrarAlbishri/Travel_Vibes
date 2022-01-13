@@ -24,7 +24,7 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/post_details"
+        android:id="@+id/title_post"
         android:layout_width="291dp"
         android:layout_height="86dp"
         android:layout_marginStart="27dp"
@@ -53,8 +53,8 @@
         android:textAlignment="textEnd"
         android:textColor="@color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/post_details"
-        app:layout_constraintStart_toStartOf="@+id/post_details"
+        app:layout_constraintBottom_toBottomOf="@+id/title_post"
+        app:layout_constraintStart_toStartOf="@+id/title_post"
         tools:text="date" />
 
     <ImageView

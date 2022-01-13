@@ -70,8 +70,9 @@
             app:argType="string"
             android:defaultValue="-1" />
         <action
-            android:id="@+id/action_navigation_profile_to_navigation_home"
-            app:destination="@id/navigation_home" />
+            android:id="@+id/action_navigation_profile_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/profileEditFragment"
@@ -112,6 +113,9 @@
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
     <fragment
         android:id="@+id/commentFragment"
@@ -140,6 +144,10 @@
         android:label="DetailsFragment" >
         <argument
             android:name="id"
+            app:argType="string"
+            android:defaultValue="-1" />
+        <argument
+            android:name="postId"
             app:argType="string"
             android:defaultValue="-1" />
     </fragment>

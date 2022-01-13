@@ -20,6 +20,7 @@ import com.tuwaiq.travelvibes.R
 import com.tuwaiq.travelvibes.commentFragment.CommentViewModel
 import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.databinding.FragmentDetailsBinding
+import com.tuwaiq.travelvibes.map.LocationResponse
 import com.tuwaiq.travelvibes.postFragment.TAG
 import kotlinx.coroutines.launch
 
@@ -95,6 +96,17 @@ class DetailsFragment : Fragment() {
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13f))
             googleMap.uiSettings.setAllGesturesEnabled(false)
 
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (LocationResponse.currentLocation != null && LocationResponse.locationAddress != null){
+           // binding.clickMap.text = LocationResponse.locationAddress
+            post.location = LocationResponse.locationAddress ?: "Current Location Address"
+            post.latitude = LocationResponse.currentLocation?.latitude ?: 0.0
+            post.longitude = LocationResponse.currentLocation?.longitude ?: 0.0
         }
     }
 

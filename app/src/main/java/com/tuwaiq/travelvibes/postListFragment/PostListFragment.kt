@@ -44,7 +44,7 @@ class PostListFragment : Fragment() {
 
 
 
-    private val args: PostListFragmentArgs by navArgs()
+
 
     val database = FirebaseFirestore.getInstance()
 
@@ -115,7 +115,7 @@ class PostListFragment : Fragment() {
 
        auth = FirebaseAuth.getInstance()
 
-       // postId = args.postId
+
     }
 
     override fun onCreateView(
@@ -175,7 +175,8 @@ class PostListFragment : Fragment() {
                 this.postion = postion
                 this.posts = posts
                 postId = post.postId
-                binding.postDetails.text = post.postDescription
+                binding.titlePost.text = post.postTitle
+
                 Log.d(TAG, "bind: ${post.ownerId}")
                 
                 if (!post.date.isNullOrEmpty()) {

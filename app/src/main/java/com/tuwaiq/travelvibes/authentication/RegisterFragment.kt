@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.tuwaiq.travelvibes.MainActivity
 import com.tuwaiq.travelvibes.R
 import com.tuwaiq.travelvibes.Registration
+import com.tuwaiq.travelvibes.data.Post
 import com.tuwaiq.travelvibes.data.User
 import com.tuwaiq.travelvibes.postListFragment.PostListFragment
 
@@ -37,6 +38,14 @@ class RegisterFragment : Fragment() {
     private lateinit var registerBtn: Button
     private lateinit var loginTV:TextView
 
+    private lateinit var post: Post
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        post = Post()
+    }
 
 
     override fun onStart() {
@@ -65,6 +74,10 @@ class RegisterFragment : Fragment() {
                 Constants.enteredIsCorrect -> registerUser(email =  email, password =  password, username= username )
 
             }
+
+            val navCon = findNavController()
+            val action = RegisterFragmentDirections.actionRegisterFragmentToNavigationHome(post.postId)
+            navCon.navigate(action)
         }
     }
 

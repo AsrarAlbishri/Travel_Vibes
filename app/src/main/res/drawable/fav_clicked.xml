@@ -11,9 +11,5 @@
         android:state_checked="false" />
 
 
-<!--    <item android:drawable="@drawable/ic_baseline_favorite_red_24"/>-->
-
-
-
 
 </selector>

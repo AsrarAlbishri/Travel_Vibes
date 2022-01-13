@@ -22,7 +22,7 @@
 
 
     <string name="new_post">New Post:</string>
-    <string name="enter_your_post">Enter your post</string>
+    <string name="enter_your_post">Enter your post details</string>
     <string name="place_name">Place Name:</string>
     <string name="enter_the_place_name">Enter the place name</string>
     <string name="restaurant">Restaurant</string>
@@ -66,6 +66,8 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="change_language">change language</string>
     <string name="place_name1">place name:</string>
+    <string name="title_post">Title:</string>
+    <string name="enter_your_post_title">Enter your post title</string>
 
 
 </resources>

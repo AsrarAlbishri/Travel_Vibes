@@ -55,22 +55,18 @@ class AppRepository private constructor(context: Context) {
 
     fun addPost(post: Post) = CoroutineScope(Dispatchers.IO).launch {
 
-//
-//        try {
-//            postCollectionRef.add(post).await()
-//            withContext(Dispatchers.Main){
-//                Log.d(TAG,"successfully saved post")
-//            }
-//
-//        }catch (e: java.lang.Exception){
-//            withContext(Dispatchers.Main){
-//                Log.d(TAG,"reject save post")
-//            }
-//        }
 
-       val Id = postCollectionRef.document()
-                 post.postId = Id.id
-                 Id.set(post)
+        try {
+            postCollectionRef.document(post.postId).set(post).await()
+            withContext(Dispatchers.Main){
+                Log.d(TAG,"successfully saved post")
+            }
+
+        }catch (e: java.lang.Exception){
+            withContext(Dispatchers.Main){
+                Log.d(TAG,"reject save post")
+            }
+        }
 
     }
 
@@ -104,6 +100,15 @@ class AppRepository private constructor(context: Context) {
             emit(posts)
         }
     }
+
+
+//    suspend fun getPost(postId: String): Post ?{
+//        return postCollectionRef.document(postId)
+//            .get()
+//            .await()
+//            .toObject(Post::class.java)
+//    }
+
 
     suspend fun profilePostData(uid: String):LiveData<List<Post>>{
         val postList = mutableListOf<Post>()
@@ -154,7 +159,9 @@ class AppRepository private constructor(context: Context) {
 
 //    fun updatePost(post: Post )  {
 //
-//        postCollectionRef.document(post.postId).set(post)
+//       val oldPost = postCollectionRef.document()
+//        post.postId = oldPost.id
+//            oldPost.set(post)
 //
 //            .addOnSuccessListener {
 //                Log.e(TAG , "post document update successful ")
