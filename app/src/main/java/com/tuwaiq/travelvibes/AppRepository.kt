@@ -55,18 +55,23 @@ class AppRepository private constructor(context: Context) {
 
     fun addPost(post: Post) = CoroutineScope(Dispatchers.IO).launch {
 
+//
+//        try {
+//            postCollectionRef.add(post).await()
+//            withContext(Dispatchers.Main){
+//                Log.d(TAG,"successfully saved post")
+//            }
+//
+//        }catch (e: java.lang.Exception){
+//            withContext(Dispatchers.Main){
+//                Log.d(TAG,"reject save post")
+//            }
+//        }
 
-        try {
-            postCollectionRef.add(post).await()
-            withContext(Dispatchers.Main){
-                Log.d(TAG,"successfully saved post")
-            }
+       val Id = postCollectionRef.document()
+                 post.postId = Id.id
+                 Id.set(post)
 
-        }catch (e: java.lang.Exception){
-            withContext(Dispatchers.Main){
-                Log.d(TAG,"reject save post")
-            }
-        }
     }
 
     suspend fun getFetchPosts(): LiveData<List<Post>>{

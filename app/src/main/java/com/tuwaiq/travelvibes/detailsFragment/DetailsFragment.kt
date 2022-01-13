@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "DetailsFragment"
 class DetailsFragment : Fragment() {
 
- //   var postHolder: Post? = null
+    var postHolder: Post? = null
 
     private val detailsViewModel: DetailsViewModel by lazy { ViewModelProvider(this)[DetailsViewModel::class.java] }
 
@@ -58,19 +58,17 @@ class DetailsFragment : Fragment() {
             detailsViewModel.detailsPost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
                 binding.postDescription.setText(it.postDescription)
                 binding.placeNameTv.setText(it.placeName)
-              //  binding.locationAddressDetails.setText(it.location)
+                binding.locationAddressDetails.setText(it.location)
 //                if (!it.location.isNullOrEmpty() && it.location != "null"){
 //                    binding.clickMap.text = it.location
 //                }
 
-//                if (it.latitude != 0.0 && it.longitude != 0.0){
-//                    postHolder = it
-//                    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-//                    mapFragment?.getMapAsync(callback)
-//                }
-////                binding.restaurantPlace.isChecked
-//                binding.hotelPlace.isChecked
-//                binding.othersPlace.isChecked
+                if (it.latitude != 0.0 && it.longitude != 0.0){
+                    postHolder = it
+                    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                    mapFragment?.getMapAsync(callback)
+                }
+
                 if (!post.date.isNullOrEmpty()) {
                     binding.postDateDetails.text = DateFormat.format(dateFormat, post.date.toLong())
                 }
@@ -84,21 +82,21 @@ class DetailsFragment : Fragment() {
 
     }
 
-//    private val callback = OnMapReadyCallback { googleMap ->
-//        if (postHolder != null){
-//            binding.materialCardView.visibility = View.VISIBLE
-//            val currentLocation = LatLng(postHolder!!.latitude, postHolder!!.longitude)
-//            googleMap.addMarker(
-//                MarkerOptions().position(currentLocation).title(postHolder!!.placeName)
-//                    .snippet(postHolder!!.placeName)
-//            )
-//
-//            googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation))
-//            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13f))
-//            googleMap.uiSettings.setAllGesturesEnabled(false)
-//
-//        }
-//    }
+    private val callback = OnMapReadyCallback { googleMap ->
+        if (postHolder != null){
+            binding.materialCardView.visibility = View.VISIBLE
+            val currentLocation = LatLng(postHolder!!.latitude, postHolder!!.longitude)
+            googleMap.addMarker(
+                MarkerOptions().position(currentLocation).title(postHolder!!.placeName)
+                    .snippet(postHolder!!.placeName)
+            )
+
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation))
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13f))
+            googleMap.uiSettings.setAllGesturesEnabled(false)
+
+        }
+    }
 
 
 }

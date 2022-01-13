@@ -179,8 +179,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 //                post.restaurant = restaurantPlace.isChecked.toString()
 
 
-//                val action = PostFragmentDirections.actionNavigationAddToNavigationHome()
-//                findNavController().navigate(action)
+                val action = PostFragmentDirections.actionNavigationAddToNavigationHome(post.postId)
+                findNavController().navigate(action)
 
             }
 

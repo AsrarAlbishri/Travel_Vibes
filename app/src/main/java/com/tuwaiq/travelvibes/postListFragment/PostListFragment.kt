@@ -228,6 +228,7 @@ class PostListFragment : Fragment() {
                         val action = PostListFragmentDirections.actionNavigationHomeToNavigationProfile(post.ownerId)
                        findNavController().navigate(action)
                 }
+
             }
 
         override fun onClick(p0: View?) {
@@ -241,7 +242,9 @@ class PostListFragment : Fragment() {
             if (p0 == binding.deletPostIV){
 
                 if (auth.currentUser!!.uid == post.ownerId){
+                  //  binding.deletPostIV.visibility = View.VISIBLE
                     postListViewModel.deletePost(post)
+
                     posts.removeAt(adapterPosition)
                     updateUI(posts, user)
 

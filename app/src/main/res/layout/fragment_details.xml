@@ -2,105 +2,133 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout7"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="20sp"
-    tools:context=".DetailsFragment">
+   >
 
-    <ImageView
-        android:id="@+id/details_IV"
-        android:layout_width="351sp"
-        android:layout_height="280sp"
-        android:layout_marginBottom="8dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/post_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:src="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/post_description"
-        android:layout_width="322dp"
-        android:layout_height="103dp"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="37dp"
-        android:inputType="textMultiLine"
-        android:lines="3"
-        android:maxLines="3"
-        android:singleLine="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/details_IV"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <TextView
-        android:id="@+id/place_name_tv"
-        android:layout_width="216dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:text="@string/place_name1"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/post_description"
-        app:layout_constraintTop_toTopOf="@+id/post_description" />
-
-    <TextView
-        android:id="@+id/post_date_details"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="40dp"
-        android:textAlignment="textEnd"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="@+id/place_name_tv"
-        app:layout_constraintTop_toTopOf="@+id/place_name_tv"
-        tools:text="date" />
+        android:layout_marginTop="28dp"
+        android:background="@drawable/custom_background_det"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="7dp">
 
-    <TextView
-        android:id="@+id/location_address_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="8dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/details_IV"
-        app:layout_constraintStart_toEndOf="@+id/details_location_IV" />
+        <ImageView
+            android:id="@+id/details_IV"
+            android:layout_width="343dp"
+            android:layout_height="207dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="11dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/location_address_details"
+            tools:src="@tools:sample/avatars" />
 
-    <ImageView
-        android:id="@+id/details_location_IV"
-        android:layout_width="32dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/details_IV"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/location1" />
+        <TextView
+            android:id="@+id/post_description"
+            android:layout_width="323dp"
+            android:layout_height="105dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="50dp"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:maxLines="3"
+            android:singleLine="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_IV"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="91dp"
+            android:layout_height="33dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="48dp"
+            android:text="@string/place_name1"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/post_description"
+            app:layout_constraintTop_toTopOf="@+id/post_description" />
+
+        <TextView
+            android:id="@+id/place_name_tv"
+            android:layout_width="171dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="16dp"
+            android:text="Text view"
+            android:textColor="#050505"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/post_description"
+            app:layout_constraintStart_toEndOf="@+id/textView12" />
+
+        <TextView
+            android:id="@+id/post_date_details"
+            android:layout_width="34dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="24dp"
+            android:textAlignment="textEnd"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/post_description"
+            app:layout_constraintStart_toStartOf="@+id/post_description"
+            tools:text="date" />
+
+        <TextView
+            android:id="@+id/location_address_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:text="TextView"
+            app:layout_constraintBottom_toTopOf="@+id/details_IV"
+            app:layout_constraintStart_toEndOf="@+id/details_location_IV"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/details_location_IV"
+            android:layout_width="32dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@+id/details_IV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/location1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="350dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="711dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:cardCornerRadius="10dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        app:layout_constraintStart_toStartOf="parent">
-
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".postFragment.PostFragment" />
+            tools:context=".postFragment.PostFragment"
+            tools:layout="@layout/fragment_maps" />
     </com.google.android.material.card.MaterialCardView>
 
 
