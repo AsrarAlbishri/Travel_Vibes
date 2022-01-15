@@ -1,5 +1,6 @@
 package com.tuwaiq.travelvibes.postListFragment
 
+import android.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
@@ -242,14 +243,32 @@ class PostListFragment : Fragment() {
 
             if (p0 == binding.deletPostIV){
 
-                if (auth.currentUser!!.uid == post.ownerId){
-                  //  binding.deletPostIV.visibility = View.VISIBLE
-                    postListViewModel.deletePost(post)
+                binding.deletPostIV.setOnClickListener {
 
-                    posts.removeAt(adapterPosition)
-                    updateUI(posts, user)
+                    val builder = context?.let {  it -> AlertDialog.Builder(it)}
+                    builder?.let {
 
+                        it.setMessage("Are you sure you want to delete this post?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes"){ _,_ ->
+
+                        if (auth.currentUser!!.uid == post.ownerId){
+                            //  binding.deletPostIV.visibility = View.VISIBLE
+                            postListViewModel.deletePost(post)
+
+                            posts.removeAt(adapterPosition)
+                            updateUI(posts, user)
+                        }
+                    }.setNegativeButton("No"){ dialog , id ->
+                                dialog.dismiss()
+
+                            }
+
+                        val alert = builder.create()
+                        alert.show()
+                    }
                 }
+
             }
 
             if (p0 == binding.commentIV){

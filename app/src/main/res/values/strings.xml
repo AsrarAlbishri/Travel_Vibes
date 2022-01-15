@@ -2,18 +2,19 @@
     <string name="app_name">Travel Vibes</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-<!--    <string name="travelvibe">Travel Vibe</string>-->
+    <!--    <string name="travelvibe">Travel Vibe</string>-->
 
     <string name="username">User Name</string>
     <string name="password">Password</string>
     <string name="log_inbtn">Log In</string>
-    <string name="register">Sign Up</string>
+    <string name="register">Register Here</string>
 
     <string name="register_user_name">User Name</string>
     <string name="e_mail">E_mail</string>
     <string name="register_password">password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="log_in">Login</string>
+    <string name="register_btn">SIGN UP</string>
+    <string name="log_in">Login Here</string>
 
     <string name="home_page">Home</string>
     <string name="add_page">Add Post</string>
@@ -22,12 +23,8 @@
 
 
     <string name="new_post">New Post:</string>
-    <string name="enter_your_post">Enter your post details</string>
-    <string name="place_name">Place Name:</string>
-    <string name="enter_the_place_name">Enter the place name</string>
-    <string name="restaurant">Restaurant</string>
-    <string name="hotel">Hotel</string>
-    <string name="others">Others</string>
+    <string name="enter_your_post">Description</string>
+    <string name="enter_the_place_name">place name</string>
     <string name="location">Location</string>
     <string name="click_to_open_the_map">Click To Open The Map</string>
 
@@ -37,11 +34,11 @@
     <string name="user_name">user name</string>
     <string name="your_post">your post :</string>
 
-    <string name="first_name">First Name:</string>
-    <string name="last_name">Last Name:</string>
-    <string name="user_name_edit">User Name:</string>
-    <string name="email">Email:</string>
-    <string name="phone_number">Phone Number:</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="user_name_edit">User Name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
     <string name="save">save</string>
     <string name="change_photo">Change Photo</string>
     <string name="date">Date</string>
@@ -61,13 +58,16 @@
     <string name="language">Language</string>
     <string name="save_post">Save</string>
     <string name="account_information">Account Information</string>
-    <string name="register_btn">Register</string>
+
     <string name="add_location">Add Location</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="change_language">change language</string>
     <string name="place_name1">place name:</string>
     <string name="title_post">Title:</string>
     <string name="enter_your_post_title">Enter your post title</string>
+
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="already_have_an_account">Already have an account?</string>
 
 
 </resources>

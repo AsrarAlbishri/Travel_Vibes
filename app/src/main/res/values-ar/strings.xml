@@ -23,12 +23,8 @@
 
 
     <string name="new_post">منشور جديد:</string>
-    <string name="enter_your_post">اكتب منشورك</string>
-    <string name="place_name">اسم المكان:</string>
+    <string name="enter_your_post">اوصف المنشور الخاص بك</string>
     <string name="enter_the_place_name">اكتب اسم المكان</string>
-    <string name="restaurant">مطعم</string>
-    <string name="hotel">فندق</string>
-    <string name="others">اخرى</string>
     <string name="location">الموقع</string>
     <string name="click_to_open_the_map">انقر لفتح الخريطة</string>
 
@@ -38,11 +34,11 @@
     <string name="user_name">user name</string>
     <string name="your_post">منشوراتك:</string>
 
-    <string name="first_name">الاسم الاول:</string>
-    <string name="last_name">الاسم الاخير:</string>
-    <string name="user_name_edit">اسم المستخدم:</string>
-    <string name="email">البريد الالكتروني:</string>
-    <string name="phone_number">رقم الجوال:</string>
+    <string name="first_name">الاسم الاول</string>
+    <string name="last_name">الاسم الاخير</string>
+    <string name="user_name_edit">اسم المستخدم</string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="phone_number">رقم الجوال</string>
     <string name="save">حفظ</string>
     <string name="change_photo">Change Photo</string>
     <string name="date">التاريخ</string>
@@ -65,5 +61,12 @@
     <string name="add_location">اضف الموقع</string>
     <string name="dark_mode">المظهر الداكن</string>
     <string name="change_language">غير اللغة</string>
+
+    <string name="place_name1">اسم المكان:</string>
+    <string name="title_post">العنوان:</string>
+    <string name="enter_your_post_title">ادخل عنوان للبوست</string>
+
+    <string name="don_t_have_an_account"> ليس لديك حساب ؟</string>
+    <string name="already_have_an_account">لديك حساب بالفعل</string>
 
 </resources>

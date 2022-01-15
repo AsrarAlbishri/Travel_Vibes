@@ -4,25 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-   >
+    android:layout_margin="5sp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/custom_background_det"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="7dp">
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/details_IV"
             android:layout_width="343dp"
             android:layout_height="207dp"
-            android:layout_marginStart="11dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="11dp"
+            android:layout_marginEnd="16dp"
             android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +38,7 @@
             android:layout_height="105dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginEnd="32dp"
             android:inputType="textMultiLine"
             android:lines="3"
             android:maxLines="3"
@@ -60,10 +63,9 @@
 
         <TextView
             android:id="@+id/place_name_tv"
-            android:layout_width="171dp"
-            android:layout_height="41dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_width="152dp"
+            android:layout_height="27dp"
+            android:layout_marginBottom="28dp"
             android:text="Text view"
             android:textColor="#050505"
             android:textSize="16sp"
@@ -84,8 +86,9 @@
 
         <TextView
             android:id="@+id/location_address_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="306dp"
+            android:layout_height="39dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="24dp"
             android:text="TextView"
@@ -97,12 +100,13 @@
             android:id="@+id/details_location_IV"
             android:layout_width="32dp"
             android:layout_height="28dp"
-            android:layout_marginStart="28dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="12dp"
             app:layout_constraintBottom_toTopOf="@+id/details_IV"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.368"
             app:srcCompat="@drawable/location1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -112,9 +116,9 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="420dp"
         android:layout_marginEnd="20dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cardCornerRadius="10dp"
         app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -130,8 +134,6 @@
             tools:context=".postFragment.PostFragment"
             tools:layout="@layout/fragment_maps" />
     </com.google.android.material.card.MaterialCardView>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,68 +26,73 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/post_write"
-            android:layout_width="274dp"
-            android:layout_height="88dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="84dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutDescription"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="261dp"
+            android:layout_height="82dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="75dp"
             android:hint="@string/enter_your_post"
-            android:inputType="textMultiLine"
-            android:lines="3"
-            android:maxLines="3"
-            android:singleLine="false"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/post_camera"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutTitle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/post_write"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:maxLines="3"
+                android:singleLine="false" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/post_photo"
-            android:layout_width="93dp"
+            android:layout_width="100dp"
             android:layout_height="106dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="40dp"
-            android:scaleType="centerCrop"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_baseline_image_24"
+            app:layout_constraintEnd_toStartOf="@+id/textInputLayoutDescription"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            tools:src="@tools:sample/avatars" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <ImageButton
+
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/post_camera"
-            android:layout_width="76dp"
-            android:layout_height="34dp"
+            android:layout_width="72dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="-15dp"
             android:src="@android:drawable/ic_menu_camera"
-            app:layout_constraintEnd_toEndOf="@+id/post_photo"
-            app:layout_constraintStart_toStartOf="@+id/post_photo"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/post_photo"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="144dp"
-            android:text="@string/place_name"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_camera" />
-
-        <EditText
-            android:id="@+id/place_name"
-            android:layout_width="211dp"
-            android:layout_height="47dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPlaceName"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="225dp"
+            android:layout_height="57dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="37dp"
-            android:layout_marginEnd="35dp"
+            android:layout_marginTop="32dp"
             android:hint="@string/enter_the_place_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.068"
-            app:layout_constraintStart_toEndOf="@+id/textView1"
-            app:layout_constraintTop_toBottomOf="@+id/click_map"
-            tools:ignore="TouchTargetSizeCheck" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/location_post"
+            tools:ignore="TouchTargetSizeCheck">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/place_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!--    <CheckBox-->
         <!--        android:id="@+id/restaurant_place"-->
@@ -162,15 +167,18 @@
 
         <TextView
             android:id="@+id/click_map"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="88dp"
+            android:layout_width="265dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/click_to_open_the_map"
             android:textColor="#9A9595"
             android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/post_write" />
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDescription" />
 
         <ImageView
             android:id="@+id/date_picker_IV"
@@ -200,16 +208,14 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="8dp"
             android:visibility="gone"
             app:cardCornerRadius="10dp"
             app:cardElevation="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/place_name">
+            app:layout_constraintTop_toBottomOf="@id/textInputLayoutPlaceName">
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/map"
@@ -220,34 +226,33 @@
                 tools:layout="@layout/fragment_maps" />
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/title_post"
-            android:textColor="@color/black"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/post_write"
-            app:layout_constraintEnd_toStartOf="@+id/enter_title" />
 
-        <EditText
-            android:id="@+id/enter_title"
-            android:layout_width="227dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="6dp"
-            android:ems="10"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutTitle"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="256dp"
+            android:layout_height="57dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="40dp"
             android:hint="@string/enter_your_post_title"
-            android:inputType="textMultiLine"
-            android:lines="3"
-            android:maxLines="3"
-            android:singleLine="false"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/post_write"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/post_photo"
+            app:layout_constraintTop_toBottomOf="@+id/add_post">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/enter_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:maxLines="3"
+                android:singleLine="false"
+                android:textSize="14sp"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
