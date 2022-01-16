@@ -78,16 +78,17 @@ class LoginFragment : Fragment() {
                     if (task.isSuccessful) {
                         showToast("login successful")
                         if (builder != null) {
+
                             nm?.notify(0,builder)
-                        }                    } else {
+                        }
+                        val navCon = findNavController()
+                        val action = LoginFragmentDirections.actionLoginFragmentToPostListFragment(post.postId)
+                        navCon.navigate(action)
+                    } else {
                         showToast("login failed")
                     }
-                   // Registration.validation()
-                }
 
-            val navCon = findNavController()
-            val action = LoginFragmentDirections.actionLoginFragmentToPostListFragment(post.postId)
-            navCon.navigate(action)
+                }
 
         }
 

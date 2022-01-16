@@ -44,9 +44,6 @@ class PostListFragment : Fragment() {
     private val postListViewModel: PostListViewModel by lazy { ViewModelProvider(this)[PostListViewModel::class.java] }
 
 
-
-
-
     val database = FirebaseFirestore.getInstance()
 
     private val dateFormat = "EEE, MMM dd, yyyy"
@@ -87,8 +84,10 @@ class PostListFragment : Fragment() {
                             postListViewModel.getSearchPosts(search).observeForever { postList ->
 
                                 lifecycleScope.launch {
-                                    postListViewModel.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(viewLifecycleOwner){ user ->
-                                        binding.postRecyclerView.adapter = PostsAdapter(postList,user)
+                                    Firebase.auth.currentUser?.uid?.let {
+                                        postListViewModel.getUserInfo(it).observe(viewLifecycleOwner){ user ->
+                                            binding.postRecyclerView.adapter = PostsAdapter(postList,user)
+                                        }
                                     }
                                 }
 
@@ -168,7 +167,6 @@ class PostListFragment : Fragment() {
             binding.editIV.setOnClickListener(this)
 
         }
-
 
             fun bind(post:Post,user: User, postion: Int,posts: MutableList<Post>){
                 this.post = post

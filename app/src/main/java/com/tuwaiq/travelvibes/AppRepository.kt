@@ -227,7 +227,7 @@ class AppRepository private constructor(context: Context) {
 
     }
 
-    suspend fun getUserInfo(uid: String): LiveData<User> {
+    suspend fun getUserInfo(uid:String): LiveData<User> {
 
                 return liveData {
 
@@ -240,8 +240,6 @@ class AppRepository private constructor(context: Context) {
                     if (user != null){
                         emit(user!!)
                     }
-
-
 
                 }
 
