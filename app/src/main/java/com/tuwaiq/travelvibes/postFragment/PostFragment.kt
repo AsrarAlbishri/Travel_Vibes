@@ -55,6 +55,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
     private val args:PostFragmentArgs by navArgs()
 
+    private var imageUri:String = ""
 
 
     private lateinit var photoFile: File
@@ -149,6 +150,14 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             findNavController().navigate(action)
         }
 
+        if (args.id == "-1" ){
+            binding.addPost.visibility = View.VISIBLE
+
+        }else{
+            binding.updateButton.visibility = View.VISIBLE
+
+        }
+
     }
 
     private fun openCamera() {
@@ -170,35 +179,47 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
        // binding= PostFragmentBinding.inflate(layoutInflater)
 
-        binding.addPost.setOnClickListener {
-            binding.apply {
-                post.postDescription=postWrite.text.toString()
-                post.placeName= placeName.text.toString().lowercase(Locale.getDefault())
-                post.postTitle= enterTitle.text.toString()
+//        if (postHolder == null){
+
+            binding.addPost.setOnClickListener {
+                binding.apply {
+                    post.postDescription=postWrite.text.toString()
+                    post.placeName= placeName.text.toString().lowercase(Locale.getDefault())
+                    post.postTitle= enterTitle.text.toString()
 //                post.hotel = hotelPlace.isChecked.toString()
 //                post.others = othersPlace.isChecked.toString()
 //                post.restaurant = restaurantPlace.isChecked.toString()
 
 
-                val action = PostFragmentDirections.actionNavigationAddToNavigationHome(post.postId)
-                findNavController().navigate(action)
+                    val action = PostFragmentDirections.actionNavigationAddToNavigationHome()
+                    findNavController().navigate(action)
 
+                }
+
+
+                post.ownerId= firebaseUser.uid
+                post.postId = UUID.randomUUID().toString()
+
+                postViewModel.savePost(post)
             }
 
 
-            post.ownerId= firebaseUser.uid
-            post.postId = UUID.randomUUID().toString()
 
-            postViewModel.savePost(post)
-        }
+//       if (postHolder != null){
+
+           binding.updateButton.setOnClickListener {
+               Log.d(TAG, "onCreateView:update uri $imageUri")
+               postViewModel.updatePost(
+                   binding.enterTitle.text.toString(),
+                   binding.postWrite.text.toString(),
+                   binding.placeName.text.toString(),
+                  // binding.datePickerIV.toString(),
+                   binding.clickMap.text.toString(),
+                   postImageUrl = imageUri,
+                   postId = post.postId)
+           }
 
 
-//        binding.postPhoto.setOnClickListener {
-//            Intent(Intent.ACTION_GET_CONTENT).also {
-//                it.type = "image/*"
-//                startActivityForResult(it,REQUEST_CODE_IMAGE_POST)
-//            }
-//        }
 
         binding.postCamera.setOnClickListener {
             val builder = context?.let { it -> AlertDialog.Builder (it) }
@@ -221,6 +242,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         lifecycleScope.launch {
             Log.d(TAG, "onCreateView: ${args.id}")
             postViewModel.detailsPost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
+                post = it
                 binding.postWrite.setText(it.postDescription)
                 binding.placeName.setText(it.placeName)
                 binding.enterTitle.setText(it.postTitle)
@@ -238,10 +260,6 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
             })
         }
-
-//        binding.addPost.setOnClickListener {
-//            postViewModel.updatePost(post)
-//        }
 
         return binding.root
     }
@@ -267,8 +285,6 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
             it.type = "image/*"
             startActivityForResult(it,REQUEST_CODE_IMAGE_POST)
         }
-
-
 
     }
 
@@ -314,7 +330,8 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
                            ref.downloadUrl
                        }
                            .addOnSuccessListener {
-                               val imageUri = it.toString()
+                                imageUri = it.toString()
+
                                post.postImageUrl = imageUri
                                Log.d(TAG, "imageUri $imageUri" )
                         Toast.makeText(context,"uploaded image", Toast.LENGTH_LONG).show()

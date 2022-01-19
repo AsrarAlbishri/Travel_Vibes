@@ -31,13 +31,17 @@ class LoginFragment : Fragment() {
     private lateinit var loginBtn: Button
     private lateinit var signUp:TextView
 
-    private lateinit var post: Post
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        post = Post()
+
+
+        auth.currentUser?.let {
+            val navCon = findNavController()
+            val action = LoginFragmentDirections.actionLoginFragmentToPostListFragment()
+            navCon.navigate(action)
+        }
     }
 
 
@@ -82,7 +86,7 @@ class LoginFragment : Fragment() {
                             nm?.notify(0,builder)
                         }
                         val navCon = findNavController()
-                        val action = LoginFragmentDirections.actionLoginFragmentToPostListFragment(post.postId)
+                        val action = LoginFragmentDirections.actionLoginFragmentToPostListFragment()
                         navCon.navigate(action)
                     } else {
                         showToast("login failed")

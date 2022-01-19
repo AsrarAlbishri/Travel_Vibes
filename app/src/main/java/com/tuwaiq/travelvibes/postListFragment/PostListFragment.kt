@@ -1,5 +1,6 @@
 package com.tuwaiq.travelvibes.postListFragment
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.tuwaiq.travelvibes.databinding.ListItemPostBinding
 import com.tuwaiq.travelvibes.databinding.PostListFragmentBinding
 import android.text.format.DateFormat
 import android.view.*
+import android.widget.PopupMenu
 import android.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.distinctUntilChanged
@@ -24,11 +26,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
+import com.squareup.okhttp.internal.DiskLruCache
 import com.tuwaiq.travelvibes.commentFragment.CommentViewModel
 import com.tuwaiq.travelvibes.data.Comment
 import com.tuwaiq.travelvibes.data.User
+import com.tuwaiq.travelvibes.postFragment.PostFragmentArgs
 import com.tuwaiq.travelvibes.postFragment.PostFragmentDirections
 import com.tuwaiq.travelvibes.postFragment.PostViewModel
 import kotlinx.coroutines.Dispatchers
@@ -44,9 +49,11 @@ class PostListFragment : Fragment() {
     private val postListViewModel: PostListViewModel by lazy { ViewModelProvider(this)[PostListViewModel::class.java] }
 
 
-    val database = FirebaseFirestore.getInstance()
-
     private val dateFormat = "EEE, MMM dd, yyyy"
+
+    private lateinit var post: Post
+
+
 
 
     private lateinit var binding:PostListFragmentBinding
@@ -93,7 +100,6 @@ class PostListFragment : Fragment() {
 
                             }
 
-
                         }
 
                     }
@@ -114,6 +120,8 @@ class PostListFragment : Fragment() {
         setHasOptionsMenu(true)
 
        auth = FirebaseAuth.getInstance()
+
+        post = Post()
 
 
     }
@@ -162,9 +170,9 @@ class PostListFragment : Fragment() {
 
         init {
             itemView.setOnClickListener(this)
-            binding.deletPostIV.setOnClickListener(this)
+           // binding.deletPostIV.setOnClickListener(this)
             binding.commentIV.setOnClickListener(this)
-            binding.editIV.setOnClickListener(this)
+           // binding.editIV.setOnClickListener(this)
 
         }
 
@@ -195,6 +203,8 @@ class PostListFragment : Fragment() {
 //                }
 
 
+                binding.menu.setOnClickListener { popupMenu(it) }
+
 
                         lifecycleScope.launch(Dispatchers.Main) {
                             Firebase.firestore.collection("users").document(post.ownerId)
@@ -209,6 +219,13 @@ class PostListFragment : Fragment() {
                                     Log.e(TAG, "bind: ",it)
                                 }
                         }
+
+//                lifecycleScope.launch(Dispatchers.Main){
+//                     postListViewModel.getPost(args.postId) ?: Post()
+//                    binding.titlePost.setText(post.postTitle)
+//
+//
+//                }
 
 
                 binding.favoritIV.setOnCheckedChangeListener { _, isChecked ->
@@ -231,6 +248,59 @@ class PostListFragment : Fragment() {
 
             }
 
+
+        @SuppressLint("DiscouragedPrivateApi")
+        private fun popupMenu(v:View) {
+             val popupMenu = PopupMenu(context,v)
+            popupMenu.inflate(R.menu.show_menu)
+            popupMenu.setOnMenuItemClickListener {
+                when(it.itemId){
+                    R.id.editpost ->{
+
+                        if (auth.currentUser!!.uid == post.ownerId){
+
+                            val action = PostListFragmentDirections.actionPostListFragmentToPostFragment(post.postId)
+                            findNavController().navigate(action)
+
+                        }
+                        true
+                    }
+                    R.id.deletepost ->{
+                        val builder = context?.let {  it -> AlertDialog.Builder(it)}
+                        builder?.let {
+
+                            it.setMessage("Are you sure you want to delete this post?")
+                                .setCancelable(false)
+                                .setPositiveButton("Yes"){ _,_ ->
+
+                                    if (auth.currentUser!!.uid == post.ownerId){
+                                        //  binding.deletPostIV.visibility = View.VISIBLE
+                                        postListViewModel.deletePost(post)
+
+                                        posts.removeAt(adapterPosition)
+                                        updateUI(posts, user)
+                                    }
+                                }.setNegativeButton("No"){ dialog , id ->
+                                    dialog.dismiss()
+
+                                }
+
+                            val alert = builder.create()
+                            alert.show()
+                        }
+                        true
+                    }
+                    else-> true
+                }
+            }
+            popupMenu.show()
+            val popup = PopupMenu::class.java.getDeclaredField("mPopup")
+            popup.isAccessible = true
+            val menu = popup.get(popupMenu)
+            menu.javaClass.getDeclaredMethod("setForceShowIcon",Boolean::class.java)
+                .invoke(menu,true)
+        }
+
         override fun onClick(p0: View?) {
 
             if(p0 == itemView){
@@ -239,35 +309,35 @@ class PostListFragment : Fragment() {
                      findNavController().navigate(action)
             }
 
-            if (p0 == binding.deletPostIV){
-
-                binding.deletPostIV.setOnClickListener {
-
-                    val builder = context?.let {  it -> AlertDialog.Builder(it)}
-                    builder?.let {
-
-                        it.setMessage("Are you sure you want to delete this post?")
-                            .setCancelable(false)
-                            .setPositiveButton("Yes"){ _,_ ->
-
-                        if (auth.currentUser!!.uid == post.ownerId){
-                            //  binding.deletPostIV.visibility = View.VISIBLE
-                            postListViewModel.deletePost(post)
-
-                            posts.removeAt(adapterPosition)
-                            updateUI(posts, user)
-                        }
-                    }.setNegativeButton("No"){ dialog , id ->
-                                dialog.dismiss()
-
-                            }
-
-                        val alert = builder.create()
-                        alert.show()
-                    }
-                }
-
-            }
+//            if (p0 == binding.deletPostIV){
+//
+//                binding.deletPostIV.setOnClickListener {
+//
+//                    val builder = context?.let {  it -> AlertDialog.Builder(it)}
+//                    builder?.let {
+//
+//                        it.setMessage("Are you sure you want to delete this post?")
+//                            .setCancelable(false)
+//                            .setPositiveButton("Yes"){ _,_ ->
+//
+//                        if (auth.currentUser!!.uid == post.ownerId){
+//                            //  binding.deletPostIV.visibility = View.VISIBLE
+//                            postListViewModel.deletePost(post)
+//
+//                            posts.removeAt(adapterPosition)
+//                            updateUI(posts, user)
+//                        }
+//                    }.setNegativeButton("No"){ dialog , id ->
+//                                dialog.dismiss()
+//
+//                            }
+//
+//                        val alert = builder.create()
+//                        alert.show()
+//                    }
+//                }
+//
+//            }
 
             if (p0 == binding.commentIV){
                 val action = PostListFragmentDirections.actionNavigationHomeToCommentFragment(post.postId)
@@ -275,14 +345,14 @@ class PostListFragment : Fragment() {
 
             }
 
-            if(p0 == binding.editIV){
-                if (auth.currentUser!!.uid == post.ownerId){
-
-                    val action = PostListFragmentDirections.actionPostListFragmentToPostFragment(post.postId)
-                    findNavController().navigate(action)
-
-                }
-            }
+//            if(p0 == binding.editIV){
+//                if (auth.currentUser!!.uid == post.ownerId){
+//
+//                    val action = PostListFragmentDirections.actionPostListFragmentToPostFragment(post.postId)
+//                    findNavController().navigate(action)
+//
+//                }
+//            }
         }
     }
 
@@ -300,7 +370,6 @@ class PostListFragment : Fragment() {
             Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
                 .update("favorite", originalList)
 
-
         }
     }
 
@@ -317,8 +386,6 @@ class PostListFragment : Fragment() {
 
             Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
                 .update("favorite", originalList)
-
-
         }
     }
 

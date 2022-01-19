@@ -22,13 +22,10 @@ class PostViewModel : ViewModel() {
 
     }
 
+    fun updatePost(postTitle:String,postDescription:String,placeName:String,
+                  location:String,postImageUrl:String,postId:String ){
 
-
-//    fun updatePost(post: Post ){
-//        repo.updatePost(post)
-//    }
-
-
-
+        return repo.updatePost(postTitle,postDescription,placeName,location,postImageUrl,postId)
+    }
 
 }

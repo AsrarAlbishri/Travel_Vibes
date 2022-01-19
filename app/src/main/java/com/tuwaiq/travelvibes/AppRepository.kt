@@ -9,7 +9,9 @@ import coil.load
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.tuwaiq.travelvibes.data.*
@@ -48,9 +50,7 @@ class AppRepository private constructor(context: Context) {
                 Log.d(TAG,"reject save data")
             }
 
-
         }
-
     }
 
     fun addPost(post: Post) = CoroutineScope(Dispatchers.IO).launch {
@@ -127,8 +127,6 @@ class AppRepository private constructor(context: Context) {
                         postList.add(post)
 
                     }
-
-
                 }
                 .await()
 
@@ -157,36 +155,34 @@ class AppRepository private constructor(context: Context) {
 
         }
 
-//    fun updatePost(post: Post )  {
-//
-//       val oldPost = postCollectionRef.document()
-//        post.postId = oldPost.id
-//            oldPost.set(post)
-//
-//            .addOnSuccessListener {
-//                Log.e(TAG , "post document update successful ")
-//
-//
-//            }.addOnFailureListener {
-//                Log.e(TAG, "Error adding post document")
-//
-//            }
-//
-//    }
+    fun updatePost(postTitle:String,postDescription:String,placeName:String,
+             location:String,postImageUrl:String,postId:String )  {
 
+//        val updatePost = Post()
+//
+//        if (postTitle.isNotEmpty()) updatePost.postTitle = postTitle
+//        if (postDescription.isNotEmpty()) updatePost.postDescription = postDescription
+//        if (placeName.isNotEmpty()) updatePost.placeName = placeName
+//       // if (date.isNotEmpty()) updatePost.date = date
+//        if (location.isNotEmpty()) updatePost.location = location
+//        if (postImageUrl.isNotEmpty()) updatePost.postImageUrl = postImageUrl
+
+
+        postCollectionRef.document(postId)
+            .update("postTitle",postTitle,"postDescription",postDescription,
+            "placeName",placeName,"location",location,"postImageUrl",postImageUrl)
+          //.set(updatePost, SetOptions.merge())
+
+    }
 
 
    fun deletePost(post: Post ) {
 
             postCollectionRef.document(post.postId).delete()
-          // postCollectionRef.document(post.postId).update("postId",post)
-
 
     }
 
     fun addComment(comment: Comment , postId: String ) = CoroutineScope(Dispatchers.IO).launch {
-
-
 
         try {
          val oldPost =  postCollectionRef.document(postId).get().await().toObject(Post::class.java)!!

@@ -38,13 +38,13 @@ class RegisterFragment : Fragment() {
     private lateinit var registerBtn: Button
     private lateinit var loginTV:TextView
 
-    private lateinit var post: Post
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        post = Post()
+
     }
 
 
@@ -76,7 +76,7 @@ class RegisterFragment : Fragment() {
             }
 
             val navCon = findNavController()
-            val action = RegisterFragmentDirections.actionRegisterFragmentToNavigationHome(post.postId)
+            val action = RegisterFragmentDirections.actionRegisterFragmentToNavigationHome()
             navCon.navigate(action)
         }
     }

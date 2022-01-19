@@ -10,37 +10,44 @@
 
     <TextView
         android:id="@+id/post_fav_place"
-        android:layout_width="140dp"
-        android:layout_height="66dp"
+        android:layout_width="123dp"
+        android:layout_height="48dp"
         android:layout_margin="20sp"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="4dp"
         android:inputType="textMultiLine"
         android:lines="3"
         android:maxLines="3"
         android:singleLine="false"
         android:textAlignment="center"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.888"
-        app:layout_constraintStart_toEndOf="@+id/favPostImage"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.536"
+        app:layout_constraintStart_toStartOf="@+id/favPostImage"
+        app:layout_constraintTop_toBottomOf="@+id/favPostImage"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageView
         android:id="@+id/favPostImage"
-        android:layout_width="192dp"
-        android:layout_height="92dp"
+        android:layout_width="199dp"
+        android:layout_height="190dp"
         android:layout_margin="10sp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="100dp"
         android:padding="5sp"
         android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/delete_fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="28dp"
+        app:layout_constraintStart_toEndOf="@+id/post_fav_place"
+        app:layout_constraintTop_toBottomOf="@+id/favPostImage"
+        app:srcCompat="@drawable/ic_baseline_delete_24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

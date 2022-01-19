@@ -96,9 +96,6 @@ class ProfileFragment : Fragment() {
 
     private fun showUserInfo(uid:String) {
 
-
-
-
         lifecycleScope.launch {
 
                 profileViewModel.getUserInfo(uid).observe(viewLifecycleOwner, {
@@ -134,6 +131,7 @@ class ProfileFragment : Fragment() {
 
         override fun onClick(v: View?) {
             if (v == itemView){
+                Log.d(TAG, "onClick: ${post.postId}")
                 val action = ProfileFragmentDirections.actionNavigationProfileToDetailsFragment(post.postId)
                 findNavController().navigate(action)
 

@@ -21,6 +21,7 @@ import com.tuwaiq.travelvibes.data.Comment
 import com.tuwaiq.travelvibes.data.CommentUser
 import com.tuwaiq.travelvibes.databinding.FragmentCommentBinding
 import com.tuwaiq.travelvibes.databinding.ListItemCommentBinding
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
@@ -62,6 +63,17 @@ class CommentFragment : Fragment() {
 
         binding.commentRV.addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
 
+        lifecycleScope.launch {
+
+            commentViewModel.getComments(postId).observe(viewLifecycleOwner,  {
+
+
+                Log.d(TAG, "onCreateView: ${it}")
+                updateUi(it)
+
+            })
+        }
+
         binding.addComment.setOnClickListener {
             binding.apply {
                 comment.commentDetails = enterComment.text.toString()
@@ -69,20 +81,41 @@ class CommentFragment : Fragment() {
 
             comment.userId = firebaseUser.uid
             commentViewModel.addComment(comment,postId)
+
+            lifecycleScope.launch {
+
+                delay(300L)
+                commentViewModel.getComments(postId).observe(viewLifecycleOwner,  {
+
+
+                    Log.d(TAG, "onCreateView: ${it}")
+                    updateUi(it)
+
+                })
+            }
+
+            binding.enterComment.text.clear()
+
         }
 
-        lifecycleScope.launch {
-
-            commentViewModel.getComments(postId).observe(viewLifecycleOwner,  {
-
-
-                Log.d(TAG, "onCreateView: ${it}")
-                binding.commentRV.adapter = CommentAdapter(it ?: emptyList())
-
-            })
-        }
+//        lifecycleScope.launch {
+//
+//            commentViewModel.getComments(postId).observe(viewLifecycleOwner,  {
+//
+//
+//                Log.d(TAG, "onCreateView: ${it}")
+//                binding.commentRV.adapter = CommentAdapter(it ?: emptyList())
+//
+//            })
+//        }
 
         return binding.root
+    }
+
+    private fun updateUi(comments: List<CommentUser>){
+        val adapter = CommentAdapter(comments)
+
+        binding.commentRV.adapter = adapter
     }
 
 

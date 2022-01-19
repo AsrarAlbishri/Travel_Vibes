@@ -20,8 +20,10 @@
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_favorite_shadow_24.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_image_24.xml" value="0.19282051282051282" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_more_horiz_24.xml" value="0.1824074074074074" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.18177083333333333" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_edit.xml" value="0.1824074074074074" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_launcher_background.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_round_add_24.xml" value="0.19583333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/drawable/ic_search.xml" value="0.19583333333333333" />
@@ -32,7 +34,7 @@
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_comment.xml" value="0.22" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_details.xml" value="0.22" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_favorite.xml" value="0.1796875" />
-        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_login.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_login.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_maps.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_profile_edit.xml" value="0.22" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/fragment_register.xml" value="0.22" />
@@ -41,12 +43,13 @@
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/list_item_fav_post.xml" value="0.22" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/list_item_post.xml" value="0.22" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/notification.xml" value="0.22" />
-        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/post_fragment.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/post_fragment.xml" value="0.1" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/post_list_fragment.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/post_list_profile_fragment.xml" value="0.22" />
-        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/profile_fragment.xml" value="0.22" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/layout/profile_fragment.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/menu/bottom_nav_menu.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/menu/search_menu.xml" value="0.1796875" />
+        <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/menu/show_menu.xml" value="0.1796875" />
         <entry key="..\:/Users/asrar/AndroidStudioProjects/TravelVibes/app/src/main/res/xml/my_pics.xml" value="0.1796875" />
       </map>
     </option>

@@ -2,6 +2,7 @@ package com.tuwaiq.travelvibes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -36,11 +37,29 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.bottomNavigationView.setupWithNavController(navController)
+        
+        navController.addOnDestinationChangedListener { _, destination,_ ->
 
+            when(destination.id){
+                R.id.loginFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                    binding.fab.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+                }
 
+                R.id.registerFragment -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                    binding.fab.visibility = View.GONE
+                    binding.bottomAppBar.visibility = View.GONE
+
+                }
+                else -> {
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+                    binding.fab.visibility = View.VISIBLE
+                    binding.bottomAppBar.visibility = View.VISIBLE
+                }
+            }
+        }
 
     }
-
-
-
 }

@@ -8,19 +8,21 @@
     tools:context=".authentication.LoginFragment">
 
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/imageView"
-        android:layout_width="172dp"
-        android:layout_height="134dp"
+        android:layout_width="184dp"
+        android:layout_height="130dp"
         android:layout_marginStart="116dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="123dp"
+        android:layout_marginEnd="116dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/travel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/splashlogo" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputET"
