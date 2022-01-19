@@ -123,7 +123,6 @@ class FavoriteFragment : Fragment() {
                             .update("favorite", originalList)
 
 
-
                     }
 
 
