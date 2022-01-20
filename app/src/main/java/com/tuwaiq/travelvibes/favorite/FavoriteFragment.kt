@@ -41,17 +41,10 @@ class FavoriteFragment : Fragment() {
 
     private val favoriteViewModel: FavoriteViewModel by lazy { ViewModelProvider(this)[FavoriteViewModel::class.java] }
     
-    private lateinit var binding: FragmentFavoriteBinding
+    private lateinit var mainBinding: FragmentFavoriteBinding
 
     lateinit var postId:String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-      //  postId = args.postId
-
-       // user = User()
-
-    }
 
 
     override fun onCreateView(
@@ -59,8 +52,8 @@ class FavoriteFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         
-       binding = FragmentFavoriteBinding.inflate(layoutInflater)
-        binding.favoriteRecyclerView.layoutManager = GridLayoutManager(context,2)
+       mainBinding = FragmentFavoriteBinding.inflate(layoutInflater)
+        mainBinding.favoriteRecyclerView.layoutManager = GridLayoutManager(context,2)
 
 
         lifecycleScope.launch {
@@ -75,19 +68,18 @@ class FavoriteFragment : Fragment() {
                                         if(!favoritePosts.contains(it)) {
                                             favoritePosts += it
                                         }
-                                       binding.favoriteRecyclerView.adapter = PostFavoriteAdapter(favoritePosts)
+                                       mainBinding.favoriteRecyclerView.adapter = PostFavoriteAdapter(favoritePosts)
 
                                    }
                                )
                            }
                        }
-            }
-
+                  }
 
             }
 
         
-        return binding.root
+        return mainBinding.root
     }
     
     
@@ -97,7 +89,53 @@ class FavoriteFragment : Fragment() {
             private lateinit var post: Post
 
 
-            
+            init {
+
+                binding.deleteFav.setOnClickListener {
+
+                    lifecycleScope.launch {
+                        val originalList: MutableList<String> =
+                            (Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+                                .get()
+                                .await()
+                                .toObject(User::class.java)
+                                ?.favorite ?: emptyList()) as MutableList<String>
+
+                        originalList.remove(post.postId)
+                        //  originalList.removeAt(adapterPosition)
+
+                        Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
+                            .update("favorite", originalList.distinct())
+                        if (originalList.isNotEmpty()) {
+                            favoriteViewModel.getFavoritePost(Firebase.auth.currentUser?.uid!!)
+                                .observe(viewLifecycleOwner) {
+//
+                                    val favoritePosts: MutableList<Post> = mutableListOf()
+                                    it.favorite.distinct().forEach {
+
+
+                                        lifecycleScope.launch {
+                                            favoriteViewModel.detailsPost(it).observe(
+                                                viewLifecycleOwner, {
+                                                    Log.d(TAG, "favo: $it")
+                                                    favoritePosts += it
+                                                    mainBinding.favoriteRecyclerView.adapter =
+                                                        PostFavoriteAdapter(favoritePosts)
+
+                                                }
+                                            )
+                                        }
+                                    }
+                                }
+                        }else{
+                            mainBinding.favoriteRecyclerView.adapter = PostFavoriteAdapter(emptyList())
+                        }
+                    }
+
+                }
+
+            }
+
             fun bind(post: Post){
                 this.post = post
                 postId = post.postId
@@ -107,60 +145,9 @@ class FavoriteFragment : Fragment() {
                 
                 binding.favPostImage.load(post.postImageUrl)
 
-                binding.deleteFav.setOnClickListener {
 
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val originalList: MutableList<String> =
-                            (Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
-                                .get()
-                                .await()
-                                .toObject(User::class.java)
-                                ?.favorite ?: emptyList()) as MutableList<String>
-
-                        originalList.remove(postId)
-
-                        Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
-                            .update("favorite", originalList)
-
-
-                    }
-
-
-                    lifecycleScope.launch {
-
-                        favoriteViewModel.getFavoritePost(Firebase.auth.currentUser?.uid!!).observeForever {
-
-                            val favoritePosts : MutableList<Post> = mutableListOf()
-                            it.favorite.forEach {
-
-                                updateUi(favoritePosts)
-                                lifecycleScope.launch {
-                                    favoriteViewModel.detailsPost(it).observe(
-                                        viewLifecycleOwner, {
-                                            favoritePosts.add(it)
-                                        }
-                                    )
-                                }
-                            }
-
-                            updateUi(favoritePosts)
-                        }
-
-
-                    }
-
-
-
-                }
 
             }
-
-    }
-
-    private fun updateUi(posts: List<Post>){
-        val adapter = PostFavoriteAdapter(posts)
-
-        binding.favoriteRecyclerView.adapter = adapter
     }
 
 
@@ -184,5 +171,6 @@ class FavoriteFragment : Fragment() {
         override fun getItemCount(): Int = posts.size
         
     }
+
 
 }

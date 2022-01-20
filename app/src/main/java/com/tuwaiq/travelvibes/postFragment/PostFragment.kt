@@ -55,8 +55,6 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
     private val args:PostFragmentArgs by navArgs()
 
-    private var imageUri:String = ""
-
 
     private lateinit var photoFile: File
     private lateinit var photoUri: Uri
@@ -177,18 +175,11 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     ): View? {
 
 
-       // binding= PostFragmentBinding.inflate(layoutInflater)
-
-//        if (postHolder == null){
-
             binding.addPost.setOnClickListener {
                 binding.apply {
                     post.postDescription=postWrite.text.toString()
                     post.placeName= placeName.text.toString().lowercase(Locale.getDefault())
                     post.postTitle= enterTitle.text.toString()
-//                post.hotel = hotelPlace.isChecked.toString()
-//                post.others = othersPlace.isChecked.toString()
-//                post.restaurant = restaurantPlace.isChecked.toString()
 
 
                     val action = PostFragmentDirections.actionNavigationAddToNavigationHome()
@@ -205,17 +196,13 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
 
 
-//       if (postHolder != null){
-
            binding.updateButton.setOnClickListener {
-               Log.d(TAG, "onCreateView:update uri $imageUri")
+
                postViewModel.updatePost(
                    binding.enterTitle.text.toString(),
                    binding.postWrite.text.toString(),
                    binding.placeName.text.toString(),
-                  // binding.datePickerIV.toString(),
                    binding.clickMap.text.toString(),
-                   postImageUrl = imageUri,
                    postId = post.postId)
            }
 
@@ -330,7 +317,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
                            ref.downloadUrl
                        }
                            .addOnSuccessListener {
-                                imageUri = it.toString()
+                               val imageUri = it.toString()
 
                                post.postImageUrl = imageUri
                                Log.d(TAG, "imageUri $imageUri" )

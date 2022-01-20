@@ -32,7 +32,7 @@
             android:layout_width="261dp"
             android:layout_height="82dp"
             android:layout_marginStart="80dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="75dp"
             android:hint="@string/enter_your_post"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,7 +56,7 @@
             android:layout_width="111dp"
             android:layout_height="117dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_baseline_image_24"
@@ -70,7 +70,7 @@
             android:layout_width="72dp"
             android:layout_height="41dp"
             android:layout_marginStart="28dp"
-            android:layout_marginTop="-15dp"
+            android:layout_marginTop="-20dp"
             android:src="@android:drawable/ic_menu_camera"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/post_photo"
@@ -112,11 +112,11 @@
 
         <ImageView
             android:id="@+id/location_post"
-            android:layout_width="41dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="12dp"
+            android:layout_width="59dp"
+            android:layout_height="43dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:src="@drawable/location1"
+            android:src="@drawable/location_100px"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/date_picker_IV" />
 
@@ -125,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="36dp"
             android:text="@string/location"
             android:textColor="@color/black"
             android:textSize="16sp"
@@ -137,24 +137,20 @@
             android:id="@+id/click_map"
             android:layout_width="265dp"
             android:layout_height="37dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="85dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="26dp"
             android:text="@string/click_to_open_the_map"
             android:textColor="#9A9595"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayoutDescription" />
+            app:layout_constraintBottom_toTopOf="@+id/textInputLayoutPlaceName"
+            app:layout_constraintStart_toEndOf="@+id/textView8" />
 
         <ImageView
             android:id="@+id/date_picker_IV"
-            android:layout_width="41dp"
-            android:layout_height="42dp"
+            android:layout_width="49dp"
+            android:layout_height="44dp"
             android:layout_marginStart="12dp"
             android:layout_marginTop="24dp"
-            android:src="@drawable/dateicon"
+            android:src="@drawable/timeline_week_100px"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/post_camera" />
 
@@ -201,12 +197,12 @@
             android:layout_width="256dp"
             android:layout_height="57dp"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="29dp"
+            android:layout_marginTop="45dp"
             android:layout_marginEnd="40dp"
             android:hint="@string/enter_your_post_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/post_photo"
-            app:layout_constraintTop_toBottomOf="@+id/add_post">
+            app:layout_constraintTop_toBottomOf="@+id/textView">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/enter_title"
@@ -224,14 +220,17 @@
 
         <Button
             android:id="@+id/update_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:layout_marginEnd="18dp"
-            android:text="Button"
+            android:layout_width="83dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/update_btn"
+            android:textColor="@color/black"
+            android:textSize="10sp"
             android:visibility="gone"
             app:layout_constraintEnd_toStartOf="@+id/add_post"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

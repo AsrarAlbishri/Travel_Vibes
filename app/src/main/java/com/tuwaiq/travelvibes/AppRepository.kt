@@ -102,14 +102,6 @@ class AppRepository private constructor(context: Context) {
     }
 
 
-//    suspend fun getPost(postId: String): Post ?{
-//        return postCollectionRef.document(postId)
-//            .get()
-//            .await()
-//            .toObject(Post::class.java)
-//    }
-
-
     suspend fun profilePostData(uid: String):LiveData<List<Post>>{
         val postList = mutableListOf<Post>()
 
@@ -156,22 +148,12 @@ class AppRepository private constructor(context: Context) {
         }
 
     fun updatePost(postTitle:String,postDescription:String,placeName:String,
-             location:String,postImageUrl:String,postId:String )  {
-
-//        val updatePost = Post()
-//
-//        if (postTitle.isNotEmpty()) updatePost.postTitle = postTitle
-//        if (postDescription.isNotEmpty()) updatePost.postDescription = postDescription
-//        if (placeName.isNotEmpty()) updatePost.placeName = placeName
-//       // if (date.isNotEmpty()) updatePost.date = date
-//        if (location.isNotEmpty()) updatePost.location = location
-//        if (postImageUrl.isNotEmpty()) updatePost.postImageUrl = postImageUrl
+             location:String,postId:String )  {
 
 
         postCollectionRef.document(postId)
             .update("postTitle",postTitle,"postDescription",postDescription,
-            "placeName",placeName,"location",location,"postImageUrl",postImageUrl)
-          //.set(updatePost, SetOptions.merge())
+            "placeName",placeName,"location",location)
 
     }
 
@@ -209,7 +191,6 @@ class AppRepository private constructor(context: Context) {
 
             val post =    database.collection("posts").document( postId)
             val x = post.get().await().toObject(CommentResponse::class.java)
-//            Log.d(TAG, "getComments: ${x?.comment}")
             x?.comment?.forEach {
                 var comment = CommentUser()
                 comment.comment = it
@@ -234,7 +215,7 @@ class AppRepository private constructor(context: Context) {
                     Log.d(TAG, "get favorite :${user?.favorite}")
 
                     if (user != null){
-                        emit(user!!)
+                        emit(user)
                     }
 
                 }

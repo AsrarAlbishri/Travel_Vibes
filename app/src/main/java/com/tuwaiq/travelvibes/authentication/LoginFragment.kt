@@ -35,8 +35,6 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         auth.currentUser?.let {
             val navCon = findNavController()
             val action = LoginFragmentDirections.actionLoginFragmentToPostListFragment()
@@ -108,11 +106,6 @@ class LoginFragment : Fragment() {
             context?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(notificationChannel)
 
-        //val intent = Intent(context, MainActivity::class.java)
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-
-        // val pendingIntent = PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT)
-
         val builder = context?.let {
             NotificationCompat.Builder(it, channelId)
         }
@@ -120,8 +113,6 @@ class LoginFragment : Fragment() {
             ?.setContentTitle("Welcome to Travel Vibes")
             ?.setContentText("Where you can share your travel experience")
             ?.setSmallIcon(R.drawable.travel)
-          //  ?.setSmallIcon(R.id.logo_notification,R.drawable.travel)
-           // ?.setColor(0x169AB9)
             ?.setAutoCancel(true)
             ?.setPriority(NotificationCompat.PRIORITY_HIGH)
             ?.setVibrate(longArrayOf(5000, 5000, 5000, 5000))

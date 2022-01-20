@@ -37,8 +37,6 @@ class DetailsFragment : Fragment() {
 
     private lateinit var post: Post
 
-    private val dateFormat = "EEE, MMM dd, yyyy"
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,9 +58,7 @@ class DetailsFragment : Fragment() {
                 binding.postDescription.setText(it.postDescription)
                 binding.placeNameTv.setText(it.placeName)
                 binding.locationAddressDetails.setText(it.location)
-//                if (!it.location.isNullOrEmpty() && it.location != "null"){
-//                    binding.clickMap.text = it.location
-//                }
+
 
                 if (it.latitude != 0.0 && it.longitude != 0.0){
                     postHolder = it
@@ -70,9 +66,6 @@ class DetailsFragment : Fragment() {
                     mapFragment?.getMapAsync(callback)
                 }
 
-                if (!post.date.isNullOrEmpty()) {
-                    binding.postDateDetails.text = DateFormat.format(dateFormat, post.date.toLong())
-                }
 
                 binding.detailsIV.load(it.postImageUrl)
 
@@ -99,16 +92,6 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        if (LocationResponse.currentLocation != null && LocationResponse.locationAddress != null){
-           // binding.clickMap.text = LocationResponse.locationAddress
-            post.location = LocationResponse.locationAddress ?: "Current Location Address"
-            post.latitude = LocationResponse.currentLocation?.latitude ?: 0.0
-            post.longitude = LocationResponse.currentLocation?.longitude ?: 0.0
-        }
-    }
 
 
 }

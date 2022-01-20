@@ -64,10 +64,14 @@
 
     <string name="place_name1">اسم المكان:</string>
     <string name="title_post">العنوان:</string>
-    <string name="enter_your_post_title">ادخل عنوان للبوست</string>
+    <string name="enter_your_post_title">ادخل عنوان المنشور </string>
 
     <string name="don_t_have_an_account"> ليس لديك حساب ؟</string>
     <string name="already_have_an_account">لديك حساب بالفعل</string>
     <string name="text_location">TextView</string>
+    <string name="update_btn">تحديث</string>
+
+    <string name="edit_post">تعديل للمنشور</string>
+    <string name="delete_post">حذف المنشور</string>
 
 </resources>

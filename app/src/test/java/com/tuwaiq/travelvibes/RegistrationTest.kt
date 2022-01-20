@@ -49,7 +49,7 @@ class RegistrationTest {
         val result = Registration.validation(
             "asrar",
             "123",
-            "ssggcom@gg.com"
+            "ssggcom@gg"
         )
         assertThat(result).isEqualTo(Constants.checkEmailPattren)
     }

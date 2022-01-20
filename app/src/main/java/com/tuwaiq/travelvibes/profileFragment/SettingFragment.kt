@@ -37,9 +37,7 @@ class SettingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //loadLocate()
-
-
+        loadLocate()
 
     }
 
@@ -48,7 +46,7 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        loadLocate()
+       // loadLocate()
 
 //        val intent = Intent(requireActivity(), PostListFragment::class.java)
 //
@@ -85,10 +83,14 @@ class SettingFragment : Fragment() {
         builder.setSingleChoiceItems(listLanguage , -1){ dialog , which ->
            when(which){
                0 -> {setLocate("ar")
-               recreate(requireActivity())}
+//               recreate(requireActivity())
+                   homePageNav()
+               }
 
                1 -> {setLocate("en")
-               recreate(requireActivity())}
+//               recreate(requireActivity())
+                   homePageNav()
+               }
            }
             dialog.dismiss()
 
@@ -117,6 +119,12 @@ class SettingFragment : Fragment() {
         val language = pref.getString(PREF_CHANGE_LANG_KEY,"")!!
         setLocate(language)
 
+    }
+
+    private fun homePageNav(){
+
+        val action = SettingFragmentDirections.actionSettingFragmentToLoginFragment()
+        findNavController().navigate(action)
     }
 
 }

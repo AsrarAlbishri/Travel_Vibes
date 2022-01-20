@@ -68,7 +68,9 @@
             android:defaultValue="-1" />
         <action
             android:id="@+id/action_navigation_profile_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
 
     </fragment>
     <fragment
@@ -85,7 +87,9 @@
         tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_postListFragment"
-            app:destination="@id/navigation_home" />
+            app:destination="@id/navigation_home"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />

@@ -98,16 +98,6 @@ class CommentFragment : Fragment() {
 
         }
 
-//        lifecycleScope.launch {
-//
-//            commentViewModel.getComments(postId).observe(viewLifecycleOwner,  {
-//
-//
-//                Log.d(TAG, "onCreateView: ${it}")
-//                binding.commentRV.adapter = CommentAdapter(it ?: emptyList())
-//
-//            })
-//        }
 
         return binding.root
     }

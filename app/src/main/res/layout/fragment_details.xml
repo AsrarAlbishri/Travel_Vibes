@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="600sp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
@@ -37,7 +37,7 @@
             android:layout_width="323dp"
             android:layout_height="105dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="32dp"
             android:inputType="textMultiLine"
             android:lines="3"
@@ -54,7 +54,7 @@
             android:layout_width="84dp"
             android:layout_height="33dp"
             android:layout_marginStart="4dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="60dp"
             android:text="@string/place_name1"
             android:textColor="@color/black"
             android:textSize="14sp"
@@ -66,7 +66,7 @@
             android:id="@+id/place_name_tv"
             android:layout_width="162dp"
             android:layout_height="27dp"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="16dp"
             android:text="Text view"
             android:textColor="#050505"
             android:textSize="16sp"
@@ -77,12 +77,11 @@
             android:id="@+id/post_date_details"
             android:layout_width="34dp"
             android:layout_height="28dp"
-            android:layout_marginStart="24dp"
             android:textAlignment="textEnd"
             android:textColor="@color/black"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/post_description"
-            app:layout_constraintStart_toStartOf="@+id/post_description"
+            tools:layout_editor_absoluteX="35dp"
+            tools:layout_editor_absoluteY="420dp"
             tools:text="date" />
 
         <TextView
@@ -110,31 +109,34 @@
             app:layout_constraintVertical_bias="0.368"
             app:srcCompat="@drawable/location1" />
 
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="370dp"
+            android:layout_marginEnd="20dp"
+            android:visibility="gone"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".postFragment.PostFragment"
+                tools:layout="@layout/fragment_maps" />
+        </com.google.android.material.card.MaterialCardView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="420dp"
-        android:layout_marginEnd="20dp"
-        android:visibility="gone"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".postFragment.PostFragment"
-            tools:layout="@layout/fragment_maps" />
-    </com.google.android.material.card.MaterialCardView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

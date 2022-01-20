@@ -69,6 +69,10 @@
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="text_location">TextView</string>
+    <string name="update_btn">update</string>
+
+    <string name="edit_post">Edit Post</string>
+    <string name="delete_post">Delete Post</string>
 
 
 </resources>

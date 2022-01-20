@@ -52,10 +52,6 @@ class PostListFragment : Fragment() {
     private val dateFormat = "EEE, MMM dd, yyyy"
 
     private lateinit var post: Post
-
-
-
-
     private lateinit var binding:PostListFragmentBinding
     lateinit var postId:String
 
@@ -170,10 +166,7 @@ class PostListFragment : Fragment() {
 
         init {
             itemView.setOnClickListener(this)
-           // binding.deletPostIV.setOnClickListener(this)
             binding.commentIV.setOnClickListener(this)
-           // binding.editIV.setOnClickListener(this)
-
         }
 
             fun bind(post:Post,user: User, postion: Int,posts: MutableList<Post>){
@@ -196,11 +189,6 @@ class PostListFragment : Fragment() {
 
                 binding.locationAddressText.text = post.location
 
-//                if (post.location.contains(post.location)){
-//                    binding.locationIV.visibility = View.VISIBLE
-//                }else{
-//                    binding.locationIV.visibility = View.GONE
-//                }
 
 
                 binding.menu.setOnClickListener { popupMenu(it) }
@@ -220,12 +208,6 @@ class PostListFragment : Fragment() {
                                 }
                         }
 
-//                lifecycleScope.launch(Dispatchers.Main){
-//                     postListViewModel.getPost(args.postId) ?: Post()
-//                    binding.titlePost.setText(post.postTitle)
-//
-//
-//                }
 
 
                 binding.favoritIV.setOnCheckedChangeListener { _, isChecked ->
@@ -309,35 +291,6 @@ class PostListFragment : Fragment() {
                      findNavController().navigate(action)
             }
 
-//            if (p0 == binding.deletPostIV){
-//
-//                binding.deletPostIV.setOnClickListener {
-//
-//                    val builder = context?.let {  it -> AlertDialog.Builder(it)}
-//                    builder?.let {
-//
-//                        it.setMessage("Are you sure you want to delete this post?")
-//                            .setCancelable(false)
-//                            .setPositiveButton("Yes"){ _,_ ->
-//
-//                        if (auth.currentUser!!.uid == post.ownerId){
-//                            //  binding.deletPostIV.visibility = View.VISIBLE
-//                            postListViewModel.deletePost(post)
-//
-//                            posts.removeAt(adapterPosition)
-//                            updateUI(posts, user)
-//                        }
-//                    }.setNegativeButton("No"){ dialog , id ->
-//                                dialog.dismiss()
-//
-//                            }
-//
-//                        val alert = builder.create()
-//                        alert.show()
-//                    }
-//                }
-//
-//            }
 
             if (p0 == binding.commentIV){
                 val action = PostListFragmentDirections.actionNavigationHomeToCommentFragment(post.postId)
@@ -345,14 +298,6 @@ class PostListFragment : Fragment() {
 
             }
 
-//            if(p0 == binding.editIV){
-//                if (auth.currentUser!!.uid == post.ownerId){
-//
-//                    val action = PostListFragmentDirections.actionPostListFragmentToPostFragment(post.postId)
-//                    findNavController().navigate(action)
-//
-//                }
-//            }
         }
     }
 

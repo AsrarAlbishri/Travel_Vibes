@@ -23,9 +23,9 @@ class PostViewModel : ViewModel() {
     }
 
     fun updatePost(postTitle:String,postDescription:String,placeName:String,
-                  location:String,postImageUrl:String,postId:String ){
+                  location:String,postId:String ){
 
-        return repo.updatePost(postTitle,postDescription,placeName,location,postImageUrl,postId)
+        return repo.updatePost(postTitle,postDescription,placeName,location,postId)
     }
 
 }

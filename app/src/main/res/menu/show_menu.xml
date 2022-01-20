@@ -3,12 +3,12 @@
 
     <item
         android:id="@+id/editpost"
-        android:title="Edit Post"
+        android:title="@string/edit_post"
         android:icon="@drawable/ic_edit"/>
 
     <item
         android:id="@+id/deletepost"
-        android:title="Delete Post"
+        android:title="@string/delete_post"
         android:icon="@drawable/ic_baseline_delete_24"/>
 
 </menu>
