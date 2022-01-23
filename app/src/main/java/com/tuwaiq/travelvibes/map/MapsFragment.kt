@@ -29,14 +29,14 @@ import java.util.*
 
 class MapsFragment : Fragment() {
 
-    private lateinit var fusedLocationClient : FusedLocationProviderClient
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var googleMap: GoogleMap
-    private lateinit var currentLocation : LatLng
+    private lateinit var currentLocation: LatLng
     private var locationAddress: String = ""
-    private lateinit var addLocationBtn : Button
+    private lateinit var addLocationBtn: Button
 
     private val callback = OnMapReadyCallback { googleMap ->
-       this.googleMap = googleMap
+        this.googleMap = googleMap
     }
 
     override fun onCreateView(
@@ -46,7 +46,6 @@ class MapsFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,30 +61,37 @@ class MapsFragment : Fragment() {
         addLocationBtn = view.findViewById(R.id.btn_Add_location)
         addLocationBtn.setOnClickListener {
 
-            val addresses : List<Address>
+            val addresses: List<Address>
 
             val geocoder = Geocoder(context, Locale.getDefault())
             try {
-                addresses = geocoder.getFromLocation(currentLocation.latitude,currentLocation.longitude,1)
+                addresses =
+                    geocoder.getFromLocation(currentLocation.latitude, currentLocation.longitude, 1)
                 locationAddress = addresses[0].getAddressLine(0)
 
                 LocationResponse.currentLocation = currentLocation
                 LocationResponse.locationAddress = locationAddress
                 findNavController().popBackStack()
-            }catch (e: Exception){
-                //
-                Log.i("Here" , "No Internet Connection")
+            } catch (e: Exception) {
+
+                Log.i("Here", "No Internet Connection")
             }
         }
     }
 
 
-    private fun getCurrentLocation(){
-        if (ContextCompat.checkSelfPermission(requireActivity(),Manifest.permission.ACCESS_FINE_LOCATION)
-        != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(requireActivity(),
+    private fun getCurrentLocation() {
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSION_REQUEST_ACCESS_FINE_LOCATION)
+                PERMISSION_REQUEST_ACCESS_FINE_LOCATION
+            )
 
             return
         }
@@ -102,14 +108,22 @@ class MapsFragment : Fragment() {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
 
-        if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION){
-            when (grantResults[0]){
+        if (requestCode == PERMISSION_REQUEST_ACCESS_FINE_LOCATION) {
+            when (grantResults[0]) {
                 PackageManager.PERMISSION_GRANTED -> getCurrentLocation()
-                PackageManager.PERMISSION_DENIED -> Toast.makeText(requireContext(),"You need to allow GPS Location" ,Toast.LENGTH_LONG).show()
+                PackageManager.PERMISSION_DENIED -> Toast.makeText(
+                    requireContext(),
+                    "You need to allow GPS Location",
+                    Toast.LENGTH_LONG
+                ).show()
             }
-        }else{
+        } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
 

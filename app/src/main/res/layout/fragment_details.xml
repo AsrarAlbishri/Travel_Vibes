@@ -64,8 +64,9 @@
 
         <TextView
             android:id="@+id/place_name_tv"
-            android:layout_width="162dp"
+            android:layout_width="wrap_content"
             android:layout_height="27dp"
+            android:layout_marginStart="5dp"
             android:layout_marginBottom="16dp"
             android:text="Text view"
             android:textColor="#050505"

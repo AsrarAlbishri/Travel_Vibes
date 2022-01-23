@@ -9,18 +9,18 @@ import java.util.*
 
 class DatePickerDialogFragment : DialogFragment() {
 
-    interface DatePickerCallback{
+    interface DatePickerCallback {
         fun onDateSelected(date: Date)
     }
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-      val date = arguments?.getSerializable(POST_DATE_KEY) as String
+        val date = arguments?.getSerializable(POST_DATE_KEY) as String
 
 
         val calendar = Calendar.getInstance()
-        if (date.isNotEmpty()){
+        if (date.isNotEmpty()) {
             val realdate = Date(date.toLong())
             calendar.time = realdate
         }
@@ -30,7 +30,7 @@ class DatePickerDialogFragment : DialogFragment() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val dateListener = DatePickerDialog.OnDateSetListener { _, year, month, dat ->
-            val resultDate = GregorianCalendar(year,month,dat).time
+            val resultDate = GregorianCalendar(year, month, dat).time
 
             targetFragment?.let {
                 (it as DatePickerCallback).onDateSelected(resultDate)

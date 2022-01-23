@@ -1,20 +1,14 @@
 package com.tuwaiq.travelvibes
 
-
 import com.google.common.truth.Truth.assertThat
 import com.tuwaiq.travelvibes.authentication.Constants
-import org.junit.Before
-
 import org.junit.Test
-import org.testng.annotations.BeforeTest
-import java.io.ObjectInputValidation
+
 
 class RegistrationTest {
 
-
-
     @Test
-    fun `username are empty`(){
+    fun `username are empty`() {
         val result = Registration.validation(
             "",
             "123",
@@ -25,7 +19,7 @@ class RegistrationTest {
 
 
     @Test
-    fun `password are empty`(){
+    fun `password are empty`() {
         val result = Registration.validation(
             "asrar",
             "",
@@ -35,7 +29,7 @@ class RegistrationTest {
     }
 
     @Test
-    fun `password is less than 2 digit`(){
+    fun `password is less than 2 digit`() {
         val result = Registration.validation(
             "asrar",
             "abcdefg5",
@@ -45,7 +39,7 @@ class RegistrationTest {
     }
 
     @Test
-    fun `checkEmail`(){
+    fun `checkEmail`() {
         val result = Registration.validation(
             "asrar",
             "123",
@@ -53,6 +47,5 @@ class RegistrationTest {
         )
         assertThat(result).isEqualTo(Constants.checkEmailPattren)
     }
-
 
 }

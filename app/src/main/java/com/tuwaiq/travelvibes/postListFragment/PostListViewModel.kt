@@ -15,16 +15,16 @@ class PostListViewModel : ViewModel() {
 
     }
 
-    fun deletePost(post: Post ){
-         repo.deletePost(post)
+    fun deletePost(post: Post) {
+        repo.deletePost(post)
     }
 
-    suspend fun getSearchPosts(word:String): LiveData<List<Post>>{
+    suspend fun getSearchPosts(word: String): LiveData<List<Post>> {
         return repo.getSearchPosts(word)
     }
 
-    suspend fun getUserInfo(uid:String):LiveData<User>{
-      return  repo.getUserInfo(uid)
+    suspend fun getUserInfo(uid: String): LiveData<User> {
+        return repo.getUserInfo(uid)
     }
 
 

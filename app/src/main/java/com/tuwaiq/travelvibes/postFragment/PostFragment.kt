@@ -27,7 +27,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -46,14 +45,14 @@ const val TAG = "PostFragment"
 private const val REQUEST_CODE_IMAGE_POST = 0
 const val POST_DATE_KEY = "post date"
 
-class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
+class PostFragment : Fragment(), DatePickerDialogFragment.DatePickerCallback {
 
     var currentFile: Uri? = null
     var imageRef = Firebase.storage.reference
 
     var postHolder: Post? = null
 
-    private val args:PostFragmentArgs by navArgs()
+    private val args: PostFragmentArgs by navArgs()
 
 
     private lateinit var photoFile: File
@@ -66,23 +65,21 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     private lateinit var firebaseUser: FirebaseUser
 
 
-
-
     private val getPermissionLuncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ){
+    ) {
 
     }
 
     private val takePhotoLunchr = registerForActivityResult(
         ActivityResultContracts.TakePicture()
-    ){
-        if (it){
+    ) {
+        if (it) {
             photoUri?.let {
                 val ref = imageRef.child("postImages/${Calendar.getInstance().time}")
                 val uploadImage = ref.putFile(it)
                 uploadImage.continueWithTask { task ->
-                    if (!task.isSuccessful){
+                    if (!task.isSuccessful) {
                         task.exception?.let {
                             throw it
                         }
@@ -94,13 +91,14 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
                     .addOnSuccessListener {
                         val imageUri = it.toString()
                         post.postImageUrl = imageUri
-                        Log.d(TAG, "imageUri $imageUri" )
-                        Toast.makeText(context,"uploaded image", Toast.LENGTH_LONG).show()
-                        Firebase.firestore.collection("posts").document(Firebase.auth.currentUser?.uid!!)
-                            .update("postImageUrl" , imageUri)
+                        Log.d(TAG, "imageUri $imageUri")
+                        Toast.makeText(context, "uploaded image", Toast.LENGTH_LONG).show()
+                        Firebase.firestore.collection("posts")
+                            .document(Firebase.auth.currentUser?.uid!!)
+                            .update("postImageUrl", imageUri)
 
                     }.addOnFailureListener {
-                        Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                     }
             }
 
@@ -110,9 +108,9 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (Firebase.auth.currentUser != null){
+        if (Firebase.auth.currentUser != null) {
             firebaseUser = Firebase.auth.currentUser!!
-        }else{
+        } else {
 
             val navCon = findNavController()
             val action = PostFragmentDirections.actionNavigationAddToRegisterFragment()
@@ -120,7 +118,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         }
 
 
-        binding= PostFragmentBinding.inflate(layoutInflater)
+        binding = PostFragmentBinding.inflate(layoutInflater)
 
         post = Post()
 
@@ -144,14 +142,14 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         }
 
         binding.clickMap.setOnClickListener {
-            val action =PostFragmentDirections.actionNavigationAddToMapsFragment()
+            val action = PostFragmentDirections.actionNavigationAddToMapsFragment()
             findNavController().navigate(action)
         }
 
-        if (args.id == "-1" ){
+        if (args.id == "-1") {
             binding.addPost.visibility = View.VISIBLE
 
-        }else{
+        } else {
             binding.updateButton.visibility = View.VISIBLE
 
         }
@@ -175,51 +173,51 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     ): View? {
 
 
-            binding.addPost.setOnClickListener {
-                binding.apply {
-                    post.postDescription=postWrite.text.toString()
-                    post.placeName= placeName.text.toString().lowercase(Locale.getDefault())
-                    post.postTitle= enterTitle.text.toString()
+        binding.addPost.setOnClickListener {
+            binding.apply {
+                post.postDescription = postWrite.text.toString()
+                post.placeName = placeName.text.toString().lowercase(Locale.getDefault())
+                post.postTitle = enterTitle.text.toString()
 
 
-                    val action = PostFragmentDirections.actionNavigationAddToNavigationHome()
-                    findNavController().navigate(action)
+                val action = PostFragmentDirections.actionNavigationAddToNavigationHome()
+                findNavController().navigate(action)
 
-                }
-
-
-                post.ownerId= firebaseUser.uid
-                post.postId = UUID.randomUUID().toString()
-
-                postViewModel.savePost(post)
             }
 
 
+            post.ownerId = firebaseUser.uid
+            post.postId = UUID.randomUUID().toString()
 
-           binding.updateButton.setOnClickListener {
+            postViewModel.savePost(post)
+        }
 
-               postViewModel.updatePost(
-                   binding.enterTitle.text.toString(),
-                   binding.postWrite.text.toString(),
-                   binding.placeName.text.toString(),
-                   binding.clickMap.text.toString(),
-                   postId = post.postId)
-           }
+
+
+        binding.updateButton.setOnClickListener {
+
+            postViewModel.updatePost(
+                binding.enterTitle.text.toString(),
+                binding.postWrite.text.toString(),
+                binding.placeName.text.toString(),
+                binding.clickMap.text.toString(),
+                postId = post.postId
+            )
+        }
 
 
 
         binding.postCamera.setOnClickListener {
-            val builder = context?.let { it -> AlertDialog.Builder (it) }
+            val builder = context?.let { it -> AlertDialog.Builder(it) }
             builder?.let {
                 val pictureDialogItems = arrayOf("Choose from Gallery", "Capture a photo")
-                    builder.setItems(pictureDialogItems){
-                        dialog , which ->
-                        when (which){
-                            0 -> uploadImage()
-                            1 -> openCamera()
-                        }
+                builder.setItems(pictureDialogItems) { dialog, which ->
+                    when (which) {
+                        0 -> uploadImage()
+                        1 -> openCamera()
                     }
-               val alert = builder.create()
+                }
+                val alert = builder.create()
                 alert.show()
             }
 
@@ -228,33 +226,35 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
         lifecycleScope.launch {
             Log.d(TAG, "onCreateView: ${args.id}")
-            postViewModel.detailsPost(args.id).observe(viewLifecycleOwner , androidx.lifecycle.Observer {
-                post = it
-                binding.postWrite.setText(it.postDescription)
-                binding.placeName.setText(it.placeName)
-                binding.enterTitle.setText(it.postTitle)
-                if (!it.location.isNullOrEmpty() && it.location != "null"){
-                    binding.clickMap.text = it.location
-                }
+            postViewModel.detailsPost(args.id)
+                .observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+                    post = it
+                    binding.postWrite.setText(it.postDescription)
+                    binding.placeName.setText(it.placeName)
+                    binding.enterTitle.setText(it.postTitle)
+                    if (!it.location.isNullOrEmpty() && it.location != "null") {
+                        binding.clickMap.text = it.location
+                    }
 
-                if (it.latitude != 0.0 && it.longitude != 0.0){
-                    postHolder = it
-                    val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-                    mapFragment?.getMapAsync(callback)
-                }
+                    if (it.latitude != 0.0 && it.longitude != 0.0) {
+                        postHolder = it
+                        val mapFragment =
+                            childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+                        mapFragment?.getMapAsync(callback)
+                    }
 
-                binding.postPhoto.load(it.postImageUrl)
+                    binding.postPhoto.load(it.postImageUrl)
 
-            })
+                })
         }
 
         return binding.root
     }
 
     private val callback = OnMapReadyCallback { googleMap ->
-        if (postHolder != null){
+        if (postHolder != null) {
             binding.materialCardView.visibility = View.VISIBLE
-           val currentLocation = LatLng(postHolder!!.latitude, postHolder!!.longitude)
+            val currentLocation = LatLng(postHolder!!.latitude, postHolder!!.longitude)
             googleMap.addMarker(
                 MarkerOptions().position(currentLocation).title(postHolder!!.placeName)
                     .snippet(postHolder!!.placeName)
@@ -270,7 +270,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     private fun uploadImage() {
         Intent(Intent.ACTION_GET_CONTENT).also {
             it.type = "image/*"
-            startActivityForResult(it,REQUEST_CODE_IMAGE_POST)
+            startActivityForResult(it, REQUEST_CODE_IMAGE_POST)
         }
 
     }
@@ -280,12 +280,12 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
 
         binding.datePickerIV.setOnClickListener {
             val args = Bundle()
-            args.putSerializable(POST_DATE_KEY,post.date)
+            args.putSerializable(POST_DATE_KEY, post.date)
 
             val datePicker = DatePickerDialogFragment()
             datePicker.arguments = args
-            datePicker.setTargetFragment(this,0)
-            datePicker.show(this.parentFragmentManager,"date picker")
+            datePicker.setTargetFragment(this, 0)
+            datePicker.show(this.parentFragmentManager, "date picker")
         }
     }
 
@@ -293,7 +293,7 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_IMAGE_POST){
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_IMAGE_POST) {
             data?.data?.let {
                 currentFile = it
                 binding.postPhoto.setImageURI(it)
@@ -303,55 +303,56 @@ class PostFragment : Fragment() , DatePickerDialogFragment.DatePickerCallback {
         }
     }
 
-    private fun uploadImageToFirestore(){
+    private fun uploadImageToFirestore() {
 
         currentFile?.let {
-           val ref = imageRef.child("postImages/${Calendar.getInstance().time}")
-               val uploadImage = ref.putFile(it)
-                   uploadImage.continueWithTask { task ->
-                           if (!task.isSuccessful){
-                               task.exception?.let {
-                                   throw it
-                               }
-                           }
-                           ref.downloadUrl
-                       }
-                           .addOnSuccessListener {
-                               val imageUri = it.toString()
+            val ref = imageRef.child("postImages/${Calendar.getInstance().time}")
+            val uploadImage = ref.putFile(it)
+            uploadImage.continueWithTask { task ->
+                if (!task.isSuccessful) {
+                    task.exception?.let {
+                        throw it
+                    }
+                }
+                ref.downloadUrl
+            }
+                .addOnSuccessListener {
+                    val imageUri = it.toString()
 
-                               post.postImageUrl = imageUri
-                               Log.d(TAG, "imageUri $imageUri" )
-                        Toast.makeText(context,"uploaded image", Toast.LENGTH_LONG).show()
-                               Firebase.firestore.collection("posts").document(Firebase.auth.currentUser?.uid!!)
-                                   .update("postImageUrl",imageUri)
+                    post.postImageUrl = imageUri
+                    Log.d(TAG, "imageUri $imageUri")
+                    Toast.makeText(context, "uploaded image", Toast.LENGTH_LONG).show()
+                    Firebase.firestore.collection("posts")
+                        .document(Firebase.auth.currentUser?.uid!!)
+                        .update("postImageUrl", imageUri)
 
 
                 }.addOnFailureListener {
-                    Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
 
         }
 
     }
 
-    fun updateImageview(){
-        if (photoFile.exists()){
-            val bitmap = getScaledBitmap(photoFile.path,requireActivity())
+    fun updateImageview() {
+        if (photoFile.exists()) {
+            val bitmap = getScaledBitmap(photoFile.path, requireActivity())
             binding.postPhoto.setImageBitmap(bitmap)
-        }else {
-             binding.postPhoto.setImageBitmap(null)
+        } else {
+            binding.postPhoto.setImageBitmap(null)
         }
 
     }
 
     override fun onDateSelected(date: Date) {
-         post.date = date.time.toString()
+        post.date = date.time.toString()
     }
 
     override fun onResume() {
         super.onResume()
 
-        if (LocationResponse.currentLocation != null && LocationResponse.locationAddress != null){
+        if (LocationResponse.currentLocation != null && LocationResponse.locationAddress != null) {
             binding.clickMap.text = LocationResponse.locationAddress
             post.location = LocationResponse.locationAddress ?: "Current Location Address"
             post.latitude = LocationResponse.currentLocation?.latitude ?: 0.0

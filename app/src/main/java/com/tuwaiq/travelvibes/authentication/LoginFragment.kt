@@ -19,7 +19,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.fragment.findNavController
 import com.tuwaiq.travelvibes.*
 import com.tuwaiq.travelvibes.authentication.RegisterFragment.Companion.auth
-import com.tuwaiq.travelvibes.data.Post
+
 
 const val channelId = "notification"
 const val channelName = "my notification"
@@ -29,7 +29,7 @@ class LoginFragment : Fragment() {
     private lateinit var userNameET: EditText
     private lateinit var passwordET: EditText
     private lateinit var loginBtn: Button
-    private lateinit var signUp:TextView
+    private lateinit var signUp: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +62,7 @@ class LoginFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-         signUp.setOnClickListener {
+        signUp.setOnClickListener {
             val navCon = findNavController()
             val action = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
             navCon.navigate(action)
@@ -81,7 +81,7 @@ class LoginFragment : Fragment() {
                         showToast("login successful")
                         if (builder != null) {
 
-                            nm?.notify(0,builder)
+                            nm?.notify(0, builder)
                         }
                         val navCon = findNavController()
                         val action = LoginFragmentDirections.actionLoginFragmentToPostListFragment()

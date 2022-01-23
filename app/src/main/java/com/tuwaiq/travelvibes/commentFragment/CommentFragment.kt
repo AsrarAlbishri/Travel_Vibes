@@ -25,21 +25,21 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-
 private const val TAG = "CommentFragment"
+
 class CommentFragment : Fragment() {
 
-    private val commentViewModel:CommentViewModel by lazy { ViewModelProvider(this)[CommentViewModel::class.java] }
+    private val commentViewModel: CommentViewModel by lazy { ViewModelProvider(this)[CommentViewModel::class.java] }
 
     private lateinit var comment: Comment
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var auth: FirebaseAuth
     private val args: CommentFragmentArgs by navArgs()
-    lateinit var postId:String
+    lateinit var postId: String
     lateinit var commentUserList: List<CommentUser>
 
 
-    private lateinit var binding : FragmentCommentBinding
+    private lateinit var binding: FragmentCommentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +59,18 @@ class CommentFragment : Fragment() {
     ): View? {
 
         binding = FragmentCommentBinding.inflate(layoutInflater)
-        binding.commentRV.layoutManager= LinearLayoutManager(context)
+        binding.commentRV.layoutManager = LinearLayoutManager(context)
 
-        binding.commentRV.addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
+        binding.commentRV.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
 
         lifecycleScope.launch {
 
-            commentViewModel.getComments(postId).observe(viewLifecycleOwner,  {
+            commentViewModel.getComments(postId).observe(viewLifecycleOwner, {
 
 
                 Log.d(TAG, "onCreateView: ${it}")
@@ -80,12 +85,12 @@ class CommentFragment : Fragment() {
             }
 
             comment.userId = firebaseUser.uid
-            commentViewModel.addComment(comment,postId)
+            commentViewModel.addComment(comment, postId)
 
             lifecycleScope.launch {
 
                 delay(300L)
-                commentViewModel.getComments(postId).observe(viewLifecycleOwner,  {
+                commentViewModel.getComments(postId).observe(viewLifecycleOwner, {
 
 
                     Log.d(TAG, "onCreateView: ${it}")
@@ -102,43 +107,44 @@ class CommentFragment : Fragment() {
         return binding.root
     }
 
-    private fun updateUi(comments: List<CommentUser>){
+    private fun updateUi(comments: List<CommentUser>) {
         val adapter = CommentAdapter(comments)
 
         binding.commentRV.adapter = adapter
     }
 
 
-    private inner class CommentHolder(val binding:ListItemCommentBinding)
-        :RecyclerView.ViewHolder(binding.root){
+    private inner class CommentHolder(val binding: ListItemCommentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         private var comment: Comment? = null
 
 
-            fun bind(comment: CommentUser){
-                this.comment = comment.comment
+        fun bind(comment: CommentUser) {
+            this.comment = comment.comment
 
-                binding.commentText.text = comment.comment?.commentDetails
-                binding.userIVComment.load(comment.user?.profileImageUrl)
-                binding.commentUserName.text = comment.user?.userName
+            binding.commentText.text = comment.comment?.commentDetails
+            binding.userIVComment.load(comment.user?.profileImageUrl)
+            binding.commentUserName.text = comment.user?.userName
 
-            }
         }
+    }
 
-    private inner class CommentAdapter(val comments:List<CommentUser>):RecyclerView.Adapter<CommentHolder>(){
+    private inner class CommentAdapter(val comments: List<CommentUser>) :
+        RecyclerView.Adapter<CommentHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
-             val binding = ListItemCommentBinding.inflate(
-                 layoutInflater,
-                 parent,
-                 false
+            val binding = ListItemCommentBinding.inflate(
+                layoutInflater,
+                parent,
+                false
 
-             )
+            )
 
             return CommentHolder(binding)
         }
 
         override fun onBindViewHolder(holder: CommentHolder, position: Int) {
-           val comment = comments[position]
+            val comment = comments[position]
             holder.bind(comment)
         }
 

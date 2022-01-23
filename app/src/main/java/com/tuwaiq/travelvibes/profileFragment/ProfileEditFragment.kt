@@ -26,23 +26,23 @@ import java.util.*
 
 private const val REQUEST_CODE = 0
 private const val TAG = "ProfileEditFragment"
+
 class ProfileEditFragment : Fragment() {
 
     var currentFile: Uri? = null
     var imageRef = Firebase.storage.reference
 
 
-    private val  profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
+    private val profileViewModel: ProfileViewModel by lazy { ViewModelProvider(this)[ProfileViewModel::class.java] }
     private lateinit var binding: FragmentProfileEditBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var user: User
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        user=User()
+        user = User()
         auth = FirebaseAuth.getInstance()
 
 
@@ -53,25 +53,25 @@ class ProfileEditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding= FragmentProfileEditBinding.inflate(layoutInflater)
+        binding = FragmentProfileEditBinding.inflate(layoutInflater)
 
         binding.save.setOnClickListener {
 
             binding.apply {
-                user.firstName=firstNameEdit.text.toString()
-                user.lastName=lastNameEdit.text.toString()
-                user.userName=userNameEdit.text.toString()
-                user.email=emailEdit.text.toString()
-                user.phoneNumber=phoneNum.text.toString()
-                user.bio=editBio.text.toString()
+                user.firstName = firstNameEdit.text.toString()
+                user.lastName = lastNameEdit.text.toString()
+                user.userName = userNameEdit.text.toString()
+                user.email = emailEdit.text.toString()
+                user.phoneNumber = phoneNum.text.toString()
+                user.bio = editBio.text.toString()
 
                 uploadImageToFirebase()
 
-        }
+            }
 
             profileViewModel.saveUser(user)
 
-            if (!user.profileImageUrl.isNullOrEmpty()){
+            if (!user.profileImageUrl.isNullOrEmpty()) {
                 uploadImageToFirebase()
             }
         }
@@ -81,36 +81,36 @@ class ProfileEditFragment : Fragment() {
         binding.uploadimageButton.setOnClickListener {
             Intent(Intent.ACTION_GET_CONTENT).also {
                 it.type = "image/*"
-                startActivityForResult(it,REQUEST_CODE)
+                startActivityForResult(it, REQUEST_CODE)
             }
             uploadImageToFirebase()
         }
 
 
         lifecycleScope.launch {
-            profileViewModel.getUserInfo(Firebase.auth.currentUser?.uid!!).observe(viewLifecycleOwner , {
-                user = it
-                binding.firstNameEdit.setText(it.firstName)
-                binding.lastNameEdit.setText(it.lastName)
-                binding.userNameEdit.setText(it.userName)
-                binding.phoneNum.setText(it.phoneNumber)
-                binding.emailEdit.setText(it.email)
-                binding.editBio.setText(it.bio)
-                binding.profileImage.load(it.profileImageUrl)
+            profileViewModel.getUserInfo(Firebase.auth.currentUser?.uid!!)
+                .observe(viewLifecycleOwner, {
+                    user = it
+                    binding.firstNameEdit.setText(it.firstName)
+                    binding.lastNameEdit.setText(it.lastName)
+                    binding.userNameEdit.setText(it.userName)
+                    binding.phoneNum.setText(it.phoneNumber)
+                    binding.emailEdit.setText(it.email)
+                    binding.editBio.setText(it.bio)
+                    binding.profileImage.load(it.profileImageUrl)
 
-            })
+                })
         }
 
         return binding.root
     }
 
 
-
-    private fun uploadImageToFirebase(){
+    private fun uploadImageToFirebase() {
         currentFile?.let {
-           val ref = imageRef.child("images/${Calendar.getInstance().time}")
-            val uploadImge =   ref.putFile(it)
-                uploadImge.continueWithTask { task ->
+            val ref = imageRef.child("images/${Calendar.getInstance().time}")
+            val uploadImge = ref.putFile(it)
+            uploadImge.continueWithTask { task ->
                 if (!task.isSuccessful) {
                     task.exception?.let {
                         throw it
@@ -119,18 +119,19 @@ class ProfileEditFragment : Fragment() {
                 ref.downloadUrl
 
             }
-                .addOnSuccessListener{
+                .addOnSuccessListener {
 
-                        val imageUri = it.toString()
-                        user.profileImageUrl=imageUri
-                    Log.d(TAG,"image url $imageUri")
-                        Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.uid!!)
-                            .update("profileImageUrl" , imageUri)
+                    val imageUri = it.toString()
+                    user.profileImageUrl = imageUri
+                    Log.d(TAG, "image url $imageUri")
+                    Firebase.firestore.collection("users")
+                        .document(Firebase.auth.currentUser?.uid!!)
+                        .update("profileImageUrl", imageUri)
 
                 }
 
-                .addOnFailureListener{
-                    Toast.makeText(context,it.message,Toast.LENGTH_LONG).show()
+                .addOnFailureListener {
+                    Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
                 }
         }
 
@@ -138,7 +139,7 @@ class ProfileEditFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE){
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
             data?.data?.let {
                 currentFile = it
                 binding.profileImage.setImageURI(it)
