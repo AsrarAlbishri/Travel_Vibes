@@ -74,4 +74,8 @@
     <string name="edit_post">تعديل للمنشور</string>
     <string name="delete_post">حذف المنشور</string>
 
+    <string name="delete_dialog">هل انت متأكد أنك تريد حذف هذه المشاركة؟</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+
 </resources>

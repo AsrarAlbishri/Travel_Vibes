@@ -245,9 +245,9 @@ class PostListFragment : Fragment() {
                         val builder = context?.let { it -> AlertDialog.Builder(it) }
                         builder?.let {
 
-                            it.setMessage("Are you sure you want to delete this post?")
+                            it.setMessage(getString(R.string.delete_dialog))
                                 .setCancelable(false)
-                                .setPositiveButton("Yes") { _, _ ->
+                                .setPositiveButton(getString(R.string.yes)) { _, _ ->
 
                                     if (auth.currentUser!!.uid == post.ownerId) {
                                         //  binding.deletPostIV.visibility = View.VISIBLE
@@ -256,7 +256,7 @@ class PostListFragment : Fragment() {
                                         posts.removeAt(adapterPosition)
                                         updateUI(posts, user)
                                     }
-                                }.setNegativeButton("No") { dialog, id ->
+                                }.setNegativeButton(getString(R.string.no)) { dialog, id ->
                                     dialog.dismiss()
 
                                 }

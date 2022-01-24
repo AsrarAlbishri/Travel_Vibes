@@ -74,5 +74,13 @@
     <string name="edit_post">Edit Post</string>
     <string name="delete_post">Delete Post</string>
 
+    <string name="delete_dialog">Are you sure you want to delete this post?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+
+
+
+
 
 </resources>
