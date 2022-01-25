@@ -50,10 +50,6 @@
     <string name="user_post">user post</string>
     <string name="sign_out">Sign out</string>
 
-
-    <string name="title">Title</string>
-    <string name="this_is_message">This is message</string>
-
     <string name="edit_profile">Edit profile</string>
     <string name="language">Language</string>
     <string name="save_post">Save</string>
@@ -77,6 +73,10 @@
     <string name="delete_dialog">Are you sure you want to delete this post?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+
+    <string name="title_notification">Welcome to Travel Vibes</string>
+    <string name="notification_message">Where you can share your travel experience"</string>
+
 
 
 

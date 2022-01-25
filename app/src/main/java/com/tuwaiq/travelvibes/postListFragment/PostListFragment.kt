@@ -250,9 +250,7 @@ class PostListFragment : Fragment() {
                                 .setPositiveButton(getString(R.string.yes)) { _, _ ->
 
                                     if (auth.currentUser!!.uid == post.ownerId) {
-                                        //  binding.deletPostIV.visibility = View.VISIBLE
                                         postListViewModel.deletePost(post)
-
                                         posts.removeAt(adapterPosition)
                                         updateUI(posts, user)
                                     }

@@ -51,8 +51,6 @@
     <string name="sign_out">تسجيل الخروج</string>
 
 
-    <string name="title">Title</string>
-    <string name="this_is_message">This is message</string>
     <string name="edit_profile">تعديل الملف الشخصي</string>
     <string name="language">اللغة</string>
     <string name="save_post">حفظ</string>
@@ -77,5 +75,8 @@
     <string name="delete_dialog">هل انت متأكد أنك تريد حذف هذه المشاركة؟</string>
     <string name="yes">نعم</string>
     <string name="no">لا</string>
+
+    <string name="title_notification">مرحباً بك في Travel Vibes</string>
+    <string name="notification_message">حيث يمكنك مشاركة تجربة السفر الخاصة بك</string>
 
 </resources>

@@ -24,9 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.background = null
 
-        Language.loadLocate(this)
-
-
+       // Language.loadLocate(this)
 
         binding.bottomAppBar.fabAlignmentMode = BottomAppBar.FAB_ALIGNMENT_MODE_END
 

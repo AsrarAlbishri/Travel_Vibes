@@ -110,8 +110,8 @@ class LoginFragment : Fragment() {
             NotificationCompat.Builder(it, channelId)
         }
 
-            ?.setContentTitle("Welcome to Travel Vibes")
-            ?.setContentText("Where you can share your travel experience")
+            ?.setContentTitle(getString(R.string.title_notification))
+            ?.setContentText(getString(R.string.notification_message))
             ?.setSmallIcon(R.drawable.travel)
             ?.setAutoCancel(true)
             ?.setPriority(NotificationCompat.PRIORITY_HIGH)
