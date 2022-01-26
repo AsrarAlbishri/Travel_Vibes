@@ -40,15 +40,12 @@ class RegisterFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        val currentUser = auth.currentUser
-
-        if (currentUser != null) {
             loginTV.setOnClickListener {
                 val navCon = findNavController()
                 val action = RegisterFragmentDirections.actionRegisterFragmentToLoginFragment()
                 navCon.navigate(action)
             }
-        }
+
 
         registerBtn.setOnClickListener {
             val username: String = usernameET.text.toString()

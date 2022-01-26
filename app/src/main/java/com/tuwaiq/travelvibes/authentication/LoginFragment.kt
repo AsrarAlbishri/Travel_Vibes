@@ -56,7 +56,6 @@ class LoginFragment : Fragment() {
         signUp = view.findViewById(R.id.register_TV)
 
 
-
         return view
     }
 
